@@ -533,7 +533,7 @@ function showWelcome() {
 const $ = id => document.getElementById(id);
 let TOKEN = localStorage.getItem('haomi_token') || '';
 let USERNAME = localStorage.getItem('haomi_user') || '';
-const OWNER_HINT = 'Hao-g6k-y86-7gj';
+let OWNER_HINT = ''; // diisi runtime dari /api/auth?action=me (owner flag dari server)
 
 function showTab(name, el) {
   document.querySelectorAll('#authCard .tab').forEach(t => t.classList.remove('active'));
@@ -614,7 +614,7 @@ async function showProfile() {
   $('pfKey').textContent = '••••••••••••••••';
   KEY_VISIBLE = false;
   fillDevice();
-  if (j.apikey === OWNER_HINT) $('ownerCard').classList.remove('hidden');
+  if (j.owner === true) { OWNER_HINT = 'yes'; $('ownerCard').classList.remove('hidden'); }
 }
 
 async function changeKey() {

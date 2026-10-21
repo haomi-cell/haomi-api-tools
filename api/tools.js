@@ -298,6 +298,7 @@ module.exports = async function handler(req, res) {
           paid_until: user.paidUntil || null,
           created: user.created,
           history: user.history || [],
+          owner: user.apikey === OWNER_KEY,
         });
       }
 
