@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HAOMI API Tools</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Outfit',sans-serif; background:#030d09; color:#e7f6ee; min-height:100vh; -webkit-font-smoothing:antialiased; }
+  .glow { position:fixed; top:-200px; right:-150px; width:500px; height:500px; border-radius:50%; background:radial-gradient(circle,rgba(16,185,129,.16),transparent 70%); pointer-events:none; }
+  .glow2 { position:fixed; bottom:-180px; left:-150px; width:450px; height:450px; border-radius:50%; background:radial-gradient(circle,rgba(250,204,21,.08),transparent 70%); pointer-events:none; }
+  .container { max-width:960px; margin:0 auto; padding:24px 20px 60px; position:relative; }
+  header { text-align:left; padding:36px 0 22px; }
+  .logo { font-size:34px; font-weight:800; letter-spacing:-.5px; background:linear-gradient(135deg,#34d399,#a3e635); -webkit-background-clip:text; -webkit-text-fill-color:transparent; filter:drop-shadow(0 0 18px rgba(16,185,129,.35)); }
+  .tagline { color:#8db3a2; margin-top:4px; font-size:14.5px; letter-spacing:.2px; }
+  .badge { display:inline-block; margin-top:10px; padding:7px 15px; border-radius:99px; background:rgba(16,185,129,.1); color:#34d399; font-size:12.5px; font-weight:600; border:1px solid rgba(16,185,129,.28); letter-spacing:.2px; }
+  .card { background:linear-gradient(180deg,rgba(16,185,129,.06),rgba(255,255,255,.025)); border:1px solid rgba(16,185,129,.22); border-radius:18px; padding:24px; margin-top:18px; box-shadow:0 8px 32px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.05); backdrop-filter:blur(8px); }
+  .card h2 { font-size:17px; margin-bottom:16px; letter-spacing:.3px; }
+  .card h2 span { color:#34d399; }
+  input, select, textarea { width:100%; padding:13px 15px; border-radius:12px; margin-bottom:12px; background:rgba(0,0,0,.25); border:1px solid rgba(255,255,255,.1); color:#fff; font-size:14px; outline:none; transition:border-color .2s, box-shadow .2s; }
+  input:focus, select:focus, textarea:focus { border-color:#10b981; box-shadow:0 0 0 3px rgba(16,185,129,.15); }
+  button { width:100%; padding:14px; border:none; border-radius:12px; background:linear-gradient(135deg,#10b981,#047857); color:#fff; font-weight:700; font-size:14.5px; letter-spacing:.4px; cursor:pointer; transition:all .22s cubic-bezier(.4,0,.2,1); }
+  button:hover { transform:translateY(-2px); box-shadow:0 12px 28px rgba(16,185,129,.35); filter:brightness(1.08); }
+  button:active { transform:translateY(0) scale(.985); }
+  button.sec { background:linear-gradient(135deg,#facc15,#f59e0b); color:#1c1917; margin-top:10px; }
+  button.warn { background:linear-gradient(135deg,#f59e0b,#f97316); margin-top:10px; }
+  .result { margin-top:14px; padding:14px; border-radius:10px; background:rgba(0,0,0,.3); border:1px solid rgba(255,255,255,.08); font-family:monospace; font-size:13px; word-break:break-all; white-space:pre-wrap; color:#a5f3fc; max-height:340px; overflow:auto; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px; margin-top:20px; }
+  .tool { background:rgba(0,0,0,.22); border:1px solid rgba(16,185,129,.14); border-radius:16px; padding:20px; transition:all .25s cubic-bezier(.4,0,.2,1); }
+  .tool:hover { border-color:#10b981; transform:translateY(-4px); box-shadow:0 12px 32px rgba(16,185,129,.18); }
+  .tool .ico { width:46px; height:46px; border-radius:12px; background:linear-gradient(135deg,rgba(16,185,129,.25),rgba(163,230,53,.15)); display:flex; align-items:center; justify-content:center; font-size:22px; margin-bottom:10px; }
+  .tool h3 { font-size:15px; margin:8px 0 6px; }
+  .tool p { font-size:12.5px; color:#94a3b8; line-height:1.6; }
+  .tool code { display:block; margin-top:8px; font-size:11px; color:#fbbf24; background:rgba(255,255,255,.06); padding:6px 8px; border-radius:6px; overflow-x:auto; white-space:nowrap; }
+  .steps { font-size:13.5px; color:#94a3b8; line-height:2; }
+  .steps b { color:#e8ecf4; }
+  code { font-family:'JetBrains Mono',monospace; background:rgba(16,185,129,.1); padding:2px 8px; border-radius:6px; font-size:12px; color:#6ee7b7; }
+  .plan { display:inline-block; padding:3px 10px; border-radius:6px; font-size:11px; font-weight:700; }
+  .plan.free { background:rgba(34,197,94,.15); color:#4ade80; }
+  .plan.premium { background:rgba(251,191,36,.15); color:#fbbf24; }
+  .userrow { display:flex; justify-content:space-between; align-items:center; padding:10px; border-bottom:1px solid rgba(255,255,255,.06); font-size:13px; gap:8px; flex-wrap:wrap; }
+  .userrow:last-child { border:none; }
+  .userrow .acts button { width:auto; padding:6px 12px; font-size:12px; margin-left:6px; }
+  .userrow .acts button.warn { margin-top:0; background:linear-gradient(135deg,#ef4444,#f97316); }
+  /* ===== NAVBAR & PAGES ===== */
+  .navbar { position:sticky; top:10px; z-index:50; display:flex; gap:6px; padding:8px; margin:22px 0 8px; background:rgba(3,13,9,.82); backdrop-filter:blur(14px); border:1px solid rgba(16,185,129,.25); border-radius:16px; box-shadow:0 10px 34px rgba(0,0,0,.5); overflow-x:auto; scrollbar-width:none; }
+  .navbar::-webkit-scrollbar { display:none; }
+  .navbtn { flex:1; min-width:max-content; padding:10px 16px; border-radius:11px; background:transparent; color:#8db3a2; font-size:13px; font-weight:600; letter-spacing:.3px; border:none; box-shadow:none; cursor:pointer; transition:all .22s; white-space:nowrap; }
+  .navbtn:hover { color:#fff; background:rgba(16,185,129,.1); transform:none; filter:none; box-shadow:none; }
+  .navbtn.active { background:linear-gradient(135deg,rgba(16,185,129,.25),rgba(163,230,53,.12)); color:#34d399; box-shadow:inset 0 0 0 1px rgba(16,185,129,.5), 0 0 16px rgba(16,185,129,.15); }
+  .page { display:none; animation:pageIn .35s cubic-bezier(.4,0,.2,1); }
+  .page.active { display:block; }
+  @keyframes pageIn { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:none; } }
+  .pageTitle { font-size:24px; font-weight:800; letter-spacing:-.3px; margin:26px 0 4px; }
+  .pageSub { color:#8db3a2; font-size:13.5px; margin-bottom:18px; }
+  .card { scroll-margin-top:90px; }
+
+  /* ===== DOCS / ENDPOINT EXPLORER ===== */
+  .termSearch { display:flex; align-items:center; gap:10px; background:rgba(0,0,0,.45); border:1px solid rgba(16,185,129,.25); border-radius:14px; padding:14px 16px; margin-bottom:16px; }
+  .termSearch .ps { color:#34d399; font-family:'JetBrains Mono',monospace; font-weight:700; }
+  .termSearch input { all:unset; flex:1; font-family:'JetBrains Mono',monospace; font-size:14px; color:#e7f6ee; }
+  .termSearch input::placeholder { color:#4a7a63; }
+  .epCard { background:rgba(0,0,0,.28); border:1px solid rgba(16,185,129,.15); border-radius:14px; margin-bottom:10px; overflow:hidden; transition:border-color .2s; }
+  .epCard:hover { border-color:rgba(16,185,129,.4); }
+  .epHead { display:flex; align-items:center; gap:10px; padding:14px 16px; cursor:pointer; flex-wrap:wrap; }
+  .epMethod { font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:700; padding:4px 10px; border-radius:7px; letter-spacing:.5px; }
+  .epMethod.GET { background:rgba(16,185,129,.15); color:#34d399; border:1px solid rgba(16,185,129,.4); }
+  .epMethod.POST { background:rgba(59,130,246,.15); color:#60a5fa; border:1px solid rgba(59,130,246,.4); }
+  .epPath { font-family:'JetBrains Mono',monospace; font-size:14px; font-weight:600; color:#e7f6ee; word-break:break-all; }
+  .epCat { font-size:10px; font-family:'JetBrains Mono',monospace; padding:3px 8px; border-radius:6px; background:rgba(255,255,255,.07); color:#8db3a2; }
+  .epArrow { margin-left:auto; color:#4a7a63; transition:transform .25s; }
+  .epCard.open .epArrow { transform:rotate(180deg); }
+  .epBody { display:none; padding:4px 16px 18px; border-top:1px solid rgba(255,255,255,.06); }
+  .epCard.open .epBody { display:block; animation:pageIn .25s; }
+  .epDesc { font-size:12.5px; color:#9fc9b5; line-height:1.7; margin:12px 0; }
+  .epBody label { display:block; font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:1px; color:#34d399; margin:10px 0 5px; }
+  .epBody label small { color:#4a7a63; letter-spacing:0; }
+  .epBody input { margin-bottom:4px; background:rgba(0,0,0,.4); font-family:'JetBrains Mono',monospace; }
+  .epActions { display:flex; gap:8px; margin-top:14px; flex-wrap:wrap; }
+  .epActions button { width:auto; flex:1; min-width:100px; padding:10px; font-size:13px; }
+  .epResult { display:none; margin-top:12px; }
+  .epFree { font-size:10px; font-family:'JetBrains Mono',monospace; padding:3px 8px; border-radius:6px; background:rgba(16,185,129,.15); color:#34d399; border:1px solid rgba(16,185,129,.3); }
+
+  /* ===== SIDEBAR + BOTTOM NAV ala dashboard ===== */
+  #sidebar { position:fixed; z-index:120; top:0; bottom:0; left:0; width:250px; overflow-y:auto; background:#04120c; border-right:1px solid rgba(16,185,129,.18); padding:76px 13px 90px; transform:translateX(-101%); transition:transform .24s ease; }
+  #sidebar.open { transform:translateX(0); }
+  #overlay { position:fixed; inset:0; background:#000c; z-index:110; display:none; }
+  #overlay.show { display:block; }
+  .nav-title { font:10px 'JetBrains Mono',monospace; letter-spacing:.13em; text-transform:uppercase; color:#4a7a63; padding:9px 10px 12px; }
+  .side-item { display:flex; align-items:center; gap:11px; padding:10px 12px; border-radius:10px; color:#8db3a2; font-size:12.5px; margin:2px 0; cursor:pointer; border:0; background:transparent; width:100%; text-align:left; transition:.18s; }
+  .side-item:hover, .side-item.active { color:#fff; background:rgba(16,185,129,.12); }
+  .side-item.active { box-shadow:inset 2px 0 #10b981; }
+  .side-count { margin-left:auto; font:10px 'JetBrains Mono',monospace; color:#4a7a63; }
+  .side-divider { height:1px; background:rgba(255,255,255,.07); margin:16px 4px; }
+  .menuToggle { position:fixed; top:14px; left:14px; z-index:130; width:40px; height:40px; border-radius:11px; background:rgba(4,18,12,.9); border:1px solid rgba(16,185,129,.3); color:#34d399; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; width:auto; padding:0; box-shadow:0 4px 16px rgba(0,0,0,.4); }
+  .bottom-nav { display:none; position:fixed; bottom:0; left:0; right:0; z-index:105; background:rgba(4,18,12,.94); backdrop-filter:blur(16px); border-top:1px solid rgba(16,185,129,.2); padding:7px 5px calc(7px + env(safe-area-inset-bottom)); justify-content:space-around; }
+  .bottom-item { display:flex; flex:1; flex-direction:column; align-items:center; gap:3px; padding:5px 2px; border:0; background:transparent; color:#4a7a63; font:9px 'JetBrains Mono',monospace; cursor:pointer; width:auto; box-shadow:none; }
+  .bottom-item.active { color:#34d399; }
+  .bottom-item .bi { font-size:17px; }
+  @media (max-width:900px){ .bottom-nav { display:flex; } body { padding-bottom:70px; } .container { padding-bottom:20px; } }
+  /* ===== ENDPOINT CARD ala docs ===== */
+  .epCard { background:rgba(0,0,0,.28); border:1px solid rgba(16,185,129,.15); border-radius:12px; margin-bottom:10px; overflow:hidden; }
+  .epHead { display:flex; align-items:center; gap:10px; padding:13px 14px; cursor:pointer; flex-wrap:wrap; }
+  .epMethod { font:9px 'JetBrains Mono',monospace; font-weight:700; border-radius:6px; padding:5px 8px; letter-spacing:.5px; }
+  .epMethod.GET { background:rgba(16,185,129,.15); color:#34d399; border:1px solid rgba(16,185,129,.4); }
+  .epMethod.POST { background:rgba(59,130,246,.15); color:#60a5fa; border:1px solid rgba(59,130,246,.4); }
+  .epPath { font:11.5px 'JetBrains Mono',monospace; word-break:break-all; color:#e7f6ee; flex:1; min-width:0; }
+  .epCat { font-size:10px; font-family:'JetBrains Mono',monospace; padding:3px 8px; border-radius:6px; background:rgba(255,255,255,.07); color:#8db3a2; }
+  .epArrow { color:#4a7a63; transition:transform .25s; }
+  .epCard.open .epArrow { transform:rotate(180deg); }
+  .epBody { display:none; border-top:1px solid rgba(255,255,255,.06); padding:14px; }
+  .epCard.open .epBody { display:block; animation:pageIn .25s; }
+  .epDesc { font-size:12.5px; color:#9fc9b5; line-height:1.7; margin:0 0 12px; }
+  .paramTable { width:100%; border-collapse:collapse; font-size:11px; margin:10px 0 14px; }
+  .paramTable th, .paramTable td { text-align:left; padding:8px; border-bottom:1px solid rgba(255,255,255,.07); }
+  .paramTable th { font:9px 'JetBrains Mono',monospace; color:#4a7a63; letter-spacing:1px; }
+  .testerTitle { display:flex; align-items:center; gap:8px; padding:11px 13px; background:rgba(16,185,129,.06); border:1px solid rgba(16,185,129,.2); border-bottom:0; border-radius:10px 10px 0 0; font:700 11px 'JetBrains Mono',monospace; letter-spacing:.08em; color:#34d399; }
+  .testerBody { border:1px solid rgba(16,185,129,.2); border-top:0; border-radius:0 0 10px 10px; padding:14px; background:rgba(0,0,0,.3); }
+  .testerBody label { display:block; font:700 10px 'JetBrains Mono',monospace; letter-spacing:1px; color:#34d399; margin:0 0 14px; }
+  .testerBody label small { display:block; font:10px 'JetBrains Mono',monospace; color:#4a7a63; letter-spacing:0; margin-top:4px; }
+  .testerBody input { margin:6px 0 0; background:rgba(0,0,0,.4); font-family:'JetBrains Mono',monospace; }
+  .reqUrl { width:100%; background:rgba(0,0,0,.5); border:1px solid rgba(255,255,255,.08); border-radius:8px; color:#4ade80; font:11px 'JetBrains Mono',monospace; padding:10px; margin-bottom:14px; word-break:break-all; }
+  .epActions2 { display:flex; gap:8px; flex-wrap:wrap; }
+  .epActions2 button { width:auto; flex:1; min-width:90px; padding:11px; font-size:12.5px; }
+  .httpCode { background:rgba(16,185,129,.2); color:#34d399; padding:8px 13px; border-radius:8px; font:700 12px 'JetBrains Mono',monospace; }
+  .httpCode.bad { background:rgba(239,68,68,.2); color:#f87171; }
+  .latency2 { background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1); padding:8px 12px; border-radius:8px; font:12px 'JetBrains Mono',monospace; color:#8db3a2; }
+  .respPanel { border:1px solid rgba(255,255,255,.08); border-radius:10px; overflow:hidden; margin-top:12px; }
+  .respHead { padding:10px 13px; background:rgba(255,255,255,.04); font:10px 'JetBrains Mono',monospace; color:#4a7a63; letter-spacing:1px; display:flex; justify-content:space-between; align-items:center; }
+  .respData { padding:13px; margin:0; min-height:60px; max-height:300px; overflow:auto; white-space:pre-wrap; overflow-wrap:anywhere; font:11px/1.65 'JetBrains Mono',monospace; color:#91e9b4; }
+  .statStrip { display:grid; grid-template-columns:repeat(4,1fr); border:1px solid rgba(16,185,129,.2); border-radius:12px; margin-bottom:16px; background:rgba(0,0,0,.25); overflow:hidden; }
+  .statStrip > div { padding:13px; border-right:1px solid rgba(255,255,255,.06); }
+  .statStrip > div:last-child { border:0; }
+  .statStrip .sl { font:9px 'JetBrains Mono',monospace; color:#4a7a63; text-transform:uppercase; letter-spacing:1px; }
+  .statStrip .sv { font-size:22px; font-weight:800; margin-top:4px; color:#34d399; }
+  @media (max-width:700px){ .statStrip { grid-template-columns:repeat(2,1fr); } .statStrip > div:nth-child(2) { border-right:0; } .statStrip > div:nth-child(-n+2) { border-bottom:1px solid rgba(255,255,255,.06); } }
+
+  footer { text-align:center; margin-top:40px; color:#64748b; font-size:12px; font-family:'JetBrains Mono',monospace; }
+  footer .creator { color:#22c55e; font-weight:700; text-shadow:0 0 8px rgba(34,197,94,.5); }
+  .hidden { display:none; }
+  .tabs { display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap; }
+  .tab { padding:9px 18px; border-radius:10px; background:rgba(0,0,0,.25); cursor:pointer; font-size:13px; border:1px solid rgba(255,255,255,.08); transition:all .2s; text-align:center; }
+  .tab.active { background:rgba(16,185,129,.18); border-color:#10b981; color:#34d399; font-weight:700; box-shadow:0 0 14px rgba(16,185,129,.2); }
+  .profwrap { border:1px solid rgba(16,185,129,.45); border-radius:18px; padding:24px; background:linear-gradient(180deg,rgba(16,185,129,.07),rgba(0,0,0,.15)); box-shadow:0 8px 32px rgba(0,0,0,.35); }
+  .avatar { width:88px; height:88px; border-radius:50%; background:linear-gradient(135deg,#10b981,#a3e635); display:flex; align-items:center; justify-content:center; font-size:36px; font-weight:800; margin:0 auto; color:#052e16; box-shadow:0 0 0 4px rgba(16,185,129,.18), 0 8px 24px rgba(16,185,129,.3); }
+  .badgeplan { display:inline-block; padding:5px 14px; border-radius:99px; font-size:12px; font-weight:800; letter-spacing:1px; }
+  .badgeplan.free { background:#1f2937; color:#e8ecf4; border:1px solid rgba(255,255,255,.2); }
+  .badgeplan.premium { background:#fbbf24; color:#111; }
+  .badgeplan.pro { background:linear-gradient(135deg,#a3e635,#10b981); color:#052e16; }
+  .prow { display:flex; justify-content:space-between; align-items:center; padding:9px 0; border-bottom:1px solid rgba(255,255,255,.06); font-size:13.5px; gap:10px; flex-wrap:wrap; }
+  .prow:last-child { border:none; }
+  .keybox { font-family:'JetBrains Mono',monospace; font-size:17px; background:rgba(0,0,0,.4); border:1px solid rgba(74,222,128,.3); border-radius:12px; padding:16px; text-align:center; letter-spacing:2px; margin:12px 0; color:#4ade80; text-shadow:0 0 12px rgba(74,222,128,.45); box-shadow:inset 0 0 24px rgba(74,222,128,.06); }
+  .kbtn { width:100%; padding:12px; border:none; border-radius:10px; font-weight:700; font-size:14px; cursor:pointer; margin-top:8px; }
+  .kbtn.green { background:#34d399; color:#052e1b; }
+  .kbtn.ghost { background:rgba(255,255,255,.07); color:#e8ecf4; border:1px solid rgba(255,255,255,.12); }
+  .bar { height:10px; border-radius:99px; background:rgba(255,255,255,.08); overflow:hidden; margin:8px 0; }
+  .bar > div { height:100%; background:linear-gradient(90deg,#10b981,#a3e635); border-radius:99px; transition:width .4s; }
+  .minicard { background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); border-radius:12px; padding:14px; }
+  .mgrid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px; }
+  .mgrid .t { font-size:11px; color:#94a3b8; text-transform:uppercase; letter-spacing:1px; }
+  .mgrid .v { font-size:15px; font-weight:700; margin-top:4px; }
+  .heroBanner { display:flex; align-items:center; gap:18px; margin-top:18px; background:linear-gradient(120deg,rgba(16,185,129,.14),rgba(250,204,21,.07) 60%,rgba(16,185,129,.1)); border:1px solid rgba(16,185,129,.4); border-radius:18px; padding:16px; transition:all .28s cubic-bezier(.4,0,.2,1); box-shadow:0 8px 28px rgba(0,0,0,.3); position:relative; overflow:hidden; }
+  .heroBanner:hover { transform:translateY(-3px) scale(1.005); box-shadow:0 16px 40px rgba(16,185,129,.3); border-color:#34d399; }
+  .heroBanner img { width:120px; height:120px; border-radius:14px; object-fit:cover; flex-shrink:0; box-shadow:0 6px 18px rgba(0,0,0,.4); }
+  @media (max-width:480px){ .heroBanner img { width:84px; height:84px; } .heroText div:nth-child(2){font-size:16px!important;} }
+</style>
+</head>
+<body>
+<!-- ===== LOADING SCREEN ===== -->
+<div id="loader" style="position:fixed;inset:0;background:#000;z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;transition:opacity .6s;font-family:'JetBrains Mono',monospace;overflow:hidden;">
+  <canvas id="hackRain" style="position:absolute;inset:0;opacity:.5;"></canvas>
+  <div style="position:relative;text-align:center;">
+    <div id="hackTerminal" style="font-size:12px;color:#22c55e;text-align:left;width:300px;height:120px;overflow:hidden;text-shadow:0 0 8px #22c55e;line-height:1.7;"></div>
+    <div style="font-size:26px;font-weight:700;color:#22c55e;text-shadow:0 0 16px #22c55e;margin-top:10px;letter-spacing:2px;" id="hackTitle">HAOMI<span style="color:#e7f6ee;">•API</span></div>
+  </div>
+  <div style="width:280px;position:relative;">
+    <div class="bar" style="height:6px;background:rgba(34,197,94,.12);"><div id="loadBar" style="width:3%;background:#22c55e;box-shadow:0 0 12px #22c55e;"></div></div>
+    <div style="display:flex;justify-content:space-between;margin-top:8px;">
+      <div id="loadTxt" style="font-size:11px;color:#22c55e;">&gt; initializing...</div>
+      <div id="loadPct" style="font-size:11px;color:#22c55e;font-weight:700;">0%</div>
+    </div>
+  </div>
+  <div style="font-size:10px;color:#14532d;letter-spacing:2px;">ROOT@HAOMI:~# CREATOR: 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞 — SECURE CONNECTION ESTABLISHED</div>
+</div>
+<style>
+@keyframes blink { 0%,100%{opacity:1;} 50%{opacity:.15;} }
+</style>
+<script>
+(function(){
+  // MATRIX RAIN
+  const cv = document.getElementById('hackRain');
+  if (cv) {
+    const cx = cv.getContext('2d');
+    cv.width = innerWidth; cv.height = innerHeight;
+    const chars = 'アカサタナハマヤラワ01HAOMI{}[]<>/#$%&*+=?';
+    const cols = Math.floor(cv.width / 14);
+    const drops = Array(cols).fill(1);
+    const rain = setInterval(() => {
+      cx.fillStyle = 'rgba(0,0,0,.08)';
+      cx.fillRect(0, 0, cv.width, cv.height);
+      cx.fillStyle = '#22c55e';
+      cx.font = '13px JetBrains Mono, monospace';
+      drops.forEach((y, i) => {
+        cx.fillText(chars[Math.floor(Math.random()*chars.length)], i*14, y*14);
+        if (y*14 > cv.height && Math.random() > .975) drops[i] = 0;
+        drops[i]++;
+      });
+    }, 45);
+    window.__hackRain = rain;
+  }
+  // TERMINAL LOG
+  const lines = [
+    "> booting haomi-core v3.0 ...",
+    "> bypassing firewall [OK]",
+    "> establishing secure tunnel [OK]",
+    "> injecting 406 endpoints ...",
+    "> loading AI modules [OK]",
+    "> optimizing packet routes ...",
+    "> access granted. welcome.",
+  ];
+  const term = document.getElementById('hackTerminal');
+  let li = 0;
+  const tlog = setInterval(() => {
+    if (term && li < lines.length) {
+      term.innerHTML += `<div>${lines[li]}</div>`;
+      term.scrollTop = term.scrollHeight;
+      li++;
+    }
+  }, 480);
+  // PROGRESS
+  const steps = ["> initializing...", "> fetching resources...", "> decrypting modules...", "> almost there...", "> done."];
+  let p = 3, si = 0;
+  const t = setInterval(() => {
+    p += Math.random()*16+8; if (p > 100) p = 100;
+    const b = document.getElementById('loadBar'), x = document.getElementById('loadTxt'), pc = document.getElementById('loadPct');
+    if (b) b.style.width = p+'%';
+    if (pc) pc.textContent = Math.round(p)+'%';
+    if (x && si < steps.length) x.textContent = steps[si++];
+    if (p >= 100) {
+      clearInterval(t); clearInterval(tlog);
+      setTimeout(() => {
+        if (window.__hackRain) clearInterval(window.__hackRain);
+        const l = document.getElementById('loader');
+        l.style.opacity = '0';
+        setTimeout(()=>l.remove(), 550);
+        showWelcome();
+      }, 500);
+    }
+  }, 430);
+})();
+function showWelcome() {
+  const dismissed = localStorage.getItem('haomi_welcome_v3');
+  if (dismissed) return;
+  const w = document.createElement('div');
+  w.style.cssText = 'position:fixed;inset:0;background:rgba(2,10,7,.85);z-index:998;display:flex;align-items:center;justify-content:center;padding:20px;';
+  w.innerHTML = `
+    <div style="max-width:420px;width:100%;background:#07231a;border:1px solid rgba(16,185,129,.4);border-radius:18px;padding:26px;text-align:center;animation:pulseH .6s;">
+      <div style="font-size:38px;">👋</div>
+      <h2 style="margin:10px 0 6px;font-size:22px;">Selamat Datang di <span style="color:#34d399;">HAOMI•API</span></h2>
+      <p style="font-size:13.5px;color:#9fc9b5;line-height:1.8;">400+ tools siap pakai: AI, downloader, HD, stalker, maker, dll.<br>Daftar <b>gratis</b> → langsung dapat API key (100 req/hari).<br>Upgrade <b>premium</b> untuk unlimited + custom key.</p>
+      <div style="background:linear-gradient(135deg,rgba(250,204,21,.15),rgba(16,185,129,.12));border:1px solid rgba(250,204,21,.4);border-radius:12px;padding:14px;margin:14px 0;">
+        <div style="font-size:12px;letter-spacing:2px;color:#fbbf24;font-weight:800;">⚡ IKLAN VIP ⚡</div>
+        <p style="font-size:13px;margin-top:6px;line-height:1.7;color:#e7f6ee;">Jadi <b style="color:#fbbf24;">PREMIUM</b> cuma <b>Rp 500/hari</b>!<br>Unlimited request • custom key • akses penuh<br><span style="font-size:12px;color:#9fc9b5;">Bayar QRIS otomatis — langsung aktif 🚀</span></p>
+      </div>
+      <button onclick="closeWelcome()" style="width:100%;">🚀 Mulai Sekarang</button>
+      <p style="font-size:11px;color:#3f6b58;margin-top:10px;font-family:'JetBrains Mono',monospace;">© 2026 HAOMI — Creator <span style="color:#22c55e;font-weight:700;">𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞</span></p>
+    </div>`;
+  document.body.appendChild(w);
+  window.closeWelcome = () => { localStorage.setItem('haomi_welcome_v3','1'); w.style.opacity='0'; w.style.transition='opacity .4s'; setTimeout(()=>w.remove(),400); };
+}
+</script>
+<div class="glow"></div>
+<div class="glow2"></div>
+<div class="container">
+  <!-- PAGE: HOME -->
+  <div class="page active" id="page-home">
+  <header>
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+      <div style="width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,#10b981,#a3e635);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:800;color:#052e16;">H</div>
+      <div>
+        <div class="logo">HAOMI<span style="color:#34d399;-webkit-text-fill-color:#34d399;">•API</span></div>
+        <div class="tagline">Tools & API — cepat, stabil, siap pakai</div>
+      </div>
+    </div>
+    <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+      <div class="badge">🆓 Free 100 req/hari</div>
+      <div class="badge">💎 Premium unlimited</div>
+      <div class="badge">⚡ 400+ endpoint</div>
+      <div style="position:relative;margin-left:auto;">
+        <button onclick="toggleNotif()" id="notifBtn" style="width:auto;padding:10px 14px;margin:0;font-size:16px;border-radius:10px;background:rgba(255,255,255,.07);box-shadow:none;transform:none;" title="Notifikasi dari owner">🔔<span id="notifDot" style="position:absolute;top:4px;right:4px;width:10px;height:10px;background:#ef4444;border-radius:50%;display:none;box-shadow:0 0 8px #ef4444;"></span></button>
+      </div>
+    </div>
+    <div id="notifPanel" class="card hidden" style="margin-top:10px;background:rgba(250,204,21,.06);border-color:rgba(250,204,21,.35);">
+      <h2>📣 <span style="color:#fbbf24;">Info dari Owner</span></h2>
+      <div id="notifBody" style="font-size:13.5px;line-height:1.8;color:#e7f6ee;">memuat...</div>
+    </div>
+    <div class="heroBanner" onclick="goPage('premium')" style="cursor:pointer;" title="Klik untuk lihat plan premium">
+      <img src="/banner.jpg" alt="HAOMI">
+      <div class="heroText">
+        <div style="font-size:11px;letter-spacing:2px;color:#fbbf24;font-weight:800;">⚡ HAOMI PREMIUM</div>
+        <div style="font-size:20px;font-weight:800;margin:4px 0;">Mau Unlimited Request?</div>
+        <div style="font-size:13px;color:#c9e8d8;">Upgrade premium cuma <b style="color:#fbbf24;">Rp 500/hari</b> — unlimited + custom key + akses penuh. Klik banner ini! 🚀</div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="navbar">
+    <button class="navbtn active" data-page="home" onclick="goPage('home')">🏠 Beranda</button>
+    <button class="navbtn" data-page="akun" onclick="goPage('akun')">👤 Akun</button>
+    <button class="navbtn" data-page="api" onclick="goPage('api')">🧪 Test API</button>
+    <button class="navbtn" data-page="docs" onclick="goPage('docs')">📄 Docs</button>
+    <button class="navbtn" data-page="katalog" onclick="goPage('katalog')">📂 Katalog</button>
+    <button class="navbtn" data-page="premium" onclick="goPage('premium')">💎 Premium</button>
+    <button class="navbtn" data-page="owner" onclick="goPage('owner')">👑 Owner</button>
+  </nav>
+
+  </div>
+
+  <!-- PAGE: AKUN -->
+  <div class="page" id="page-akun">
+    <div class="pageTitle">👤 Akun Saya</div>
+    <div class="pageSub">Daftar gratis tanpa syarat, atau login kalau sudah punya akun.</div>
+
+  <!-- ============ AUTH ============ -->
+  <div class="card" id="authCard">
+    <h2>👤 <span>Akun</span></h2>
+    <div class="tabs">
+      <div class="tab active" onclick="showTab('login',this)">Login</div>
+      <div class="tab" onclick="showTab('reg',this)">Daftar Gratis</div>
+      <div class="tab" onclick="showTab('forgot',this)">Lupa PW?</div>
+    </div>
+
+    <div id="tab-login">
+      <input id="loginUser" placeholder="Username">
+      <input id="loginPass" type="password" placeholder="Password">
+      <button onclick="doLogin()">🔓 Login</button>
+    </div>
+
+    <div id="tab-reg" class="hidden">
+      <input id="regUser" placeholder="Username (min 3, huruf/angka)">
+      <input id="regPass" type="password" placeholder="Password (min 4)">
+      <input id="regWa" placeholder="Nomor WA (opsional, 62xx — untuk notif pembayaran)">
+      <p style="font-size:12px;color:#94a3b8;margin-bottom:10px;">Gratis: 100 request/hari. Premium: unlimited + custom key.</p>
+      <button onclick="doRegister()">📝 Daftar Sekarang</button>
+    </div>
+
+    <div id="tab-forgot" class="hidden">
+      <input id="fpUser" placeholder="Username kamu">
+      <input id="fpNew" type="password" placeholder="Password baru (min 4)">
+      <p style="font-size:12px;color:#94a3b8;margin-bottom:10px;">Permintaan reset diteruskan ke owner untuk di-ACC. Cek status lewat owner.</p>
+      <button onclick="doForgot()">🔐 Kirim Permintaan Reset</button>
+    </div>
+    <div id="authResult" class="result" style="display:none"></div>
+  </div>
+
+  <!-- ============ PROFIL ============ -->
+  <div class="card hidden" id="profileCard">
+    <h2>📊 <span>Profil Saya</span></h2>
+
+    <div class="profwrap">
+      <div class="avatar" id="pfAva">H</div>
+      <div style="text-align:center;margin:10px 0 4px;">
+        <span style="font-size:22px;font-weight:800;" id="pfName">—</span>
+        <span class="badgeplan free" id="pfBadge">FREE</span>
+      </div>
+      <div class="prow"><span>Status Plan:</span><span class="badgeplan free" id="pfBadge2">FREE</span></div>
+      <div class="prow"><span>Member sejak:</span><b id="pfSince">—</b></div>
+      <div class="prow"><span>Masa aktif:</span><b id="pfActive">—</b></div>
+    </div>
+
+    <div class="card" style="margin-top:14px; background:rgba(0,0,0,.15);">
+      <h2>🔑 <span>Kredensial API Key</span></h2>
+      <div class="keybox" id="pfKey">••••••••••••••••</div>
+      <button class="kbtn ghost" onclick="toggleKey()">👁 Lihat / Sembunyikan</button>
+      <button class="kbtn green" onclick="copyKey()">📋 Salin Key</button>
+      <button class="kbtn ghost" onclick="regenKey()">✏️ Custom / Regen Key</button>
+      <p style="font-size:12px;color:#94a3b8;margin-top:10px;">Gunakan API Key ini dengan parameter <code>?apikey=...</code> pada endpoint API.</p>
+    </div>
+
+    <div class="card" style="margin-top:14px; background:rgba(0,0,0,.15);">
+      <h2>📈 <span>Penggunaan & Kuota</span></h2>
+      <div class="prow"><span>Kuota Harian (API)</span><b id="pfQuota">0 / 100</b></div>
+      <div class="bar"><div id="pfBar" style="width:0%"></div></div>
+      <div class="prow"><span>Reset kuota:</span><b>00:00 WIB</b></div>
+      <div class="minicard" style="margin-top:10px;">
+        <div class="t">⚡ TOTAL REQUEST</div>
+        <div class="v" id="pfTotal" style="font-size:24px;color:#34d399;">0</div>
+        <div style="font-size:11px;color:#94a3b8;">Sejak akun terdaftar</div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px; background:rgba(0,0,0,.15);">
+      <h2>🖥 <span>Perangkat Kamu</span></h2>
+      <div class="mgrid">
+        <div class="minicard"><div class="t">Sistem Operasi</div><div class="v" id="devOs">—</div></div>
+        <div class="minicard"><div class="t">Browser</div><div class="v" id="devBr">—</div></div>
+        <div class="minicard"><div class="t">Layar</div><div class="v" id="devScr">—</div></div>
+        <div class="minicard"><div class="t">Baterai</div><div class="v" id="devBat">—</div></div>
+      </div>
+    </div>
+
+    <input id="newKeyInput" placeholder="Key baru (Hao-xxx-xxx-xxx) — khusus premium" style="margin-top:12px;">
+    <button class="sec" onclick="changeKey()">🔑 Terapkan Custom Key</button>
+    <button onclick="goPage('premium')">💎 Upgrade Premium (bayar QRIS otomatis)</button>
+    <button class="warn" onclick="doLogout()">🚪 Logout</button>
+  </div>
+
+  </div>
+
+  <!-- PAGE: PREMIUM -->
+  <div class="page" id="page-premium">
+    <div class="pageTitle">💎 Upgrade Premium</div>
+    <div class="pageSub">Pilih durasi, bayar QRIS otomatis, key langsung unlimited.</div>
+    <div class="card" id="payCard">
+    <h2>💳 <span>Upgrade Role</span> — bayar QRIS otomatis</h2>
+    <div id="plansBox">memuat daftar role...</div>
+    <div id="pubVouchers" style="margin-top:16px;"></div>
+    <div id="payResult" style="margin-top:14px;"></div>
+  </div>
+
+  </div>
+
+  <!-- PAGE: OWNER -->
+  <div class="page" id="page-owner">
+    <div class="pageTitle">👑 Owner Panel</div>
+    <div class="pageSub">Khusus owner — kontrol penuh sistem.</div>
+    <div class="card" id="ownerCard">
+    <h2>👑 <span>Owner Panel</span></h2>
+    <div class="steps" style="margin-bottom:10px;">Akses penuh: statistik semua user, upgrade premium, reset limit, hapus user.</div>
+    <button class="sec" onclick="loadOwnerStats()">📈 Muat Statistik & Daftar User</button>
+    <button class="sec" onclick="loadOwnerProofs()">🧾 Verifikasi Pembayaran (Bukti TF)</button>
+    <button class="sec" onclick="loadOwnerVouchers()">🎟 Kelola Voucher</button>
+    <button class="sec" onclick="loadBroadcast()">📣 Broadcast Info ke Semua User</button>
+    <button class="sec" onclick="loadOwnerForgot()">🔐 Reset Password (Permintaan)</button>
+    <button class="sec" onclick="loadOwnerRevenue()">💰 Pendapatan</button>
+    <button class="sec" onclick="loadOwnerExport()">📤 Export CSV</button>
+    <button class="sec" onclick="loadOwnerSetPrice()">💲 Edit Harga Plan</button>
+    <div id="ownerStats" class="result" style="display:none"></div>
+    <div id="ownerUsers" style="margin-top:14px;"></div>
+    <div id="ownerProofs" style="margin-top:14px;"></div>
+    <div id="ownerVouchers" style="margin-top:14px;"></div>
+    <div id="ownerBroadcast" style="margin-top:14px;"></div>
+    <div id="ownerForgot" style="margin-top:14px;"></div>
+    <div id="ownerRevenue" style="margin-top:14px;"></div>
+    <div id="ownerExport" style="margin-top:14px;"></div>
+    <div id="ownerSetPrice" style="margin-top:14px;"></div>
+  </div>
+
+  </div>
+
+  <!-- PAGE: API -->
+  <div class="page" id="page-api">
+    <div class="pageTitle">🧪 Test API</div>
+    <div class="pageSub">Coba endpoint langsung dari browser — dengan status code & waktu response.</div>
+    <div class="card">
+    <h2 style="display:none;">Test API</h2>
+    <input id="apikey" placeholder="API Key (Hao-xxx-xxx-xxx)">
+    <select id="endpoint">
+      <option value="ai/chatai">🤖 AI Chat — tanya jawab AI cerdas (POST prompt)</option>
+      <option value="downloader/tiktok">🎵 TikTok Download — unduh video TikTok tanpa WM (?url=)</option>
+      <option value="downloader/youtube">📺 YouTube Download — unduh video/audio YT (?url=)</option>
+      <option value="downloader/instagram">📸 Instagram Reels — unduh reels/story IG (?url=)</option>
+      <option value="tools/hd">✨ HD Enhance — pertajam & HD-kan foto (?url=)</option>
+      <option value="tools/findpresetam">🎬 Cari Preset AM — cari preset Alight Motion (?query=)</option>
+      <option value="stalker/tiktok">👤 Stalk TikTok — info akun TikTok (?username=)</option>
+      <option value="search/cuaca">🌤 Cuaca — cuaca per kota dari BMKG (?query=)</option>
+      <option value="tools/qrcode">🔲 QR Code — buat QR dari teks (?text=)</option>
+      <option value="search/lirik">🎤 Cari Lirik — lirik lagu lengkap (?query=)</option>
+    </select>
+    <input id="param" placeholder="Isi parameter (url / prompt / query / username)">
+    <button onclick="testApi()">🚀 Execute</button>
+    <div id="testmeta" style="display:none;margin:12px 0 0;align-items:center;gap:10px;flex-wrap:wrap;">
+      <span id="teststatus" style="padding:6px 14px;border-radius:8px;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;"></span>
+      <span id="testtime" style="padding:6px 14px;border-radius:8px;background:rgba(255,255,255,.06);font-family:'JetBrains Mono',monospace;font-size:12px;color:#94a3b8;"></span>
+      <button class="sec" style="width:auto;padding:7px 16px;margin-left:auto;" onclick="copyJson()">COPY JSON</button>
+    </div>
+    <div id="testresult" class="result" style="display:none"></div>
+    <div id="snipTabs" style="display:none;margin-top:14px;gap:0;" class="tabs"></div>
+    <div id="snipBox" style="display:none;position:relative;margin-top:0;">
+      <button class="sec" style="width:auto;padding:6px 14px;position:absolute;top:10px;right:10px;z-index:2;" onclick="copySnip()">COPY</button>
+      <pre id="snipBody" style="margin:0;background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.1);border-radius:0 0 12px 12px;padding:18px;overflow-x:auto;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#a7f3d0;white-space:pre;"></pre>
+    </div>
+  </div>
+
+  </div>
+
+  <!-- PAGE: DOCS -->
+  <div class="page" id="page-docs">
+    <div class="pageTitle">📄 API Documentation</div>
+    <div class="pageSub">398+ endpoint — klik endpoint untuk membuka playground lengkap.</div>
+    <div class="termSearch"><span class="ps">$</span>
+      <input id="epSearch" placeholder="search endpoint path..." oninput="renderEps()">
+    </div>
+    <div id="catFilter" class="tabs" style="overflow-x:auto; padding-bottom:6px;"></div>
+    <div id="epList" style="margin-top:14px;"></div>
+  </div>
+
+  <!-- PAGE: KATALOG -->
+  <div class="page" id="page-katalog">
+    <div class="pageTitle">📂 Katalog Tools</div>
+    <div class="pageSub">Semua kategori endpoint yang tersedia.</div>
+  <div class="grid">
+    <div class="tool"><div class="ico">🤖</div><h3>AI Chat <span class="plan free">FREE</span></h3><p>Ngobrol sama GPT, Claude, Gemini, DeepSeek, Grok. Ada juga vision (baca gambar), reasoning, dan web search.</p><code>/api/ai/chatai?prompt=halo&apikey=KEY</code></div>
+    <div class="tool"><div class="ico">🎨</div><h3>AI Gambar <span class="plan free">FREE</span></h3><p>Bikin gambar dari teks (txt2img), edit foto pakai prompt, ubah jadi kartun, colorize hitam-putih.</p><code>/api/ai/txt2img?prompt=kucing+astronaut</code></div>
+    <div class="tool"><div class="ico">🎬</div><h3>AM Premium <span class="plan premium">PREMIUM</span></h3><p>Buat & verifikasi akun Alight Motion Premium otomatis. Plus cari preset AM siap pakai.</p><code>/api/am/bulk • /api/tools/findpresetam</code></div>
+    <div class="tool"><div class="ico">📥</div><h3>Downloader <span class="plan free">FREE</span></h3><p>Download video dari 50+ situs: TikTok, YouTube, Instagram, Facebook, Spotify, CapCut, Terabox, dll.</p><code>/api/downloader/tiktok?url=LINK</code></div>
+    <div class="tool"><div class="ico">✨</div><h3>HD Enhance <span class="plan free">FREE</span></h3><p>HD-kan foto & video, hapus blur, upscale 4x, hapus background, hapus watermark.</p><code>/api/tools/hd?url=FOTO</code></div>
+    <div class="tool"><div class="ico">🎭</div><h3>Maker <span class="plan free">FREE</span></h3><p>Buat gambar quote brat, QC chat WA/IG/TikTok, fake chat WA/Dana/iOS, meme.</p><code>/api/maker/brat?text=halo</code></div>
+    <div class="tool"><div class="ico">🔍</div><h3>Search & Stalk <span class="plan free">FREE</span></h3><p>Cari gambar, lirik, chord, cuaca, jadwal sholat, Wikipedia. Stalk akun IG/TikTok/GitHub/Roblox.</p><code>/api/stalker/tiktok?username=xxx</code></div>
+    <div class="tool"><div class="ico">🎮</div><h3>Game <span class="plan free">FREE</span></h3><p>Tebak-tebakan lengkap: tebak lagu, gambar, family100, susunkata — cocok buat bot grup.</p><code>/api/game/tebaklagu</code></div>
+    <div class="tool"><div class="ico">🛠</div><h3>PDF & File <span class="plan free">FREE</span></h3><p>Convert Word↔PDF, Excel↔PDF, merge/split/compress PDF, OCR, upload file ke CDN.</p><code>/api/tools/word-to-pdf</code></div>
+    <div class="tool"><div class="ico">📖</div><h3>Islami & Primbon <span class="plan free">FREE</span></h3><p>Al-Quran + audio, Alkitab, jadwal sholat, arti nama, zodiak, tafsir mimpi.</p><code>/api/islami/quran?surah=1</code></div>
+  </div>
+
+  <div class="card">
+    <h2>📖 <span>Cara Pakai</span></h2>
+    <div class="steps">
+      <b>1.</b> Daftar gratis di atas → otomatis dapat API key<br>
+      <b>2.</b> Panggil API: <code>https://DOMAIN/api/NAMA-TOOL?apikey=KEY</code><br>
+      <b>3.</b> Contoh: <code>/api/downloader/tiktok?url=xxx&apikey=Hao-xxx</code><br>
+      <b>4.</b> Free = 100 req/hari. <b>Premium</b> = unlimited + bisa ganti key sendiri<br>
+      <b>5.</b> Upgrade premium: chat owner <b>wa.me/6282231669053</b>
+    </div>
+  </div>
+
+</div>
+
+  <footer>© 2026 HAOMI API Tools v3.0 — Creator <span class="creator">𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞</span> ⚡</footer>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+let TOKEN = localStorage.getItem('haomi_token') || '';
+let USERNAME = localStorage.getItem('haomi_user') || '';
+const OWNER_HINT = 'Hao-g6k-y86-7gj';
+
+function showTab(name, el) {
+  document.querySelectorAll('#authCard .tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  $('tab-login').classList.toggle('hidden', name !== 'login');
+  $('tab-reg').classList.toggle('hidden', name !== 'reg');
+  const tf = $('tab-forgot'); if (tf) tf.classList.toggle('hidden', name !== 'forgot');
+}
+
+async function doRegister() {
+  const r = await fetch('/api/auth', { method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ action:'register', username:$('regUser').value.trim(), password:$('regPass').value, wa:($('regWa')||{}).value||'' }) });
+  const j = await r.json();
+  const el = $('authResult'); el.style.display='block';
+  el.textContent = j.success ? `✅ ${j.message}\n\n🔑 API Key kamu: ${j.apikey}\n\n⚠️ Simpan key ini!` : `❌ ${j.message}`;
+  if (j.success) $('apikey').value = j.apikey;
+}
+
+async function doLogin() {
+  const r = await fetch('/api/auth', { method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ action:'login', username:$('loginUser').value.trim(), password:$('loginPass').value }) });
+  const j = await r.json();
+  const el = $('authResult'); el.style.display='block';
+  if (j.success) {
+    TOKEN = j.token; USERNAME = j.username;
+    localStorage.setItem('haomi_token', TOKEN);
+    localStorage.setItem('haomi_user', USERNAME);
+    el.textContent = `✅ Selamat datang, ${j.username}! (${j.plan})`;
+    $('apikey').value = j.apikey;
+    showProfile();
+  } else el.textContent = `❌ ${j.message}`;
+}
+
+let KEY_VISIBLE = false;
+function toggleKey() {
+  KEY_VISIBLE = !KEY_VISIBLE;
+  $('pfKey').textContent = KEY_VISIBLE ? (window.__MYKEY__ || '—') : '••••••••••••••••';
+}
+function copyKey() {
+  navigator.clipboard?.writeText(window.__MYKEY__ || '').then(() => alert('✅ Key tersalin!'));
+}
+async function regenKey() {
+  // regen otomatis: premium bebas, free diminta konfirmasi (akan ditolak server)
+  const baru = 'Hao-' + Math.random().toString(36).slice(2,5) + '-' + Math.random().toString(36).slice(2,5) + '-' + Math.random().toString(36).slice(2,5);
+  $('newKeyInput').value = baru;
+  await changeKey();
+}
+function fillDevice() {
+  const ua = navigator.userAgent;
+  const os = /Android/i.test(ua) ? 'Android' : /iPhone|iPad/i.test(ua) ? 'iOS' : /Windows/i.test(ua) ? 'Windows' : /Mac/i.test(ua) ? 'macOS' : /Linux/i.test(ua) ? 'Linux' : 'Lainnya';
+  const br = /Edg/i.test(ua) ? 'Edge' : /Chrome/i.test(ua) ? 'Chrome' : /Firefox/i.test(ua) ? 'Firefox' : /Safari/i.test(ua) ? 'Safari' : 'Lainnya';
+  $('devOs').textContent = os;
+  $('devBr').textContent = br;
+  $('devScr').textContent = screen.width + 'x' + screen.height;
+  if (navigator.getBattery) {
+    navigator.getBattery().then(b => { $('devBat').textContent = Math.round(b.level*100) + '%'; });
+  } else { $('devBat').textContent = '—'; }
+}
+async function showProfile() {
+  if (!TOKEN) return;
+  $('authCard').classList.add('hidden');
+  $('profileCard').classList.remove('hidden');
+  const r = await fetch('/api/auth?action=profile&token=' + encodeURIComponent(TOKEN));
+  const j = await r.json();
+  if (!j.success) { doLogout(); return; }
+  window.__MYKEY__ = j.apikey;
+  const planCls = j.plan === 'free' ? 'free' : j.plan;
+  $('pfName').textContent = j.username;
+  $('pfAva').textContent = j.username.charAt(0).toUpperCase();
+  [$('pfBadge'), $('pfBadge2')].forEach(b => { b.className = 'badgeplan ' + planCls; b.textContent = j.plan.toUpperCase(); });
+  $('pfSince').textContent = j.created.slice(0,10);
+  $('pfActive').textContent = j.paid_until ? ('sd ' + new Date(j.paid_until).toLocaleDateString('id-ID')) : 'Free — tanpa batas waktu';
+  const used = j.used_today, lim = j.limit === 'unlimited' ? '∞' : j.limit;
+  $('pfQuota').textContent = `${used} / ${lim}`;
+  if (j.limit !== 'unlimited') $('pfBar').style.width = Math.min(100, used/j.limit*100) + '%';
+  else $('pfBar').style.width = '100%';
+  $('pfTotal').textContent = j.total_used || 0;
+  $('pfKey').textContent = '••••••••••••••••';
+  KEY_VISIBLE = false;
+  fillDevice();
+  if (j.apikey === OWNER_HINT) $('ownerCard').classList.remove('hidden');
+}
+
+async function changeKey() {
+  const r = await fetch('/api/auth', { method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ action:'customkey', token: TOKEN, newkey: $('newKeyInput').value.trim() }) });
+  const j = await r.json();
+  alert(j.success ? `✅ ${j.message}\nKey baru: ${j.apikey}` : `❌ ${j.message}`);
+  showProfile();
+}
+
+async function doLogout() {
+  localStorage.removeItem('haomi_token');
+  TOKEN = '';
+  $('profileCard').classList.add('hidden');
+  $('ownerCard').classList.add('hidden');
+  $('payCard').classList.add('hidden');
+  $('authCard').classList.remove('hidden');
+}
+
+// ===== PEMBAYARAN =====
+async function showPlans() {
+  $('payCard').classList.remove('hidden');
+  $('payCard').scrollIntoView({ behavior:'smooth' });
+  const r = await fetch('/api/auth', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ action:'plans' }) });
+  const j = await r.json();
+  if (!j.success) { $('plansBox').textContent = '❌ Gagal memuat'; return; }
+  $('plansBox').dataset.loaded = '1';
+  window.__PLANS__ = j.plans;
+  $('plansBox').innerHTML = j.plans.map((p,i) => `
+    <div style="background:rgba(0,0,0,.2);border:1px solid rgba(16,185,129,.2);border-left:3px solid #10b981;border-radius:14px;padding:18px;" id="planbox-${i}">
+      <h3>💎 ${p.label}</h3>
+      <p style="color:#94a3b8;font-size:12.5px;margin-bottom:12px;">${p.tagline}</p>
+      <div class="tabs">
+        <div class="tab" onclick="selDays(${i},7,this)">MINGGUAN<br><small>Rp ${p.weekly.toLocaleString('id-ID')}</small></div>
+        <div class="tab active" onclick="selDays(${i},30,this)">BULANAN<br><small>Rp ${p.monthly.toLocaleString('id-ID')}</small></div>
+        <div class="tab" onclick="selDays(${i},0,this)">CUSTOM<br><small>min 3 hari</small></div>
+      </div>
+      <input id="days-${i}" class="hidden" type="number" min="3" max="365" placeholder="Jumlah hari (min 3)" oninput="updPrice(${i})">
+      <p style="font-size:26px;font-weight:800;color:#fbbf24;margin:10px 0;" id="price-${i}">Rp ${(p.perDay*30).toLocaleString('id-ID')} <small style="font-size:12px;color:#94a3b8;">/30 hari • Rp ${p.perDay.toLocaleString('id-ID')}/hari</small></p>
+      <div class="steps">${p.feats.map(f=>`<span style="color:#4ade80;">✓</span> ${f}<br>`).join('')}</div>
+      <button onclick="buy('${p.id}',${i})" style="margin-top:12px;">🛒 Beli Sekarang</button>
+    </div>`).join('<hr style="border-color:rgba(255,255,255,.08);margin:18px 0;">');
+}
+function selDays(i, d, el) {
+  el.parentElement.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  $('days-'+i).classList.toggle('hidden', d !== 0);
+  window['days'+i] = d;
+  updPrice(i);
+}
+function updPrice(i) {
+  const p = window.__PLANS__[i];
+  const inp = $('days-'+i);
+  const d = window['days'+i] === 0 ? (parseInt(inp.value)||0) : window['days'+i] || 30;
+  const total = p.perDay * Math.max(d,0);
+  $('price-'+i).innerHTML = d>0
+    ? `Rp ${total.toLocaleString('id-ID')} <small style="font-size:12px;color:#94a3b8;">/${d} hari • Rp ${p.perDay.toLocaleString('id-ID')}/hari</small>`
+    : `— <small style="font-size:12px;color:#94a3b8;">isi jumlah hari • Rp ${p.perDay.toLocaleString('id-ID')}/hari</small>`;
+}
+async function buy(plan, i) {
+  let days = window['days'+i];
+  if (days === 0) days = parseInt($('days-'+i).value);
+  if (!days || days < 3) { alert('Minimal 3 hari'); return; }
+  const el = $('payResult');
+  el.innerHTML = '<p style="color:#94a3b8;">⏳ Membuat invoice...</p>';
+  const r = await fetch('/api/auth', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ action:'buy', token: TOKEN, plan, days }) });
+  const j = await r.json();
+  if (!j.success) { el.innerHTML = `<p style="color:#f87171;">❌ ${j.message}</p>`; return; }
+  window.__INVOICE__ = j.invoice_id;
+  const manualBox = j.manual ? `
+    <div style="background:rgba(250,204,21,.08);border:1px solid rgba(250,204,21,.35);border-radius:12px;padding:14px;margin-bottom:12px;">
+      <p style="color:#fbbf24;font-weight:700;margin-bottom:6px;">⚠️ Sistem otomatis sedang gangguan</p>
+      <p style="font-size:13px;color:#e7f6ee;line-height:1.7;">Bayar <b>MANUAL</b> pakai QRIS statis di bawah ini (QRIS resmi Haomi Creator). Transfer <b>tepat Rp ${j.total.toLocaleString('id-ID')}</b>, lalu upload bukti TF + isi nominal di form bawah. Owner akan verifikasi & aktifkan akunmu.</p>
+    </div>` : '';
+  el.innerHTML = `
+    <div style="text-align:center;">
+      ${manualBox}
+      <p style="margin-bottom:8px;">Total bayar: <b style="color:#fbbf24;">Rp ${j.total.toLocaleString('id-ID')}</b>${j.fee ? ` <small style="color:#94a3b8;">(Rp ${j.amount.toLocaleString('id-ID')} + fee Rp ${j.fee.toLocaleString('id-ID')})</small>` : ''}</p>
+      <img src="${j.qris_image}" alt="QRIS" style="max-width:280px;border-radius:12px;background:#fff;padding:8px;">
+      <p style="font-size:12px;color:#94a3b8;margin:8px 0;">${j.manual ? 'QRIS statis — semua bank/e-wallet' : 'Scan pakai aplikasi bank/e-wallet. Berlaku sampai ' + j.expired_at}</p>
+      ${j.manual ? `
+      <div style="text-align:left;background:rgba(16,185,129,.05);border:1px solid rgba(16,185,129,.25);border-radius:12px;padding:14px;margin-top:10px;">
+        <p style="font-weight:700;margin-bottom:8px;">📤 Sudah transfer? Kirim bukti di sini</p>
+        <input type="file" id="proofFile" accept="image/*" style="width:100%;padding:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;color:#fff;margin-bottom:10px;">
+        <input id="proofNominal" type="number" placeholder="Nominal yang kamu bayar (contoh: ${j.total})" style="margin-bottom:10px;">
+        <button onclick="submitProof('${j.invoice_id}')">📨 Kirim Bukti TF ke Owner</button>
+        <p style="font-size:11px;color:#94a3b8;margin-top:8px;">Data lengkap (user, plan, nominal, bukti) otomatis diteruskan ke WhatsApp owner. Setelah di-ACC, akunmu langsung premium.</p>
+      </div>` : `
+      <button class="sec" onclick="checkPay()">✅ Saya Sudah Bayar — Cek Status</button>`}
+      <div style="text-align:left;background:rgba(250,204,21,.05);border:1px dashed rgba(250,204,21,.4);border-radius:12px;padding:14px;margin-top:12px;">
+        <p style="font-weight:700;margin-bottom:8px;">🎟 Punya Voucher?</p>
+        <div style="display:flex;gap:8px;">
+          <input id="vcode-${j.invoice_id}" placeholder="Kode voucher (misal: HEMAT2K)" style="margin-bottom:0;flex:1;">
+          <button onclick="applyVoucher('${j.invoice_id}','${j.plan}',${j.days})" style="width:auto;padding:12px 16px;font-size:13px;margin:0;">Cek</button>
+        </div>
+        <p id="vmsg-${j.invoice_id}" style="font-size:12px;color:#94a3b8;margin-top:8px;"></p>
+      </div>
+    </div>`;
+  el.scrollIntoView({ behavior:'smooth' });
+}
+
+async function submitProof(invoiceId) {
+  const f = document.getElementById('proofFile').files[0];
+  const nominal = document.getElementById('proofNominal').value;
+  if (!f) { alert('Upload screenshot bukti TF dulu'); return; }
+  if (!nominal) { alert('Isi nominal yang dibayar'); return; }
+  // baca gambar → base64
+  const reader = new FileReader();
+  reader.onload = async () => {
+    const b64 = reader.result;
+    const el = $('payResult');
+    el.insertAdjacentHTML('beforeend', '<p id="proofStatus" style="color:#94a3b8;">⏳ Mengirim bukti ke owner...</p>');
+    const r = await fetch('/api/auth', { method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ action:'submitproof', token: TOKEN, invoice_id: invoiceId, nominal: parseInt(nominal), proof: b64 }) });
+    const j = await r.json();
+    const st = document.getElementById('proofStatus');
+    if (j.success) st.innerHTML = `<span style="color:#4ade80;">✅ ${j.message}</span>${j.wa_sent ? '' : ' <small style="color:#94a3b8;">(notif WA owner: gagal kirim, tapi bukti sudah masuk dashboard owner)</small>'}`;
+    else st.innerHTML = `<span style="color:#f87171;">❌ ${j.message}</span>`;
+  };
+  reader.readAsDataURL(f);
+}
+
+async function checkPay() {
+  if (!window.__INVOICE__) return;
+  const el = $('payResult');
+  const r = await fetch('/api/auth', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ action:'checkpay', token: TOKEN, invoice_id: window.__INVOICE__ }) });
+  const j = await r.json();
+  if (j.status === 'paid') {
+    el.innerHTML = `<p style="color:#4ade80;font-weight:700;">🎉 ${j.message}</p>`;
+    showProfile();
+  } else {
+    el.insertAdjacentHTML('beforeend', `<p style="color:#fbbf24;">⏳ ${j.message}</p>`);
+  }
+}
+
+async function loadOwnerStats() {
+  const adminkey = prompt('Masukkan admin key owner:');
+  if (!adminkey) return;
+  window.__ADMINKEY__ = adminkey;
+  const r = await fetch('/api/auth', { method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ action:'owner_stats', adminkey }) });
+  const j = await r.json();
+  if (!j.success) { alert('❌ ' + j.message); return; }
+  const s = j.stats;
+  $('ownerStats').style.display = 'block';
+  $('ownerStats').textContent =
+    `TOTAL USER: ${s.total_users}  |  FREE: ${s.free_users}  |  PREMIUM: ${s.premium_users}\n` +
+    `TOTAL REQ HARI INI: ${s.total_req_hari_ini}  |  STORAGE: ${s.storage}`;
+  $('ownerUsers').innerHTML = j.users.map(u => `
+    <div class="userrow">
+      <span><b>${u.username}</b> <span class="plan ${u.plan}">${u.plan}</span><br>
+      <small>🔑 ${u.apikey} • 📈 ${u.used}/${u.plan==='free'?s.free_limit:'∞'}</small></span>
+      <span class="acts">
+        ${u.plan==='free' ? `<button onclick="ownerAct('upgrade','${u.username}','premium')">💎 Premium</button>` : `<button onclick="ownerAct('upgrade','${u.username}','free')">⬇ Free</button>`}
+        <button onclick="ownerAct('owner_reset','${u.username}')">🔄 Reset</button>
+        <button onclick="ownerAct('owner_ban','${u.username}')">🚫 Blokir</button>
+        <button class="warn" onclick="ownerAct('owner_delete','${u.username}')">🗑 Hapus</button>
+      </span>
+    </div>`).join('') || '<p style="color:#64748b;">Belum ada user.</p>';
+}
+
+async function ownerAct(act, username, plan) {
+  const r = await fetch('/api/auth', { method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ action: act, adminkey: window.__ADMINKEY__, username, plan }) });
+  const j = await r.json();
+  alert(j.message);
+  loadOwnerStats();
+}
+
+async function applyVoucher(oldInv, plan, days) {
+  const inp = document.getElementById('vcode-'+oldInv);
+  const msg = document.getElementById('vmsg-'+oldInv);
+  const kode = inp.value.trim();
+  if (!kode) { msg.textContent = 'Isi kode voucher dulu'; return; }
+  msg.textContent = '⏳ Mengecek voucher & membuat invoice baru...';
+  const r = await fetch('/api/auth', { method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ action:'buy', token: TOKEN, plan, days, voucher: kode }) });
+  const j = await r.json();
+  if (!j.success) { msg.innerHTML = `<span style="color:#f87171;">${j.message}</span>`; return; }
+  msg.innerHTML = `<span style="color:#4ade80;">✅ Voucher dipakai! Total baru: Rp ${j.total.toLocaleString('id-ID')} — QRIS di atas sudah diperbarui</span>`;
+  window.__INVOICE__ = j.invoice_id;
+  buyRender(j);
+}
+
+function buyRender(j) {
+  const el = $('payResult');
+  const manualBox = j.manual ? `
+    <div style="background:rgba(250,204,21,.08);border:1px solid rgba(250,204,21,.35);border-radius:12px;padding:14px;margin-bottom:12px;">
+      <p style="color:#fbbf24;font-weight:700;margin-bottom:6px;">⚠️ Sistem otomatis sedang gangguan</p>
+      <p style="font-size:13px;color:#e7f6ee;line-height:1.7;">Bayar <b>MANUAL</b> pakai QRIS statis di bawah ini (QRIS resmi Haomi Creator). Transfer <b>tepat Rp ${j.total.toLocaleString('id-ID')}</b>, lalu upload bukti TF + isi nominal di form bawah. Owner akan verifikasi & aktifkan akunmu.</p>
+    </div>` : '';
+  el.innerHTML = `
+    <div style="text-align:center;">
+      ${manualBox}
+      <p style="margin-bottom:8px;">Total bayar: <b style="color:#fbbf24;">Rp ${j.total.toLocaleString('id-ID')}</b>${j.fee ? ` <small style="color:#94a3b8;">(Rp ${j.amount.toLocaleString('id-ID')} + fee Rp ${j.fee.toLocaleString('id-ID')})</small>` : ''}</p>
+      <img src="${j.qris_image}" alt="QRIS" style="max-width:280px;border-radius:12px;background:#fff;padding:8px;">
+      <p style="font-size:12px;color:#94a3b8;margin:8px 0;">${j.manual ? 'QRIS statis — semua bank/e-wallet' : 'Scan pakai aplikasi bank/e-wallet. Berlaku sampai ' + j.expired_at}</p>
+      ${j.manual ? `
+      <div style="text-align:left;background:rgba(16,185,129,.05);border:1px solid rgba(16,185,129,.25);border-radius:12px;padding:14px;margin-top:10px;">
+        <p style="font-weight:700;margin-bottom:8px;">📤 Sudah transfer? Kirim bukti di sini</p>
+        <input type="file" id="proofFile" accept="image/*" style="width:100%;padding:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;color:#fff;margin-bottom:10px;">
+        <input id="proofNominal" type="number" placeholder="Nominal yang kamu bayar (contoh: ${j.total})" style="margin-bottom:10px;">
+        <button onclick="submitProof('${j.invoice_id}')">📨 Kirim Bukti TF ke Owner</button>
+        <p style="font-size:11px;color:#94a3b8;margin-top:8px;">Data lengkap (user, plan, nominal, bukti) otomatis diteruskan ke WhatsApp owner. Setelah di-ACC, akunmu langsung premium.</p>
+      </div>` : `
+      <button class="sec" onclick="checkPay()">✅ Saya Sudah Bayar — Cek Status</button>`}
+      <div style="text-align:left;background:rgba(250,204,21,.05);border:1px dashed rgba(250,204,21,.4);border-radius:12px;padding:14px;margin-top:12px;">
+        <p style="font-weight:700;margin-bottom:8px;">🎟 Punya Voucher?</p>
+        <div style="display:flex;gap:8px;">
+          <input id="vcode-${j.invoice_id}" placeholder="Kode voucher (misal: HEMAT2K)" style="margin-bottom:0;flex:1;">
+          <button onclick="applyVoucher('${j.invoice_id}','${j.plan}',${j.days})" style="width:auto;padding:12px 16px;font-size:13px;margin:0;">Cek</button>
+        </div>
+        <p id="vmsg-${j.invoice_id}" style="font-size:12px;color:#94a3b8;margin-top:8px;"></p>
+      </div>
+    </div>`;
+  el.scrollIntoView({ behavior:'smooth' });
+}
+
+async function loadOwnerProofs() {
+  const adminkey = window.__ADMINKEY__ || prompt('Masukkan admin key owner:');
+  if (!adminkey) return;
+  window.__ADMINKEY__ = adminkey;
+  const r = await fetch('/api/auth', { method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ action:'owner_proofs', adminkey }) });
+  const j = await r.json();
+  if (!j.success) { alert('❌ ' + j.message); return; }
+  $('ownerProofs').innerHTML = j.proofs.length
+    ? `<h3 style="font-size:15px;margin-bottom:10px;">🧾 Bukti TF menunggu ACC (${j.proofs.length})</h3>` + j.proofs.map(p => `
+      <div class="userrow" style="align-items:flex-start;">
+        <span>
+          <b>${p.username}</b> — 💎 ${String(p.plan).toUpperCase()} (${p.days} hari)<br>
+          <small>💵 Rp ${p.nominal.toLocaleString('id-ID')} • 🧾 ${p.invoice_id}<br>🕐 ${p.created}<br>🔑 ${p.userkey}</small><br>
+          <img src="${p.proof}" style="max-width:180px;border-radius:8px;margin-top:6px;border:1px solid rgba(255,255,255,.15);">
+        </span>
+        <span class="acts">
+          <button style="background:#34d399;color:#052e1b;" onclick="verifyProof('${p.invoice_id}',true)">✅ ACC</button>
+          <button class="warn" onclick="verifyProof('${p.invoice_id}',false)">❌ Tolak</button>
+        </span>
+      </div>`).join('')
+    : '<p style="color:#64748b;">Tidak ada bukti TF menunggu.</p>';
+}
+
+async function verifyProof(invoiceId, approve) {
+  const r = await fetch('/api/auth', { method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ action:'owner_verify', adminkey: window.__ADMINKEY__, invoice_id: invoiceId, approve }) });
+  const j = await r.json();
+  alert(j.message);
+  loadOwnerProofs();
+}
+
+// ===== NOTIF OWNER =====
+async function checkNotif() {
+  try {
+    const r = await fetch('/api/auth', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ action:'notif' }) });
+    const j = await r.json();
+    if (j.success && j.notif) {
+      const seen = localStorage.getItem('haomi_notif_seen');
+      window.__NOTIF__ = j.notif;
+      if (seen !== j.notif.time) $('notifDot').style.display = 'block';
+      $('notifBody').innerHTML = `${j.notif.text ? j.notif.text + '<br>' : ''}${j.notif.image ? `<img src="${j.notif.image}" style="max-width:100%;border-radius:12px;margin:8px 0;border:1px solid rgba(255,255,255,.15);">` : ''}<small style="color:#94a3b8;">🕐 ${new Date(j.notif.time).toLocaleString('id-ID')}</small>`;
+    } else {
+      $('notifBody').innerHTML = '<span style="color:#64748b;">Belum ada info dari owner.</span>';
+    }
+  } catch {}
+}
+function toggleNotif() {
+  const p = $('notifPanel');
+  p.classList.toggle('hidden');
+  if (!p.classList.contains('hidden')) {
+    $('notifDot').style.display = 'none';
+    if (window.__NOTIF__) localStorage.setItem('haomi_notif_seen', window.__NOTIF__.time);
+  }
+}
+async function loadOwnerVouchers() {
+  const adminkey = window.__ADMINKEY__ || prompt('Masukkan admin key owner:');
+  if (!adminkey) return;
+  window.__ADMINKEY__ = adminkey;
+  const r = await fetch('/api/auth', { method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ action:'owner_vouchers', adminkey }) });
+  const j = await r.json();
+  if (!j.success) { alert('❌ ' + j.message); return; }
+  $('ownerVouchers').innerHTML = `
+    <h3 style="font-size:15px;margin-bottom:10px;">🎟 Buat Voucher Baru</h3>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;">
+      <input id="vNewCode" placeholder="Kode (misal HEMAT2K)" style="flex:1;min-width:120px;margin-bottom:0;">
+      <input id="vNewPot" type="number" placeholder="Potongan Rp" style="flex:1;min-width:110px;margin-bottom:0;">
+      <input id="vNewMax" type="number" placeholder="Batas pakai" style="flex:1;min-width:90px;margin-bottom:0;">
+      <button onclick="makeVoucher()" style="width:auto;padding:12px 18px;font-size:13px;margin:0;">Buat</button>
+    </div>
+    <h3 style="font-size:15px;margin-bottom:10px;">Daftar Voucher (${j.vouchers.length})</h3>` +
+    (j.vouchers.map(v => `
+      <div class="userrow">
+        <span><b style="color:#fbbf24;font-family:monospace;">${v.kode}</b> — potongan Rp ${v.potongan.toLocaleString('id-ID')}<br>
+        <small>Terpakai ${v.terpakai}/${v.maxPakai}x</small></span>
+        <span class="acts"><button class="warn" onclick="delVoucher('${v.kode}')">🗑 Hapus</button></span>
+      </div>`).join('') || '<p style="color:#64748b;">Belum ada voucher.</p>');
+}
+
+async function makeVoucher() {
+  const r = await fetch('/api/auth', { method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ action:'owner_voucher', adminkey: window.__ADMINKEY__,
+      code: document.getElementById('vNewCode').value,
+      potongan: document.getElementById('vNewPot').value,
+      maxpakai: document.getElementById('vNewMax').value }) });
+  const j = await r.json();
+  alert(j.message);
+  loadOwnerVouchers();
+}
+
+async function delVoucher(kode) {
+  const r = await fetch('/api/auth', { method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ action:'owner_vdel', adminkey: window.__ADMINKEY__, code: kode }) });
+  const j = await r.json();
+  alert(j.message);
+  loadOwnerVouchers();
+}
+
+function loadBroadcast() {
+  const adminkey = window.__ADMINKEY__ || prompt('Masukkan admin key owner:');
+  if (!adminkey) return;
+  window.__ADMINKEY__ = adminkey;
+  $('ownerBroadcast').innerHTML = `
+    <h3 style="font-size:15px;margin-bottom:10px;">📣 Broadcast ke Semua User</h3>
+    <textarea id="bcText" rows="3" placeholder="Tulis info... (misal: Server maintenance jam 2 malam / Promo voucher baru!)" style="width:100%;padding:12px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#fff;font-size:14px;font-family:inherit;outline:none;margin-bottom:10px;"></textarea>
+    <label style="display:block;font-size:12px;color:#94a3b8;margin-bottom:6px;">🖼 Gambar (opsional — ikut tampil di notif user):</label>
+    <input type="file" id="bcImage" accept="image/*" style="width:100%;padding:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;color:#fff;margin-bottom:10px;">
+    <img id="bcPreview" src="" alt="" style="display:none;max-width:180px;border-radius:10px;margin-bottom:10px;border:1px solid rgba(255,255,255,.15);">
+    <button onclick="sendBroadcast()">🚀 Kirim ke Semua User</button>
+    <p style="font-size:11.5px;color:#94a3b8;margin-top:8px;">Semua user akan melihat ini di tombol 🔔 (dengan titik merah notif baru). Pesan lama otomatis tergantikan.</p>`;
+  document.getElementById('bcImage').addEventListener('change', function(){
+    const f = this.files[0];
+    const pv = document.getElementById('bcPreview');
+    if (!f) { pv.style.display='none'; return; }
+    const rd = new FileReader();
+    rd.onload = e => { pv.src = e.target.result; pv.style.display='block'; };
+    rd.readAsDataURL(f);
+  });
+}
+
+async function sendBroadcast() {
+  const text = document.getElementById('bcText').value.trim();
+  const f = document.getElementById('bcImage').files[0];
+  if (!text && !f) { alert('Tulis pesan atau pilih gambar dulu'); return; }
+  let image = null;
+  if (f) {
+    image = await new Promise(res => { const rd = new FileReader(); rd.onload = e => res(e.target.result); rd.readAsDataURL(f); });
+  }
+  const r = await fetch('/api/auth', { method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ action:'owner_broadcast', adminkey: window.__ADMINKEY__, text, image }) });
+  const j = await r.json();
+  alert(j.message);
+}
+
+function paramKeyFor(ep) {
+  if (ep.includes('stalk')) return 'username';
+  if (ep.includes('qrcode')) return 'text';
+  if (ep.includes('findpresetam') || ep.includes('lirik') || ep.includes('cuaca')) return 'query';
+  if (ep.startsWith('ai/')) return 'prompt';
+  return 'url';
+}
+
+let __lastJson = '';
+let __snips = {};
+let __snipLang = 'CURL';
+
+async function testApi() {
+  const apikey = $('apikey').value.trim();
+  const ep = $('endpoint').value;
+  const p = $('param').value.trim();
+  if (!apikey) { alert('Isi API key dulu (daftar/login di atas)'); return; }
+  const isPost = ep.startsWith('ai/');
+  let url = `/api/${ep}?apikey=${encodeURIComponent(apikey)}`;
+  const opts = { method: 'GET' };
+  if (isPost) {
+    opts.method = 'POST';
+    opts.headers = { 'Content-Type': 'application/json' };
+    opts.body = JSON.stringify({ prompt: p || 'halo', apikey });
+  } else if (p) {
+    url += `&${paramKeyFor(ep)}=${encodeURIComponent(p)}`;
+  }
+  const meta = $('testmeta'), st = $('teststatus'), tt = $('testtime'), el = $('testresult');
+  meta.style.display = 'flex';
+  st.textContent = '...'; tt.textContent = '';
+  el.style.display = 'block';
+  el.textContent = '⏳ Memproses...';
+  const t0 = performance.now();
+  try {
+    const r = await fetch(url, opts);
+    const text = await r.text();
+    const ms = Math.round(performance.now() - t0);
+    tt.textContent = ms + 'ms';
+    st.textContent = r.status + ' ' + (r.ok ? 'OK' : 'ERROR');
+    st.style.background = r.ok ? 'rgba(16,185,129,.2)' : 'rgba(239,68,68,.2)';
+    st.style.color = r.ok ? '#34d399' : '#f87171';
+    let j; try { j = JSON.parse(text); } catch(e) { j = text; }
+    __lastJson = typeof j === 'string' ? j : JSON.stringify(j, null, 2);
+    el.textContent = __lastJson.slice(0, 4000);
+  } catch (e) {
+    st.textContent = 'FAIL'; st.style.background = 'rgba(239,68,68,.2)'; st.style.color = '#f87171';
+    el.textContent = '❌ ' + e.message;
+  }
+}
+
+function copyJson() {
+  if (__lastJson) navigator.clipboard?.writeText(__lastJson).catch(()=>{});
+}
+
+async function genSnippets() {
+  const apikey = $('apikey').value.trim() || 'YOUR_APIKEY';
+  const ep = $('endpoint').value;
+  const p = $('param').value.trim() || 'halo';
+  const base = location.origin;
+  const pk = paramKeyFor(ep);
+  const isPost = ep.startsWith('ai/');
+  const fullUrl = `${base}/api/${ep}`;
+  if (isPost) {
+    __snips = {
+      'CURL': `curl -X POST "${fullUrl}?apikey=${apikey}" \\\n  -H "Content-Type: application/json" \\\n  -d '{"prompt":"${p}"}'`,
+      'NODE.JS': `const axios = require("axios");\n\naxios.post("${fullUrl}", {\n  prompt: "${p}",\n  apikey: "${apikey}"\n}).then(res => console.log(res.data));`,
+      'PYTHON': `import requests\n\nurl = "${fullUrl}"\nparams = {"prompt": "${p}", "apikey": "${apikey}"}\nres = requests.post(url, json=params)\nprint(res.json())`,
+      'PHP': `<?php\n$ch = curl_init("${fullUrl}?apikey=${apikey}");\ncurl_setopt($ch, CURLOPT_POST, true);\ncurl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json"]);\ncurl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(["prompt" => "${p}"]));\ncurl_setopt($ch, CURLOPT_RETURNTRANSFER, true);\necho curl_exec($ch);`
+    };
+  } else {
+    __snips = {
+      'CURL': `curl -X GET "${fullUrl}?${pk}=${p}&apikey=${apikey}"`,
+      'NODE.JS': `const axios = require("axios");\n\naxios.get("${fullUrl}", {\n  params: { ${pk}: "${p}", apikey: "${apikey}" }\n}).then(res => console.log(res.data));`,
+      'PYTHON': `import requests\n\nurl = "${fullUrl}"\nparams = {"${pk}": "${p}", "apikey": "${apikey}"}\nres = requests.get(url, params=params)\nprint(res.json())`,
+      'PHP': `<?php\n$url = "${fullUrl}?${pk}=${p}&apikey=${apikey}";\necho file_get_contents($url);`
+    };
+  }
+  const tabs = $('snipTabs'), box = $('snipBox');
+  tabs.style.display = 'flex'; box.style.display = 'block';
+  tabs.innerHTML = Object.keys(__snips).map(k =>
+    `<div class="tab snipTab ${k==='CURL'?'active':''}" data-lang="${k}" style="border-radius:10px 10px 0 0;flex:1;" onclick="pickSnip('${k}')">${k}</div>`).join('');
+  __snipLang = 'CURL';
+  $('snipBody').textContent = __snips['CURL'];
+}
+
+function pickSnip(lang) {
+  __snipLang = lang;
+  document.querySelectorAll('.snipTab').forEach(t => t.classList.toggle('active', t.dataset.lang === lang));
+  $('snipBody').textContent = __snips[lang] || '';
+}
+
+function copySnip() {
+  navigator.clipboard?.writeText(__snips[__snipLang] || '').catch(()=>{});
+}
+
+function goPage(name) {
+  document.querySelectorAll('.page').forEach(pg => pg.classList.remove('active'));
+  document.querySelectorAll('.navbtn').forEach(b => b.classList.toggle('active', b.dataset.page === name));
+  const el = document.getElementById('page-' + name);
+  if (el) el.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (name === 'premium' && !$('plansBox').dataset.loaded) { showPlans(); }
+  if (name === 'premium') loadPublicVouchers();
+  if (name === 'docs') loadEps();
+  if (name === 'home') checkNotif();
+}
+
+// ===== DOCS: ENDPOINT EXPLORER =====
+let __EPS = null, __cat = 'all';
+async function loadEps() {
+  if (__EPS) return;
+  const r = await fetch('/endpoints.json');
+  __EPS = await r.json();
+  const cats = ['all', ...Object.keys(__EPS).sort()];
+  $('catFilter').innerHTML = cats.map(c =>
+    `<div class="tab ${c==='all'?'active':''}" onclick="pickCat('${c}')" style="min-width:max-content;">${c}</div>`).join('');
+  renderEps();
+}
+function pickCat(c) {
+  __cat = c;
+  document.querySelectorAll('#catFilter .tab').forEach(t => t.classList.toggle('active', t.textContent === c));
+  renderEps();
+}
+function renderEps() {
+  if (!__EPS) return;
+  const q = ($('epSearch').value || '').toLowerCase().trim();
+  let rows = [];
+  for (const [cat, list] of Object.entries(__EPS)) {
+    if (__cat !== 'all' && cat !== __cat) continue;
+    for (const [m, p] of list) {
+      if (q && !p.toLowerCase().includes(q) && !cat.includes(q)) continue;
+      rows.push({ m, p, cat });
+    }
+  }
+  if (rows.length > 120) rows = rows.slice(0, 120);
+  $('epList').innerHTML = rows.length === 0
+    ? '<p style="color:#4a7a63;font-family:\'JetBrains Mono\',monospace;">// endpoint tidak ditemukan</p>'
+    : rows.map((r, i) => `
+    <div class="epCard" id="ep-${i}">
+      <div class="epHead" onclick="toggleEp(${i},'${r.m}','${r.p}','${r.cat}')">
+        <span class="epMethod ${r.m}">${r.m}</span>
+        <span class="epPath">${r.p.replace('/api/','')}</span>
+        <span class="epCat">${r.cat}</span>
+        <span class="epArrow">▼</span>
+      </div>
+      <div class="epBody" id="epBody-${i}"></div>
+    </div>`).join('');
+  $('epCount') && ($('epCount').textContent = rows.length);
+}
+function toggleEp(i, m, p, cat) {
+  const card = $('ep-' + i), body = $('epBody-' + i);
+  const wasOpen = card.classList.contains('open');
+  document.querySelectorAll('.epCard.open').forEach(c => c.classList.remove('open'));
+  if (wasOpen) return;
+  card.classList.add('open');
+  const key = p.replace('/api/','');
+  const pk = guessParam(key);
+  const isPost = m === 'POST';
+  body.innerHTML = `
+    <p class="epDesc">Endpoint ${m} pada kategori <b>${cat}</b>. Isi parameter di bawah lalu Execute — API key otomatis terisi dari akunmu.</p>
+    <label>APIKEY <small>· otomatis terisi</small></label>
+    <input id="epK-${i}" placeholder="Hao-xxx-xxx-xxx" value="${localStorage.getItem('haomi_key') || ''}">
+    <label>${pk.toUpperCase()} <small>· ${isPost ? 'body' : 'query'} (wajib)</small></label>
+    <input id="epP-${i}" placeholder="Input ${pk}">
+    ${isPost ? '' : ''}
+    <div class="epActions">
+      <button onclick="execEp(${i},'${m}','${key}')">⚡ Execute</button>
+    </div>
+    <pre class="result epResult" id="epRes-${i}"></pre>`;
+}
+function guessParam(key) {
+  if (key.includes('stalk')) return 'username';
+  if (key.includes('qrcode')) return 'text';
+  if (key.includes('lirik') || key.includes('cuaca') || key.includes('chord') || key.includes('search') || key.includes('pinterest') || key.includes('wallpaper')) return 'query';
+  if (key.startsWith('ai/') || key.includes('brat') || key.includes('quote')) return 'prompt';
+  return 'url';
+}
+async function execEp(i, m, key) {
+  const apikey = $('epK-' + i).value.trim();
+  const pv = $('epP-' + i).value.trim();
+  const el = $('epRes-' + i);
+  if (!apikey) { alert('Isi API key (daftar/login dulu)'); return; }
+  localStorage.setItem('haomi_key', apikey);
+  el.style.display = 'block';
+  el.textContent = '⏳ Memproses...';
+  const t0 = performance.now();
+  try {
+    let r, url = `/api/${key}?apikey=${encodeURIComponent(apikey)}`;
+    if (m === 'POST') {
+      r = await fetch(`/api/${key}?apikey=${encodeURIComponent(apikey)}`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ prompt: pv || 'halo', url: pv, query: pv, text: pv, username: pv, apikey }) });
+    } else {
+      const pk = guessParam(key);
+      if (pv) url += `&${pk}=${encodeURIComponent(pv)}`;
+      r = await fetch(url);
+    }
+    const text = await r.text();
+    const ms = Math.round(performance.now() - t0);
+    let j; try { j = JSON.parse(text); } catch(e) { j = text; }
+    const out = typeof j === 'string' ? j : JSON.stringify(j, null, 2);
+    el.textContent = `// ${r.status} ${r.ok?'OK':'ERROR'} · ${ms}ms\n\n` + out.slice(0, 3000);
+  } catch (e) { el.textContent = '❌ ' + e.message; }
+}
+
+async function doForgot() {
+  const el = $('authResult');
+  el.style.display = 'block';
+  el.textContent = '⏳ Mengirim permintaan...';
+  try {
+    const r = await fetch('/api/auth', { method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ action:'forgot', username:$('fpUser').value.trim(), newpass:$('fpNew').value }) });
+    const j = await r.json();
+    el.textContent = j.message;
+  } catch(e) { el.textContent = '❌ ' + e.message; }
+}
+
+// ===== PUBLIC VOUCHERS di halaman premium =====
+async function loadPublicVouchers() {
+  try {
+    const r = await fetch('/api/auth', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ action:'public_vouchers' }) });
+    const j = await r.json();
+    const box = $('pubVouchers');
+    if (!box) return;
+    if (!j.success || !j.vouchers.length) { box.innerHTML = '<p style="font-size:12px;color:#4a7a63;font-family:\'JetBrains Mono\',monospace;">// belum ada voucher aktif</p>'; return; }
+    box.innerHTML = '<div style="font-size:11px;letter-spacing:2px;color:#34d399;font-family:\'JetBrains Mono\',monospace;margin-bottom:8px;">🎟 VOUCHER AKTIF</div>' +
+      j.vouchers.map(v => `<div style="display:flex;align-items:center;gap:10px;background:rgba(16,185,129,.08);border:1px dashed rgba(16,185,129,.4);border-radius:10px;padding:10px 14px;margin-bottom:8px;">
+        <b style="font-family:'JetBrains Mono',monospace;color:#34d399;">${v.kode}</b>
+        <span style="font-size:12.5px;color:#e7f6ee;">potongan Rp ${Number(v.potongan).toLocaleString('id-ID')}</span>
+        <span style="margin-left:auto;font-size:11px;color:#8db3a2;">sisa ${v.sisa}×</span>
+        <button class="sec" style="width:auto;padding:5px 12px;margin:0;font-size:11px;" onclick="useVoucher('${v.kode}')">Pakai</button>
+      </div>`).join('');
+  } catch(e) {}
+}
+function useVoucher(kode) {
+  goPage('premium');
+  setTimeout(() => { const inp = document.querySelector('[id^="vcode-"]'); if (inp) { inp.value = kode; inp.focus(); } }, 500);
+}
+
+async function _ownerCall(action, extra={}) {
+  const adminkey = window.__ADMINKEY__ || prompt('Masukkan admin key owner:');
+  if (!adminkey) return null;
+  window.__ADMINKEY__ = adminkey;
+  const r = await fetch('/api/auth', { method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ action, adminkey, ...extra }) });
+  return r.json();
+}
+
+async function loadOwnerForgot() {
+  const j = await _ownerCall('owner_forgot');
+  const box = $('ownerForgot');
+  if (!j || !j.success) { box.innerHTML = '<p style="color:#f87171;">❌ Gagal memuat</p>'; return; }
+  if (!j.requests.length) { box.innerHTML = '<p style="font-size:12px;color:#4a7a63;font-family:\'JetBrains Mono\',monospace;">// tidak ada permintaan reset</p>'; return; }
+  box.innerHTML = j.requests.map(q => `<div style="display:flex;align-items:center;gap:10px;background:rgba(0,0,0,.25);border:1px solid rgba(251,191,36,.3);border-radius:10px;padding:10px 14px;margin-bottom:8px;flex-wrap:wrap;">
+    <b style="color:#fbbf24;">${q.username}</b>
+    <span style="font-size:11px;color:#8db3a2;font-family:'JetBrains Mono',monospace;">${q.id}</span>
+    <span style="margin-left:auto;display:flex;gap:6px;">
+      <button class="sec" style="width:auto;padding:5px 12px;margin:0;font-size:11px;" onclick="accForgot('${q.id}',1)">✓ ACC</button>
+      <button class="sec" style="width:auto;padding:5px 12px;margin:0;font-size:11px;" onclick="accForgot('${q.id}',0)">✗ Tolak</button>
+    </span>
+  </div>`).join('');
+}
+async function accForgot(id, ok) {
+  const j = await _ownerCall(ok ? 'owner_forgot_acc' : 'owner_forgot_del', { id });
+  alert(j.message || 'selesai');
+  loadOwnerForgot();
+}
+
+async function loadOwnerRevenue() {
+  const j = await _ownerCall('owner_revenue');
+  const box = $('ownerRevenue');
+  if (!j || !j.success) { box.innerHTML = '<p style="color:#f87171;">❌ Gagal memuat</p>'; return; }
+  const fmt = n => 'Rp ' + Number(n).toLocaleString('id-ID');
+  box.innerHTML = `<div style="display:flex;gap:12px;flex-wrap:wrap;">
+    <div style="flex:1;min-width:140px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.3);border-radius:12px;padding:16px;text-align:center;">
+      <div style="font-size:11px;color:#8db3a2;letter-spacing:1px;">TOTAL PENDAPATAN</div>
+      <div style="font-size:22px;font-weight:800;color:#34d399;margin-top:4px;">${fmt(j.total_semua)}</div>
+    </div>
+    <div style="flex:1;min-width:140px;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.3);border-radius:12px;padding:16px;text-align:center;">
+      <div style="font-size:11px;color:#8db3a2;letter-spacing:1px;">HARI INI</div>
+      <div style="font-size:22px;font-weight:800;color:#fbbf24;margin-top:4px;">${fmt(j.hari_ini)}</div>
+    </div>
+  </div>`;
+}
+
+async function loadOwnerExport() {
+  const j = await _ownerCall('owner_export');
+  const box = $('ownerExport');
+  if (!j || !j.success) { box.innerHTML = '<p style="color:#f87171;">❌ Gagal memuat</p>'; return; }
+  const blob = new Blob([j.csv], { type:'text/csv' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'haomi-users.csv';
+  a.click();
+  box.innerHTML = '<p style="font-size:12px;color:#34d399;">✓ CSV terunduh (' + (j.csv.split('\n').length-1) + ' user)</p>';
+}
+
+async function loadOwnerSetPrice() {
+  const box = $('ownerSetPrice');
+  box.innerHTML = `<div style="background:rgba(0,0,0,.25);border:1px solid rgba(16,185,129,.25);border-radius:12px;padding:16px;">
+    <div style="font-size:11px;letter-spacing:1px;color:#34d399;font-family:'JetBrains Mono',monospace;margin-bottom:10px;">💲 HARGA PER HARI</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <input id="spPlan" placeholder="plan (premium/pro)" style="flex:1;min-width:120px;margin:0;">
+      <input id="spDay" placeholder="Rp/hari" style="flex:1;min-width:100px;margin:0;">
+      <button class="sec" style="width:auto;padding:10px 16px;margin:0;" onclick="applySetPrice()">Terapkan</button>
+    </div>
+    <p id="spMsg" style="font-size:12px;margin-top:8px;color:#34d399;"></p>
+  </div>`;
+}
+async function applySetPrice() {
+  const j = await _ownerCall('owner_setprice', { plan: $('spPlan').value.trim(), perDay: parseInt($('spDay').value) });
+  $('spMsg').textContent = j.message || 'selesai';
+}
+
+if (TOKEN) showProfile();
+checkNotif();
+// cek notif baru tiap 60 detik
+setInterval(checkNotif, 60000);
+</script>
+</body>
+</html>

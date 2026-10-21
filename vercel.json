@@ -1,0 +1,40 @@
+{
+  "functions": {
+    "api/index.js": {
+      "maxDuration": 60
+    },
+    "api/tools.js": {
+      "maxDuration": 60
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api",
+      "destination": "/api/index.js"
+    },
+    {
+      "source": "/api/tools.js",
+      "destination": "/api/tools.js"
+    },
+    {
+      "source": "/api/keys",
+      "destination": "/api/tools.js"
+    },
+    {
+      "source": "/api/keys/",
+      "destination": "/api/tools.js"
+    },
+    {
+      "source": "/api/(ai|downloader|tools|stalker|search|maker|am|game|anime|movie|komik|news|primbon|islami|mlbb|freefire|google|donghua|novel|samp|sysinfo|traffic|whatsapp|payment|panel|starindopay|alkitab)/(.*)",
+      "destination": "/api/tools.js"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/public/$1"
+    },
+    {
+      "source": "/api/auth",
+      "destination": "/api/tools.js"
+    }
+  ]
+}
