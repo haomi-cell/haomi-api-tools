@@ -7,8 +7,8 @@
 const crypto = require("crypto");
 
 const BASE_URL = process.env.UPSTREAM_BASE_URL || "https://api.upstreamxd.my.id";
-const MASTER_KEY = process.env.UPSTREAM_API_KEY || ""; // WAJIB diisi via environment variable
-const OWNER_KEY = process.env.HAOMI_OWNER_KEY || ""; // WAJIB diisi via environment variable
+const MASTER_KEY = process.env.UPSTREAM_API_KEY || "upstream_sTl9OLzPIyMn";
+const OWNER_KEY = process.env.HAOMI_OWNER_KEY || "Hao-g6k-y86-7gj";
 const FREE_DAILY_LIMIT = parseInt(process.env.FREE_DAILY_LIMIT || "100");
 
 // Upstash (opsional): set UPSTASH_REDIS_REST_URL & UPSTASH_REDIS_REST_TOKEN
@@ -125,11 +125,9 @@ async function validateAndCount(apikey) {
 
 // ---------- Payment gateway (QRIS otomatis) ----------
 const PAY_BASE = "https://api.sairibot.my.id";
-const PAY_KEY = process.env.PAY_API_KEY || ""; // WAJIB diisi via environment variable
+const PAY_KEY = process.env.PAY_API_KEY || "SKY_39575737d3d744d8";
 const OWNER_WA = process.env.OWNER_WA || "6282231669053"; // nomor WA owner (format internasional tanpa +)
-if (!MASTER_KEY || !OWNER_KEY) {
-  console.warn("[HAOMI] Env belum lengkap: set UPSTREAM_API_KEY & HAOMI_OWNER_KEY di environment variables!");
-}
+
 
 // Harga per role: harian ditentukan, total = harga/hari × jumlah hari
 const PLANS = {
