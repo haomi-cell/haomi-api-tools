@@ -7,7 +7,7 @@
 const https = require("https");
 
 const API_BASE = "https://api.jerexd.my.id";
-const API_KEY = process.env.JERE_API_KEY || "jere_sTl9OLzPIyMn";
+const API_KEY = process.env.UPSTREAM_API_KEY || "";
 const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const OWNER_CONTACT = "6282231669053"; // format internasional (62...), tanpa + dan tanpa 0 di depan
 
