@@ -1,40 +1,1350 @@
-<!doctype html>
+```html
+<!DOCTYPE html>
 <html lang="id" class="dark">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><meta name="theme-color" content="#08080a">
-<title>HAO OMNI V52 — Supabase Connect Demo</title>
-<style>
-:root{--bg:#08080a;--panel:#121216;--panel2:#19191f;--line:#303039;--muted:#a1a1ad;--text:#f4f4f5;--mint:#39d6a0;--gold:#d4af37;--warn:#ffbf47;--radius:22px}*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:radial-gradient(circle at 5% 10%,#18231c 0,transparent 32%),var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif}button,input,select{font:inherit}button{cursor:pointer;color:inherit}.top{position:sticky;top:0;z-index:5;background:#08080aeb;backdrop-filter:blur(18px);border-bottom:1px solid #26262d;padding:20px 20px 17px;display:flex;justify-content:space-between;align-items:center;gap:12px}.brand{font-weight:900;letter-spacing:4px;font-size:22px}.brand b{color:var(--mint)}.sub{font-size:11px;letter-spacing:2px;color:var(--muted);font-weight:800;margin-top:7px}.theme,.btn,.tab{border:1px solid #383840;background:linear-gradient(145deg,#202026,#151519);border-radius:16px;padding:13px 16px;font-weight:800}.wrap{max-width:1000px;margin:auto;padding:20px 18px 44px}.hero,.panel,.stat,.tile,.notice{background:linear-gradient(145deg,#17171c,#0f0f13);border:1px solid var(--line);border-radius:var(--radius)}.hero{padding:22px;margin-bottom:18px}.eyebrow{font-size:12px;letter-spacing:3px;color:var(--mint);font-weight:900}.hero h1{font-size:28px;line-height:1.18;margin:10px 0}.muted{color:var(--muted);line-height:1.6}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:20px}.stat{padding:14px;border-radius:18px;background:#09090b}.stat small{display:block;color:var(--muted);font-weight:700;margin-bottom:8px}.stat strong{font-size:15px}.tabs{display:flex;gap:9px;overflow:auto;padding:4px 0 18px;scrollbar-width:none}.tab{white-space:nowrap;min-width:max-content}.tab.active{border-color:var(--mint);color:var(--mint);background:#102018}.view{display:none}.view.active{display:block}.panel{padding:22px;margin-bottom:18px}.panel h2{font-size:22px;margin:6px 0 12px}.panel h3{margin:0 0 10px}.field{display:block;margin:16px 0}.field span{display:block;font-weight:800;margin-bottom:8px}.field input,.field select{width:100%;background:#08080a;border:1px solid #3a3a43;border-radius:15px;color:var(--text);padding:15px;outline:none}.field input:focus,.field select:focus{border-color:var(--mint)}.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.primary{background:linear-gradient(110deg,var(--mint),#a7a52e);color:#07110c;border:0}.full{width:100%}.note{background:#24190b;color:var(--warn);padding:14px;border-radius:16px;line-height:1.5;font-size:13px;font-weight:700;margin-top:15px}.output{background:#070709;border:1px solid #292930;border-radius:15px;padding:14px;color:#c7cbd4;margin-top:14px;min-height:50px;line-height:1.5;overflow-wrap:anywhere}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.tile{padding:20px 16px;min-height:145px}.tile .ico{font-size:22px;color:var(--mint);margin-bottom:18px}.tile h3{font-size:16px;margin:0 0 8px}.tile p{font-size:13px;color:var(--muted);line-height:1.5;margin:0}.sectionline{display:flex;align-items:center;justify-content:space-between;margin:24px 2px 14px;font-weight:900;letter-spacing:1.5px}.pill{border:1px solid #474333;border-radius:99px;color:var(--mint);background:#181a12;padding:6px 11px;font-size:12px;letter-spacing:0}.owner-mark{display:inline-flex;align-items:center;gap:7px;color:var(--gold);font-size:11px;letter-spacing:2px;font-weight:900}.small{font-size:12px;color:var(--muted)}.hidden{display:none!important}.companion{max-width:500px;margin:30px auto}.companion-logo{height:68px;width:68px;border-radius:22px;display:grid;place-items:center;background:#10251b;border:1px solid #2a7459;color:var(--mint);font-size:30px;margin:8px auto 18px}.center{text-align:center}.login-icon{font-size:30px;color:var(--gold);margin-bottom:12px}.footer{text-align:center;color:#777783;font-size:11px;padding:20px 0}.light{--bg:#e9e9ed;--panel:#fff;--panel2:#f5f5f7;--line:#d1d1d8;--muted:#5d5d69;--text:#17171b;background:var(--bg);color:var(--text)}.light .top{background:#ffffffeb}.light .hero,.light .panel,.light .tile{background:#fff}.light .stat,.light .field input,.light .field select,.light .output{background:#f7f7f9;color:#17171b}.light .tab,.light .btn,.light .theme{background:#f7f7f9;color:#17171b}
-@media(min-width:700px){.wrap{padding-top:26px}.hero h1{font-size:34px}.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.top{padding-left:max(24px,calc((100vw - 1000px)/2));padding-right:max(24px,calc((100vw - 1000px)/2))}}@media(max-width:430px){.brand{font-size:19px;letter-spacing:3px}.top{padding:18px 16px}.wrap{padding:16px 14px 34px}.hero,.panel{padding:18px}.stats{gap:7px}.stat{padding:11px}.stat strong{font-size:13px}.actions{gap:8px}.btn,.tab{padding:12px 13px}.grid{gap:10px}.tile{padding:17px 14px}}
-</style></head>
-<body>
-<header class="top"><div><div class="brand">HAO OMNI <b>V52</b></div><div class="sub">PREMIUM DEVICE CONSOLE • UI DEMO</div></div><button class="theme" id="themeBtn">◐ Tema</button></header>
-<main class="wrap">
-<section class="hero" id="hero"><div class="eyebrow">DEVICE CONSOLE</div><h1>Kontrol panel HAO OMNI</h1><div class="muted">Demo tampilan untuk pengelolaan perangkat, kode pairing, konfigurasi APK pendamping, dan bantuan jarak jauh yang disetujui pemilik perangkat.</div><div class="stats"><div class="stat"><small>Waktu lokal</small><strong id="clock">--:--:--</strong></div><div class="stat"><small>Jaringan</small><strong id="net">Memeriksa…</strong></div><div class="stat"><small>Backend</small><strong id="backendState">Demo lokal</strong></div></div></section>
-<nav class="tabs" aria-label="Menu utama"><button class="tab active" data-view="modules">MODUL</button><button class="tab" data-view="builder">APK BUILDER</button><button class="tab" data-view="pairing">PAIRING</button><button class="tab" data-view="supabase">SUPABASE</button><button class="tab" data-view="owner">OWNER</button><button class="tab" data-view="companion">DEMO TARGET</button></nav>
-<section class="view active" id="view-modules"><div class="field"><input id="search" placeholder="Cari modul…" autocomplete="off"></div><div class="sectionline"><span>MODULE ARSENAL</span><span class="pill">21 MODUL</span></div><div class="grid" id="grid"></div><div class="note">Pratinjau UI saja. Modul yang membutuhkan akses perangkat akan meminta izin secara terpisah dalam implementasi nyata.</div></section>
-<section class="view" id="view-builder"><div class="panel"><div class="eyebrow">APK CONFIGURATION</div><h2>APK Builder</h2><p class="muted">Atur metadata APK pendamping. Panel ini belum melakukan kompilasi APK.</p><label class="field"><span>Nama aplikasi</span><input id="appName" value="HAO Companion" maxlength="40"></label><label class="field"><span>Application ID</span><input id="appId" value="id.hao.omni.companion"></label><label class="field"><span>Versi</span><input id="appVersion" value="1.0.0"></label><label class="field"><span>Fitur demo</span><select id="appFeature"><option value="pairing">Pairing perangkat</option><option value="screen">Pairing + berbagi layar dengan izin</option><option value="support">Paket bantuan jarak jauh dengan persetujuan</option></select></label><div class="actions"><button class="btn primary" id="exportConfig">Ekspor konfigurasi</button><button class="btn" id="shareConfig">Bagikan konfigurasi</button></div><div class="output" id="builderOut">Konfigurasi belum diekspor.</div><div class="note">Tombol ini hanya mengekspor konfigurasi JSON, bukan file APK terpasang.</div></div></section>
-<section class="view" id="view-pairing"><div class="panel"><div class="eyebrow">CONSENT-BASED REMOTE SUPPORT</div><h2>Pairing perangkat</h2><p class="muted">Buat kode sementara untuk memasangkan dua perangkat milikmu. Demo ini hanya menyimpan status secara lokal; belum menghubungkan jaringan atau streaming.</p><label class="field"><span>Peran perangkat</span><select id="pairRole"><option value="controller">HP pengontrol</option><option value="companion">HP pendamping</option></select></label><label class="field"><span>Kode sesi</span><input id="pairCode" placeholder="HAO-XXX-XXX-XXX" autocapitalize="characters"></label><div class="actions"><button class="btn primary" id="makeCode">Buat kode sesi</button><button class="btn" id="copyCode">Salin kode</button><button class="btn" id="validateCode">Validasi format kode</button><button class="btn" id="endSession">Hentikan sesi lokal</button></div><div class="output" id="pairOut">Belum ada sesi lokal.</div><div class="note">Pairing tidak otomatis membuka kamera, mikrofon, berbagi layar, atau kendali perangkat. Izin Android harus diminta terpisah dan disetujui pemilik perangkat.</div></div></section>
-<section class="view" id="view-supabase"><div class="panel"><div class="eyebrow">BACKEND CONNECTION</div><h2>Supabase Settings</h2><p class="muted">Masukkan Project URL dan publishable/anon key untuk menguji koneksi dasar. Pengaturan disimpan di browser perangkat ini saja.</p><label class="field"><span>Supabase Project URL</span><input id="supabaseUrl" type="url" placeholder="https://xxxx.supabase.co" autocomplete="url"></label><label class="field"><span>Publishable key / anon public key</span><input id="supabaseKey" type="password" placeholder="sb_publishable_… atau anon public key" autocomplete="off"></label><div class="actions"><button class="btn primary" id="saveSupabase">Simpan konfigurasi</button><button class="btn" id="testSupabase">Uji koneksi</button></div><div class="output" id="supabaseOut">Backend belum dikonfigurasi.</div><div class="note">Jangan masukkan service_role/secret key ke HTML atau browser. Untuk akses data, buat tabel dan Row Level Security (RLS) di Supabase; URL + anon key saja tidak memberi hak akses otomatis.</div></div><div class="panel"><div class="eyebrow">OWNER SECURITY</div><h2>Login Owner</h2><p class="muted">Login asli akan memakai Supabase Auth setelah konfigurasi tersimpan. Dashboard Owner sebaiknya hanya menampilkan data yang diizinkan oleh policy RLS.</p><button class="btn full" id="goOwner">Buka menu Owner</button></div></section>
-<section class="view" id="view-owner"><div class="panel"><div class="owner-mark">✦ OWNER AREA</div><h2>Masuk dashboard Owner</h2><p class="muted">Login Supabase akan diintegrasikan setelah konfigurasi backend diuji. Login demo di bawah ini tetap hanya pratinjau UI.</p><label class="field"><span>Email Owner</span><input id="ownerEmail" type="email" placeholder="owner@example.com" autocomplete="username"></label><label class="field"><span>Kata sandi</span><input id="ownerPassword" type="password" placeholder="Masukkan kata sandi demo" autocomplete="current-password"></label><button class="btn primary full" id="ownerLogin">Pratinjau dashboard Owner</button><div class="output" id="ownerOut">Belum login.</div><div id="ownerDash" class="hidden"><div class="sectionline"><span>DASHBOARD OWNER</span><span class="pill">DEMO</span></div><div class="grid"><div class="tile"><div class="ico">▤</div><h3>Backend</h3><p>Belum tersambung</p></div><div class="tile"><div class="ico">⌘</div><h3>Sesi aktif</h3><p id="ownerSessions">0 sesi demo</p></div><div class="tile"><div class="ico">◈</div><h3>Perangkat</h3><p>Belum ada perangkat terverifikasi</p></div></div><button class="btn full" id="ownerLogout" style="margin-top:14px">Keluar dashboard</button></div><div class="note">Tombol pratinjau tidak mengautentikasi akun. Jangan gunakan kata sandi asli pada demo ini.</div></div></section>
-<section class="view" id="view-companion"><div class="panel companion"><div class="center"><div class="companion-logo">H</div><div class="eyebrow">HAO COMPANION</div><h2>Hubungkan perangkat</h2><p class="muted">Masukkan kode pairing yang dibuat dari aplikasi utama.</p></div><label class="field"><span>Kode pairing</span><input id="joinCode" placeholder="HAO-XXX-XXX-XXX" autocapitalize="characters" maxlength="15"></label><button class="btn primary full" id="joinSession">Hubungkan</button><div class="output" id="companionOut">Menunggu kode pairing.</div><div id="consentBox" class="hidden"><div class="note">Kode cocok dalam demo lokal. Dalam aplikasi nyata, pemilik perangkat tetap harus menyetujui setiap izin Android yang diperlukan.</div><button class="btn full" id="consentBtn" style="margin-top:12px">Setujui demo pairing</button></div></div></section>
-<div class="footer">HAO OMNI V52 • SUPABASE CONNECTION TEST • AUTH & PAIRING MASIH BELUM DIIMPLEMENTASIKAN</div>
-</main>
-<script>
-const modules=[['▣','Info perangkat','Lihat informasi browser dan layar perangkat ini.'],['⌁','Status jaringan','Periksa status koneksi yang dilaporkan browser.'],['▬','Status baterai','Baca level baterai jika API tersedia.'],['◷','Jam & tanggal','Waktu lokal dan zona waktu.'],['⌖','Lokasi perangkat','Minta izin lokasi secara eksplisit.'],['◎','Uji kamera','Buka kamera perangkat ini setelah izin diberikan.'],['♫','Uji mikrofon','Rekam sampel singkat secara lokal setelah izin.'],['▤','Pilih berkas','Pilih berkas sendiri untuk melihat metadata.'],['▧','Papan klip','Demo input dan salin teks secara manual.'],['▦','Penyimpanan web','Lihat ringkasan penyimpanan browser.'],['⌘','Pembuat sandi','Buat sandi acak secara lokal.'],['#','Generator hash','Hash teks yang kamu masukkan.'],['{}','Pemformat JSON','Rapikan JSON lokal.'],['⇄','Encoder Base64','Encode/decode teks biasa.'],['◉','Status sesi','Lihat status sesi pairing demo.'],['▣','APK Builder','Atur metadata APK pendamping.'],['⌁','Validasi kode','Validasi format kode pairing.'],['♢','Riwayat lokal','Lihat aktivitas demo pada halaman ini.'],['⛨','Pusat izin','Ringkasan izin yang diperlukan.'],['⇧','Ekspor konfigurasi','Ekspor konfigurasi aplikasi dalam JSON.'],['⚙','Pengaturan','Tema dan preferensi antarmuka.']];
-const grid=document.querySelector('#grid');function renderModules(q=''){grid.innerHTML='';modules.filter(m=>(m[1]+' '+m[2]).toLowerCase().includes(q.toLowerCase())).forEach(m=>{const el=document.createElement('article');el.className='tile';el.innerHTML=`<div class="ico">${m[0]}</div><h3>${m[1]}</h3><p>${m[2]}</p>`;grid.appendChild(el)})}renderModules();document.querySelector('#search').addEventListener('input',e=>renderModules(e.target.value));
-document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id==='view-'+b.dataset.view));window.scrollTo({top:0,behavior:'smooth'})}));document.querySelector('#themeBtn').onclick=()=>document.body.classList.toggle('light');function tick(){document.querySelector('#clock').textContent=new Date().toLocaleTimeString('id-ID')}tick();setInterval(tick,1000);document.querySelector('#net').textContent=navigator.onLine?'Online':'Offline';window.addEventListener('online',()=>document.querySelector('#net').textContent='Online');window.addEventListener('offline',()=>document.querySelector('#net').textContent='Offline');
-function genCode(){const a='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';const part=n=>Array.from({length:n},()=>a[Math.floor(Math.random()*a.length)]).join('');return `HAO-${part(3)}-${part(3)}-${part(3)}`}function valid(s){return /^HAO-[A-Z0-9]{3}-[A-Z0-9]{3}-[A-Z0-9]{3}$/.test(s.trim().toUpperCase())}const code=document.querySelector('#pairCode'),pairOut=document.querySelector('#pairOut');document.querySelector('#makeCode').onclick=()=>{code.value=genCode();pairOut.textContent='Kode sesi dibuat secara lokal: '+code.value+'. Belum terdaftar di server.';document.querySelector('#ownerSessions').textContent='1 sesi demo'};document.querySelector('#copyCode').onclick=async()=>{if(!code.value){pairOut.textContent='Buat kode terlebih dahulu.';return}try{await navigator.clipboard.writeText(code.value);pairOut.textContent='Kode disalin.'}catch{pairOut.textContent='Kode: '+code.value+' (salin manual bila clipboard diblokir).'}};document.querySelector('#validateCode').onclick=()=>pairOut.textContent=valid(code.value)?'Format kode valid. Ini belum memverifikasi sesi server.':'Format kode salah. Contoh: HAO-ABC-234-XYZ.';document.querySelector('#endSession').onclick=()=>{code.value='';pairOut.textContent='Sesi lokal dihentikan.';document.querySelector('#ownerSessions').textContent='0 sesi demo'};
-document.querySelector('#joinSession').onclick=()=>{const v=document.querySelector('#joinCode').value.trim().toUpperCase();const out=document.querySelector('#companionOut');if(!valid(v)){out.textContent='Format kode salah. Contoh: HAO-ABC-234-XYZ.';document.querySelector('#consentBox').classList.add('hidden');return}if(v!==code.value.toUpperCase()||!code.value){out.textContent='Kode belum ditemukan di demo lokal ini. Kedua layar harus dibuka pada halaman yang sama untuk simulasi.';document.querySelector('#consentBox').classList.add('hidden');return}out.textContent='Kode cocok pada demo lokal. Belum ada koneksi jarak jauh.';document.querySelector('#consentBox').classList.remove('hidden')};document.querySelector('#consentBtn').onclick=()=>{document.querySelector('#companionOut').textContent='Pairing demo disetujui secara lokal. Tidak ada layar yang dikirim.';document.querySelector('#consentBox').classList.add('hidden')};
-function config(){return {appName:document.querySelector('#appName').value.trim(),applicationId:document.querySelector('#appId').value.trim(),version:document.querySelector('#appVersion').value.trim(),feature:document.querySelector('#appFeature').value,generatedAt:new Date().toISOString(),demo:true}}document.querySelector('#exportConfig').onclick=()=>{const data=JSON.stringify(config(),null,2);document.querySelector('#builderOut').textContent=data;const blob=new Blob([data],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='hao-companion-config.json';a.click();URL.revokeObjectURL(a.href)};document.querySelector('#shareConfig').onclick=async()=>{const data=JSON.stringify(config(),null,2);try{if(navigator.share)await navigator.share({title:'HAO Companion config',text:data});else{await navigator.clipboard.writeText(data);document.querySelector('#builderOut').textContent='Konfigurasi disalin untuk dibagikan.\n'+data}}catch(e){document.querySelector('#builderOut').textContent=data}};
-document.querySelector('#ownerLogin').onclick=()=>{const email=document.querySelector('#ownerEmail').value.trim(),pw=document.querySelector('#ownerPassword').value;if(!email||!pw){document.querySelector('#ownerOut').textContent='Isi email dan kata sandi demo untuk melihat pratinjau dashboard.';return}document.querySelector('#ownerOut').textContent='Login demo berhasil untuk '+email+'. Ini bukan autentikasi sungguhan.';document.querySelector('#ownerDash').classList.remove('hidden')};document.querySelector('#ownerLogout').onclick=()=>{document.querySelector('#ownerDash').classList.add('hidden');document.querySelector('#ownerPassword').value='';document.querySelector('#ownerOut').textContent='Keluar dari dashboard demo.'};
-// Supabase connection configuration: only public/publishable key is supported in this client demo.
-const sbUrl=document.querySelector('#supabaseUrl'), sbKey=document.querySelector('#supabaseKey'), sbOut=document.querySelector('#supabaseOut');
-function loadSb(){try{const c=JSON.parse(localStorage.getItem('hao_supabase_public_config')||'{}');sbUrl.value=c.url||'';sbKey.value=c.key||'';if(c.url&&c.key){document.querySelector('#backendState').textContent='Tersimpan';sbOut.textContent='Konfigurasi publik ditemukan di browser. Tekan Uji koneksi untuk memeriksa endpoint.'}}catch{}}
-function cleanUrl(v){return v.trim().replace(/\/+$/,'')}
-document.querySelector('#saveSupabase').onclick=()=>{const url=cleanUrl(sbUrl.value),key=sbKey.value.trim();if(!/^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(url)){sbOut.textContent='URL belum sesuai format project Supabase, contoh: https://xxxx.supabase.co';return}if(!key){sbOut.textContent='Masukkan publishable key atau anon public key.';return}if(/service_role|sb_secret_/i.test(key)){sbOut.textContent='Ditolak: secret/service_role key tidak boleh disimpan di browser. Gunakan publishable/anon public key.';return}localStorage.setItem('hao_supabase_public_config',JSON.stringify({url,key}));document.querySelector('#backendState').textContent='Konfigurasi disimpan';sbOut.textContent='Konfigurasi publik tersimpan di browser ini. Belum berarti tabel atau autentikasi sudah berfungsi.'};
-document.querySelector('#testSupabase').onclick=async()=>{const url=cleanUrl(sbUrl.value),key=sbKey.value.trim();if(!/^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(url)||!key){sbOut.textContent='Isi URL project dan publishable/anon key terlebih dahulu.';return}if(/service_role|sb_secret_/i.test(key)){sbOut.textContent='Ditolak demi keamanan: gunakan publishable/anon key, bukan secret/service_role.';return}sbOut.textContent='Menguji endpoint Auth Supabase…';try{const r=await fetch(url+'/auth/v1/settings',{method:'GET',headers:{apikey:key}});const body=await r.text();if(r.ok){document.querySelector('#backendState').textContent='Endpoint terjangkau';sbOut.textContent='Berhasil menjangkau endpoint Auth Supabase (HTTP '+r.status+'). Ini hanya tes konektivitas; belum memverifikasi login, tabel, RLS, atau pairing.'}else{document.querySelector('#backendState').textContent='Perlu diperiksa';sbOut.textContent='Endpoint merespons HTTP '+r.status+'. Periksa project URL dan key. Respons: '+body.slice(0,300)}}catch(e){document.querySelector('#backendState').textContent='Gagal diuji';sbOut.textContent='Koneksi gagal dari browser: '+e.message+'. Periksa internet, URL, dan apakah permintaan diblokir browser/CORS.'}};
-document.querySelector('#goOwner').onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.view==='owner'));document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id==='view-owner'));window.scrollTo({top:0,behavior:'smooth'})};
-loadSb();
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>HAO OMNI | V52 Premium Arsenal</title>
+    
+    <!-- Premium Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons (Duotone for Luxury Look) -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { 
+                        sans: ['Outfit', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'] 
+                    },
+                    colors: {
+                        theme: 'rgb(var(--theme-color) / <alpha-value>)',
+                        surface: '#0a0a0c',
+                        glass: 'rgba(20, 20, 25, 0.65)'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Luxury Theme Variables */
+        :root { --theme-color: 212 175 55; } /* Royal Gold (Default) */
+        .theme-diamond { --theme-color: 226 232 240; } /* Platinum/Diamond */
+        .theme-emerald { --theme-color: 16 185 129; } /* Emerald */
+        .theme-sapphire { --theme-color: 56 189 248; } /* Sapphire */
+        .theme-ruby { --theme-color: 225 29 72; } /* Ruby */
 
-</script></body></html>
+        html, body {
+            height: 100%; width: 100%;
+            background-color: #050505;
+            color: #e2e8f0;
+            overflow-x: hidden;
+            touch-action: manipulation;
+            margin: 0; padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Ambient Glowing Background Animation */
+        .ambient-bg {
+            position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none;
+            background: radial-gradient(circle at 15% 50%, rgba(var(--theme-color) / 0.05), transparent 50%),
+                        radial-gradient(circle at 85% 30%, rgba(var(--theme-color) / 0.08), transparent 50%);
+            animation: pulseBg 10s ease-in-out infinite alternate;
+        }
+        @keyframes pulseBg {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.1); opacity: 1; }
+        }
+        
+        ::-webkit-scrollbar { width: 0px; background: transparent; }
+        .custom-scroll { overflow-y: auto; overflow-x: hidden; }
+
+        #app-wrapper { position: relative; z-index: 10; min-height: 100vh; }
+
+        /* Premium Glass Cards */
+        .premium-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+            display: flex; flex-direction: column; height: 100%;
+            overflow: hidden;
+        }
+        .premium-card::after {
+            content: ''; position: absolute; inset: 0; border-radius: 16px;
+            box-shadow: inset 0 0 20px rgba(var(--theme-color) / 0.0);
+            transition: all 0.3s ease; pointer-events: none;
+        }
+        .premium-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(var(--theme-color) / 0.4);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7), 0 0 15px rgba(var(--theme-color) / 0.2);
+            background: rgba(30, 30, 35, 0.7);
+        }
+        .premium-card:hover::after { box-shadow: inset 0 0 20px rgba(var(--theme-color) / 0.1); }
+        .premium-card:active { transform: translateY(0) scale(0.98); }
+
+        .premium-card.lethal { border-color: rgba(225, 29, 72, 0.2); }
+        .premium-card.lethal:hover { border-color: rgba(225, 29, 72, 0.6); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7), 0 0 20px rgba(225, 29, 72, 0.3); }
+
+        /* Premium Buttons */
+        .btn-premium {
+            background: linear-gradient(145deg, rgba(25,25,30,0.8), rgba(15,15,20,0.9));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            color: #f8fafc;
+            border-radius: 12px;
+            padding: 12px 16px; font-weight: 500; font-size: 13px;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            letter-spacing: 0.5px; transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        .btn-premium:hover { 
+            background: linear-gradient(145deg, rgba(var(--theme-color) / 0.15), rgba(var(--theme-color) / 0.05));
+            border-color: rgb(var(--theme-color)); 
+            color: rgb(var(--theme-color)); 
+            box-shadow: 0 5px 20px rgba(var(--theme-color) / 0.25);
+        }
+        .btn-premium:active { transform: scale(0.96); }
+        
+        .btn-lethal { border-color: rgba(225, 29, 72, 0.4) !important; color: #fb7185 !important; }
+        .btn-lethal:hover { background: rgba(225, 29, 72, 0.15) !important; border-color: #e11d48 !important; color: #fff !important; box-shadow: 0 5px 20px rgba(225, 29, 72, 0.4) !important; }
+
+        .btn-active {
+            background: linear-gradient(145deg, rgba(var(--theme-color) / 0.2), rgba(var(--theme-color) / 0.1)) !important;
+            border-color: rgb(var(--theme-color)) !important; 
+            color: #fff !important; 
+            box-shadow: 0 0 15px rgba(var(--theme-color) / 0.3) !important;
+        }
+
+        /* Inputs & Terminal */
+        .input-premium { 
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            border-radius: 10px;
+            color: #fff; padding: 12px 16px; font-family: 'JetBrains Mono', monospace; font-size: 12px; width: 100%; outline: none; transition: all 0.3s;
+        }
+        .input-premium:focus { border-color: rgb(var(--theme-color)); box-shadow: 0 0 0 2px rgba(var(--theme-color) / 0.2); background: rgba(0,0,0,0.6); }
+
+        .terminal-box {
+            background: #020203;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #94a3b8; padding: 14px; overflow-y: auto; position: relative;
+            box-shadow: inset 0 5px 20px rgba(0,0,0,0.5);
+        }
+        .t-accent { color: rgb(var(--theme-color)); text-shadow: 0 0 5px rgba(var(--theme-color) / 0.5); }
+
+        /* Modals */
+        .modal-bg {
+            position: fixed; inset: 0; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(12px);
+            z-index: 50; display: none; align-items: center; justify-content: center; padding: 16px;
+            opacity: 0; transition: opacity 0.3s ease;
+        }
+        .modal-bg.active { display: flex; opacity: 1; }
+        .modal-box {
+            background: rgba(15, 15, 18, 0.85); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255,255,255,0.1); border-top: 1px solid rgba(255,255,255,0.2);
+            border-radius: 20px; width: 100%; max-width: 500px; max-height: 90vh; display: flex; flex-direction: column;
+            transform: scale(0.95) translateY(20px); opacity: 0; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.8), 0 0 40px rgba(var(--theme-color) / 0.15);
+        }
+        .modal-bg.active .modal-box { transform: scale(1) translateY(0); opacity: 1; }
+
+        /* Smartphone Graphic */
+        .smartphone-graphic {
+            width: 140px; height: 280px; border: 3px solid rgba(255,255,255,0.1); border-radius: 24px; position: relative; background: linear-gradient(180deg, #111, #000); margin: 0 auto; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+        }
+        .smartphone-graphic::before { content: ''; position: absolute; top: 8px; left: 50%; transform: translateX(-50%); width: 40px; height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; }
+        .smartphone-screen { position: absolute; top: 20px; bottom: 20px; left: 8px; right: 8px; border-radius: 12px; background: #050505; border: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; }
+
+        .softkey-bar { display: flex; background: rgba(20,20,25,0.8); border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); }
+        .softkey { flex: 1; padding: 12px; display: flex; justify-content: center; color: #64748b; transition: 0.2s; cursor: pointer; }
+        .softkey:hover { color: #f8fafc; background: rgba(255,255,255,0.1); }
+        .softkey:active { background: rgba(var(--theme-color) / 0.3); color: rgb(var(--theme-color)); }
+        
+        /* Premium Top-Center Toast */
+        .toast { 
+            position: fixed; 
+            top: -100px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            background: rgba(15,15,20,0.95); 
+            backdrop-filter: blur(12px); 
+            border: 1px solid rgba(255,255,255,0.1); 
+            border-bottom: 3px solid rgb(var(--theme-color)); 
+            border-radius: 100px; 
+            padding: 12px 24px; 
+            font-family: 'Outfit', sans-serif; 
+            font-size: 13px; 
+            font-weight: 500; 
+            color: #fff; 
+            z-index: 100; 
+            transition: top 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
+            box-shadow: 0 15px 30px rgba(0,0,0,0.6), 0 0 20px rgba(var(--theme-color) / 0.2); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 8px; 
+            white-space: nowrap; 
+        }
+        .toast.show { top: 24px; }
+        
+        /* Intel Box */
+        .intel-box {
+            background: rgba(0,0,0,0.3); border-radius: 12px; padding: 14px; margin-bottom: 16px; font-size: 12px; color: #cbd5e1; line-height: 1.6; border: 1px solid rgba(255,255,255,0.05); border-left: 3px solid rgb(var(--theme-color)); display: flex; gap: 12px; align-items: flex-start;
+        }
+        .intel-box.lethal { border-left-color: #e11d48; }
+        .intel-icon { color: rgb(var(--theme-color)); font-size: 20px; flex-shrink: 0; filter: drop-shadow(0 0 5px rgba(var(--theme-color)/0.5)); }
+        .intel-box.lethal .intel-icon { color: #fb7185; filter: drop-shadow(0 0 5px rgba(225,29,72,0.5)); }
+
+        /* Modern Toggle */
+        .toggle-switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .toggle-slider { position: absolute; cursor: pointer; inset: 0; background-color: rgba(255,255,255,0.1); transition: .3s; border-radius: 24px; border: 1px solid rgba(255,255,255,0.05); }
+        .toggle-slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px; background-color: #94a3b8; transition: .3s cubic-bezier(0.25, 0.8, 0.25, 1); border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+        input:checked + .toggle-slider { background-color: rgba(var(--theme-color) / 0.2); border-color: rgb(var(--theme-color)); }
+        input:checked + .toggle-slider:before { transform: translateX(20px); background-color: rgb(var(--theme-color)); box-shadow: 0 0 10px rgba(var(--theme-color)/0.8); }
+    </style>
+</head>
+<body onload="bootSystem()">
+
+    <div class="ambient-bg"></div>
+
+    <div id="app-wrapper">
+        <header class="fixed top-0 w-full h-16 border-b border-white/5 bg-surface/60 backdrop-blur-xl z-40 px-6 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-white/10 to-white/5 border border-white/10 flex items-center justify-center shadow-lg shadow-black/50">
+                    <i class="ph-duotone ph-fingerprint text-xl text-theme filter drop-shadow-[0_0_8px_rgba(var(--theme-color)/0.8)]"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-sm font-bold tracking-widest text-white">HAO OMNI <span class="text-theme font-medium">V52</span></span>
+                    <span class="text-[9px] font-mono text-slate-400 uppercase tracking-widest">Premium Arsenal Edition</span>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <button onclick="cycleTheme()" class="text-slate-400 hover:text-white transition-colors w-8 h-8 rounded-full hover:bg-white/10 flex items-center justify-center backdrop-blur-md border border-transparent hover:border-white/10" title="Ganti Tema Visual">
+                    <i class="ph-duotone ph-aperture text-lg"></i>
+                </button>
+                <div class="flex items-center gap-2 bg-black/40 border border-white/10 rounded-full px-3 py-1.5 backdrop-blur-md">
+                    <span class="w-1.5 h-1.5 bg-theme rounded-full animate-pulse shadow-[0_0_8px_rgba(var(--theme-color)/1)]"></span>
+                    <span class="text-[10px] font-mono text-slate-300 font-medium tracking-wider">SECURE LINK</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="pt-24 px-4 pb-12 max-w-2xl mx-auto w-full relative z-10">
+            
+            <div class="mb-6 flex items-center justify-between bg-glass backdrop-blur-xl rounded-2xl p-4 border border-white/5 shadow-xl">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center border border-white/5">
+                        <i class="ph-duotone ph-squares-four text-slate-300"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-xs font-bold text-white tracking-wider uppercase">Modul Operasi</h2>
+                        <p class="text-[10px] text-slate-400 mt-0.5">21 Fitur Eksklusif</p>
+                    </div>
+                </div>
+                <div class="text-[11px] font-mono text-theme font-bold bg-theme/10 px-3 py-1.5 rounded-lg border border-theme/20" id="clock">00:00:00</div>
+            </div>
+
+            <!-- Professional Grid (Uniform size, no hanging col-span) -->
+            <div class="grid grid-cols-2 gap-4 auto-rows-fr">
+                
+                <div class="premium-card p-5 gap-3" onclick="openMod('m-recon')">
+                    <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/5 mb-1">
+                        <i class="ph-duotone ph-device-mobile text-2xl text-slate-200 group-hover:text-theme transition-colors"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-white tracking-wide">Info HP Korban</h3>
+                        <p class="text-[10px] text-slate-400 mt-1 leading-relaxed">Cek merek HP, baterai, & IP</p>
+                    </div>
+                </div>
+
+                <div class="premium-card p-5 gap-3" onclick="openMod('m-build')">
+                    <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/5 mb-1">
+                        <i class="ph-duotone ph-cube text-2xl text-slate-200"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-white tracking-wide">Buat Virus APK</h3>
+                        <p class="text-[10px] text-slate-400 mt-1 leading-relaxed">Bikin aplikasi jebakan</p>
+                    </div>
+                </div>
+
+                <div class="premium-card p-5 gap-3" onclick="openMod('m-scan')">
+                    <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/5 mb-1">
+                        <i class="ph-duotone ph-wifi-high text-2xl text-slate-200"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-white tracking-wide">Lacak Jaringan WiFi</h3>
+                        <p class="text-[10px] text-slate-400 mt-1 leading-relaxed">Cari celah di jaringan target</p>
+                    </div>
+                </div>
+
+                <div class="premium-card p-5 gap-3" onclick="openMod('m-vnc')">
+                    <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/5 mb-1">
+                        <i class="ph-duotone ph-screencast text-2xl text-slate-200"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-white tracking-wide">Sadap Layar HP</h3>
+                        <p class="text-[10px] text-slate-400 mt-1 leading-relaxed">Tonton & foto layar target</p>
+                    </div>
+                </div>
+
+                <div class="premium-card p-5 gap-3" onclick="openMod('m-cam')">
+                    <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/5 mb-1">
+                        <i class="ph-duotone ph-camera-slash text-2xl text-slate-200"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-white tracking-wide">Kamera Rahasia</h3>
+                        <p class="text-[10px] text-slate-400 mt-1 leading-relaxed">Nyalakan kamera diam-diam</p>
+                    </div>
+                </div>
+
+                <div class="premium-card p-5 gap-3" onclick="openMod('m-mic')">
+                    <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/5 mb-1">
+                        <i class="ph-duotone ph-microphone-stage text-2xl text-slate-200"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-white tracking-wide">Sadap Suara</h3>
+                        <p class="text-[10px] text-slate-400 mt-1 leading-relaxed">Rekam obrolan sekitar HP</p>
+                    </div>
+                </div>
+
+                <div class="premium-card p-5 gap-3" onclick="openMod('m-gps')">
+                    <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/5 mb-1">
+                        <i class="ph-duotone ph-crosshair text-2xl text-slate-200"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-white tracking-wide">Lacak Lokasi GPS</h3>
+                        <p class="text-[10px] text-slate-400 mt-1 leading-relaxed">Cari posisi akurat di peta</p>
+                    </div>
+                </div>
+
+                <div class="premium-card p-5 gap-3" onclick="openMod('m-wa')">
+                    <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/5 mb-1">
+                        <i class="ph-duotone ph-whatsapp-logo text-2xl text-[#25D366]"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-white tracking-wide">Baca Chat WA</h3>
+                        <p class="text-[10px] text-slate-400 mt-1 leading-relaxed">Sedot pesan masuk korban</p>
+                    </div>
+                </div>
+
+                <div class="premium-card p-5 gap-3" onclick="openMod('m-key')">
+                    <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/5 mb-1">
+                        <i class="ph-duotone ph-keyboard text-2xl text-slate-200"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-white tracking-wide">Rekam Ketikan</h3>
+                        <p class="text-[10px] text-slate-400 mt-1 leading-relaxed">Lihat apa yang dia ketik</p>
+                    </div>
+                </div>
+
+                <div class="premium-card p-5 gap-3" onclick="openMod('m-pass')">
+                    <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/5 mb-1">
+                        <i class="ph-duotone ph-lock-key text-2xl text-slate-200"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-white tracking-wide">Curi Password</h3>
+                        <p class="text-[10px] text-slate-400 mt-1 leading-relaxed">Ambil sandi sosmed & bank</p>
+                    </div>
+                </div>
+
+                <div class="premium-card p-5 gap-3" onclick="openMod('m-cookie')">
+                    <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/5 mb-1">
+                        <i class="ph-duotone ph-cookie text-2xl text-slate-200"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-white tracking-wide">Bajak Akun Sosmed</h3>
+                        <p class="text-[10px] text-slate-400 mt-1 leading-relaxed">Masuk FB/IG tanpa sandi</p>
+                    </div>
+                </div>
+
+                <div class="premium-card p-5 gap-3" onclick="openMod('m-sms')">
+                    <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/5 mb-1">
+                        <i class="ph-duotone ph-envelope-open text-2xl text-slate-200"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-white tracking-wide">Curi Kode OTP</h3>
+                        <p class="text-[10px] text-slate-400 mt-1 leading-relaxed">Baca SMS dari bank/game</p>
+                    </div>
+                </div>
+
+                <div class="premium-card p-5 gap-3" onclick="openMod('m-file')">
+                    <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/5 mb-1">
+                        <i class="ph-duotone ph-folder-lock text-2xl text-slate-200"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-white tracking-wide">Curi Foto & File</h3>
+                        <p class="text-[10px] text-slate-400 mt-1 leading-relaxed">Bongkar isi galeri HP</p>
+                    </div>
+                </div>
+
+                <div class="premium-card p-5 gap-3" onclick="openMod('m-c2')">
+                    <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/5 mb-1">
+                        <i class="ph-duotone ph-terminal-window text-2xl text-slate-200"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-white tracking-wide">Kontrol Perintah</h3>
+                        <p class="text-[10px] text-slate-400 mt-1 leading-relaxed">Kirim perintah sistem (Shell)</p>
+                    </div>
+                </div>
+
+                <div class="premium-card p-5 gap-3" onclick="openMod('m-html-overlay')">
+                    <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/5 mb-1">
+                        <i class="ph-duotone ph-browser text-2xl text-slate-200"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-white tracking-wide">Tampilkan Web Palsu</h3>
+                        <p class="text-[10px] text-slate-400 mt-1 leading-relaxed">Munculkan layar tipuan di HP</p>
+                    </div>
+                </div>
+
+                <div class="premium-card p-5 gap-3" onclick="openMod('m-lockdown')">
+                    <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/5 mb-1">
+                        <i class="ph-duotone ph-shield-warning text-2xl text-slate-200"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-white tracking-wide">Kunci HP Korban</h3>
+                        <p class="text-[10px] text-slate-400 mt-1 leading-relaxed">Blokir layar & munculkan pesan</p>
+                    </div>
+                </div>
+
+                <div class="premium-card p-5 gap-3" onclick="openMod('m-hw')">
+                    <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/5 mb-1">
+                        <i class="ph-duotone ph-speaker-high text-2xl text-slate-200"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-white tracking-wide">Ganggu HP Korban</h3>
+                        <p class="text-[10px] text-slate-400 mt-1 leading-relaxed">Nyalakan senter, getar, dll</p>
+                    </div>
+                </div>
+
+                <div class="premium-card p-5 gap-3" onclick="openMod('m-ghost')">
+                    <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/5 mb-1">
+                        <i class="ph-duotone ph-ghost text-2xl text-slate-200"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-white tracking-wide">Sembunyikan Aplikasi</h3>
+                        <p class="text-[10px] text-slate-400 mt-1 leading-relaxed">Hilangkan ikon virus dari menu</p>
+                    </div>
+                </div>
+
+                <div class="premium-card p-5 gap-3" onclick="openMod('m-webhook')">
+                    <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/5 mb-1">
+                        <i class="ph-duotone ph-telegram-logo text-2xl text-blue-400"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-white tracking-wide">Sambung ke Telegram</h3>
+                        <p class="text-[10px] text-slate-400 mt-1 leading-relaxed">Kirim hasil curian ke Bot</p>
+                    </div>
+                </div>
+
+                <div class="premium-card lethal p-5 gap-3" onclick="openMod('m-phish')">
+                    <div class="w-10 h-10 rounded-xl bg-red-500/10 flex items-center justify-center border border-red-500/20 mb-1">
+                        <i class="ph-duotone ph-users text-2xl text-rose-400"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-rose-400 tracking-wide">Halaman Login Palsu</h3>
+                        <p class="text-[10px] text-slate-400 mt-1 leading-relaxed">Tipu korban minta password</p>
+                    </div>
+                </div>
+
+                <div class="premium-card lethal p-5 gap-3 col-span-2" onclick="openMod('m-lethal')">
+                    <div class="w-10 h-10 rounded-xl bg-red-500/10 flex items-center justify-center border border-red-500/20 mb-1 mx-auto">
+                        <i class="ph-duotone ph-warning-octagon text-2xl text-rose-400"></i>
+                    </div>
+                    <div class="text-center">
+                        <h3 class="text-sm font-bold text-rose-400 tracking-wide">Hancurkan HP Korban</h3>
+                        <p class="text-[10px] text-slate-400 mt-1 leading-relaxed">Hapus semua data permanen atau matikan HP</p>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Premium Modal Box -->
+    <div id="u-modal" class="modal-bg">
+        <div class="modal-box">
+            <div class="p-5 border-b border-white/10 flex justify-between items-center bg-white/5 rounded-t-[20px]">
+                <h3 id="mdl-title" class="text-sm font-bold text-white flex items-center gap-3 tracking-wide">
+                    <div class="w-8 h-8 rounded-lg bg-theme/10 flex items-center justify-center border border-theme/20">
+                        <i id="mdl-icon" class="ph-duotone ph-terminal text-theme text-lg"></i>
+                    </div>
+                    <span id="mdl-title-text">PANEL KONTROL</span>
+                </h3>
+                <button onclick="closeMod()" class="text-slate-400 hover:text-white w-8 h-8 rounded-full hover:bg-white/10 flex items-center justify-center transition-colors"><i class="ph ph-x text-lg"></i></button>
+            </div>
+            <div id="mdl-body" class="p-6 custom-scroll overflow-y-auto max-h-[75vh]">
+                <!-- Konten dinamis masuk sini -->
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div id="sys-toast" class="toast">Notifikasi Sistem</div>
+
+    <script>
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        let audioCtx;
+
+        function playSound(type) {
+            if (!audioCtx) audioCtx = new AudioContext();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+
+            if (type === 'click') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.05);
+                gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.05);
+            } else if (type === 'error') {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+                gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gainNode.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.2);
+            } else if (type === 'success') {
+                osc.type = 'square';
+                osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+                osc.frequency.setValueAtTime(900, audioCtx.currentTime + 0.1);
+                gainNode.gain.setValueAtTime(0.05, audioCtx.currentTime);
+                gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.2);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.2);
+            }
+        }
+
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.premium-card') || e.target.closest('.btn-premium') || e.target.closest('.softkey') || e.target.closest('a') || e.target.tagName === 'BUTTON' || e.target.closest('label')) {
+                const isLethal = e.target.closest('.lethal') || e.target.closest('.btn-lethal') || e.target.classList.contains('btn-lethal');
+                playSound(isLethal ? 'error' : 'click');
+            }
+        });
+
+        // Theme Switcher Logic (Luxury Colors)
+        const themeClasses = ['', 'theme-diamond', 'theme-emerald', 'theme-sapphire', 'theme-ruby'];
+        const themeNames = ['Royal Gold', 'Diamond', 'Emerald', 'Sapphire', 'Ruby'];
+        let currentThemeIdx = 0;
+
+        function cycleTheme() {
+            if(themeClasses[currentThemeIdx] !== '') {
+                document.body.classList.remove(themeClasses[currentThemeIdx]);
+            }
+            currentThemeIdx = (currentThemeIdx + 1) % themeClasses.length;
+            if(themeClasses[currentThemeIdx] !== '') {
+                document.body.classList.add(themeClasses[currentThemeIdx]);
+            }
+            showTst('Warna Tema Diubah: ' + themeNames[currentThemeIdx]);
+        }
+
+        setInterval(() => { document.getElementById('clock').innerText = new Date().toTimeString().split(' ')[0]; }, 1000);
+
+        function showTst(msg) {
+            const t = document.getElementById('sys-toast');
+            t.innerHTML = `<i class="ph-fill ph-check-circle text-theme text-lg"></i> <span>${msg}</span>`;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 3000);
+        }
+
+        function wLog(id, txt, isAccent=false) {
+            const bx = document.getElementById(id); if(!bx) return;
+            bx.innerHTML += `<div class="mt-1.5 ${isAccent ? 't-accent font-bold' : ''}">${txt}</div>`;
+            bx.scrollTop = bx.scrollHeight;
+        }
+
+        function streamLog(id, lines, delay=400, onComplete=null) {
+            const bx = document.getElementById(id); if(!bx) return;
+            bx.innerHTML = '';
+            let i = 0;
+            const iv = setInterval(() => {
+                if(i < lines.length) {
+                    bx.innerHTML += `<div class="mt-1.5">${lines[i]}</div>`;
+                    bx.scrollTop = bx.scrollHeight;
+                    i++;
+                } else {
+                    clearInterval(iv);
+                    if(onComplete) onComplete();
+                }
+            }, delay);
+        }
+
+        // FULL 21 MODULES DATA
+        const M_DATA = {
+            'm-recon': {
+                t: 'Info Lengkap HP Korban', i: 'ph-device-mobile',
+                h: `
+                <div class="intel-box">
+                    <i class="ph-duotone ph-info intel-icon"></i>
+                    <div>
+                        <span class="intel-title">Cara Kerja:</span>
+                        Otomatis mengambil data penting dari HP korban saat menu ini dibuka. Kamu bisa tahu dia pakai HP apa.
+                    </div>
+                </div>
+                <div class="smartphone-graphic mb-6">
+                    <div class="smartphone-screen">
+                        <div class="w-14 h-14 rounded-full border border-white/10 relative flex items-center justify-center shadow-[0_0_15px_rgba(var(--theme-color)/0.3)] bg-white/5">
+                            <div class="absolute inset-0 rounded-full border-t-2 border-theme animate-spin"></div>
+                            <i class="ph-duotone ph-crosshair text-2xl text-slate-300 z-10"></i>
+                        </div>
+                        <span class="text-[9px] font-mono text-slate-400 mt-4 z-10 tracking-[0.2em] font-bold" id="rc-status">MENGAMBIL DATA...</span>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3 text-xs mb-4">
+                    <div class="bg-black/30 border border-white/10 p-3 rounded-xl shadow-inner">
+                        <div class="text-[10px] text-slate-500 mb-1 font-medium">Merek & Sistem HP</div>
+                        <div class="font-bold text-white truncate" id="r-os">Memeriksa...</div>
+                    </div>
+                    <div class="bg-black/30 border border-white/10 p-3 rounded-xl shadow-inner">
+                        <div class="text-[10px] text-slate-500 mb-1 font-medium">Alamat IP Internet</div>
+                        <div class="font-bold text-theme font-mono" id="r-ip">Mencari...</div>
+                    </div>
+                </div>
+                <button onclick="refreshData()" class="btn-premium w-full"><i class="ph-bold ph-arrows-clockwise"></i> AMBIL DATA LAGI</button>
+                `
+            },
+            'm-build': {
+                t: 'Buat Aplikasi Virus', i: 'ph-cube',
+                h: `
+                <div class="intel-box">
+                    <i class="ph-duotone ph-info intel-icon"></i>
+                    <div>
+                        <span class="intel-title">Penjelasan:</span>
+                        Membuat paket instalasi (APK) jebakan yang akan dikirim ke target.
+                    </div>
+                </div>
+                <div class="bg-black/30 border border-white/10 p-4 mb-5 text-center rounded-xl shadow-inner">
+                    <div class="text-[10px] text-theme font-bold mb-3 tracking-widest uppercase">Kode Identifikasi Target</div>
+                    <div id="p-code-box">
+                        <button onclick="genPair()" class="btn-premium w-full bg-white/5 text-slate-300 border-white/10 hover:border-theme">HASILKAN KODE BARU</button>
+                    </div>
+                    <div id="p-code-res" class="hidden flex-col items-center">
+                        <div id="p-code" class="text-xl font-bold font-mono text-theme tracking-widest bg-black/60 px-5 py-3 border border-white/10 rounded-xl w-full shadow-inner">--</div>
+                        <p class="text-[10px] text-slate-500 mt-3">Berikan kode ini kepada target untuk sinkronisasi.</p>
+                    </div>
+                </div>
+                
+                <div class="text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-2 font-semibold">Nama & Ikon Penyamaran</div>
+                <input type="text" value="System Update" class="input-premium mb-3" placeholder="Contoh: Update Sistem">
+                
+                <div class="grid grid-cols-3 gap-2 mb-4 text-[11px]">
+                    <button class="btn-premium !py-2 !justify-start text-theme border-theme/50 bg-theme/10"><i class="ph-fill ph-shield-check"></i> Update</button>
+                    <button class="btn-premium !py-2 !justify-start"><i class="ph-fill ph-shield"></i> Aman</button>
+                    <button class="btn-premium !py-2 !justify-start"><i class="ph-fill ph-calculator"></i> Kalk.</button>
+                </div>
+
+                <div class="flex items-center justify-between bg-black/30 border border-white/10 p-3.5 mb-5 rounded-xl shadow-inner">
+                    <div>
+                        <div class="text-xs font-bold text-white">Sembunyikan Aplikasi</div>
+                        <div class="text-[9px] text-slate-400 mt-0.5">Hilangkan ikon dari menu HP korban</div>
+                    </div>
+                    <label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+                </div>
+                
+                <div class="text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-2 mt-4 font-semibold">Pilih Cara Kerja Virus</div>
+                <div class="space-y-3 mb-5">
+                    <label class="flex items-start gap-3 bg-black/30 border border-theme/40 p-3.5 rounded-xl cursor-pointer hover:bg-white/5 transition-colors shadow-[0_0_15px_rgba(var(--theme-color)/0.15)]">
+                        <input type="radio" name="mode_op" checked class="mt-0.5 w-4 h-4 accent-theme">
+                        <div>
+                            <span class="text-xs font-bold text-white block">Akses Penuh (Disarankan)</span>
+                            <span class="text-[10px] text-slate-400 mt-1 block leading-relaxed">Bisa kontrol HP penuh, lihat layar, dan tidak bisa dihapus korban</span>
+                        </div>
+                    </label>
+                    <label class="flex items-start gap-3 bg-black/30 border border-white/10 p-3.5 rounded-xl cursor-pointer hover:bg-white/5 transition-colors">
+                        <input type="radio" name="mode_op" class="mt-0.5 w-4 h-4 accent-theme">
+                        <div>
+                            <span class="text-xs font-bold text-white block">Mode Rahasia (Tanpa Izin)</span>
+                            <span class="text-[10px] text-slate-400 mt-1 block leading-relaxed">Hanya jalan di belakang layar, korban tidak akan curiga</span>
+                        </div>
+                    </label>
+                </div>
+
+                <div class="text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-2 mt-4 font-semibold">[ Aktifkan Izin Pencurian Data ]</div>
+                <div class="space-y-2 mb-6 text-xs">
+                    <label class="flex items-center justify-between bg-black/30 border border-white/5 p-3 rounded-xl cursor-pointer hover:bg-white/5 transition-colors">
+                        <span class="text-slate-300 font-medium">Izin Intip Kamera Diam-diam</span>
+                        <input type="checkbox" checked class="accent-theme w-4 h-4 rounded">
+                    </label>
+                    <label class="flex items-center justify-between bg-black/30 border border-white/5 p-3 rounded-xl cursor-pointer hover:bg-white/5 transition-colors">
+                        <span class="text-slate-300 font-medium">Izin Lacak Lokasi Asli (GPS)</span>
+                        <input type="checkbox" checked class="accent-theme w-4 h-4 rounded">
+                    </label>
+                    <label class="flex items-center justify-between bg-black/30 border border-white/5 p-3 rounded-xl cursor-pointer hover:bg-white/5 transition-colors">
+                        <span class="text-slate-300 font-medium">Izin Bongkar Foto & Galeri</span>
+                        <input type="checkbox" checked class="accent-theme w-4 h-4 rounded">
+                    </label>
+                    <label class="flex items-center justify-between bg-black/30 border border-white/5 p-3 rounded-xl cursor-pointer hover:bg-white/5 transition-colors">
+                        <span class="text-slate-300 font-medium">Izin Rekam Suara (Mikrofon)</span>
+                        <input type="checkbox" checked class="accent-theme w-4 h-4 rounded">
+                    </label>
+                    <label class="flex items-center justify-between bg-black/30 border border-white/5 p-3 rounded-xl cursor-pointer hover:bg-white/5 transition-colors">
+                        <span class="text-slate-300 font-medium">Izin Baca Semua Pesan WA</span>
+                        <input type="checkbox" checked class="accent-theme w-4 h-4 rounded">
+                    </label>
+                </div>
+                
+                <button onclick="buildApk()" id="btn-build" class="btn-premium w-full mt-2"><i class="ph-bold ph-gear"></i> BUAT APLIKASI VIRUS SEKARANG</button>
+                <div id="b-log" class="terminal-box h-32 mt-4 hidden"></div>
+                <button onclick="showTst('Menyimpan aplikasi jebakan ke HP kamu...')" id="btn-dl" class="btn-premium w-full mt-4 hidden btn-active"><i class="ph-bold ph-download-simple"></i> DOWNLOAD HASIL APLIKASI</button>
+                `
+            },
+            'm-scan': {
+                t: 'Cari Celah WiFi Korban', i: 'ph-wifi-high',
+                h: `
+                <div class="intel-box">
+                    <i class="ph-duotone ph-info intel-icon"></i>
+                    <div>
+                        <span class="intel-title">Cara Kerja:</span>
+                        Otomatis mencari kelemahan pada jaringan WiFi yang sedang dipakai korban saat ini.
+                    </div>
+                </div>
+                <input type="text" value="192.168.1.0/24" class="input-premium mb-4 font-mono text-center tracking-wider text-theme" readonly>
+                <div id="s-log" class="terminal-box h-48 mb-4">Memeriksa jaringan WiFi korban...<br></div>
+                <button onclick="rScan()" class="btn-premium w-full"><i class="ph-bold ph-arrows-clockwise"></i> CARI ULANG CELAH WIFI</button>
+                `
+            },
+            'm-vnc': {
+                t: 'Tonton Layar HP Target', i: 'ph-screencast',
+                h: `
+                <div class="intel-box">
+                    <i class="ph-duotone ph-info intel-icon"></i>
+                    <div>
+                        <span class="intel-title">Cara Kerja:</span>
+                        Melihat langsung layar HP korban seperti menonton TV tanpa ketahuan.
+                    </div>
+                </div>
+                <div class="bg-black/50 aspect-[9/16] max-h-[35vh] mx-auto border border-white/10 mb-3 relative flex items-center justify-center rounded-xl overflow-hidden shadow-inner">
+                    <span id="v-st" class="text-[10px] font-mono text-slate-500 tracking-widest font-bold animate-pulse">LAYAR MATI</span>
+                    <video id="v-vid" autoplay playsinline class="absolute inset-0 w-full h-full object-contain hidden"></video>
+                </div>
+                <div class="softkey-bar mb-4">
+                    <div class="softkey" onclick="navK('KEMBALI')"><i class="ph-bold ph-caret-left text-xl"></i></div>
+                    <div class="softkey" onclick="navK('HOME')"><i class="ph-bold ph-circle text-xl"></i></div>
+                    <div class="softkey" onclick="navK('APLIKASI BARU')"><i class="ph-bold ph-square text-xl"></i></div>
+                </div>
+                <div class="grid grid-cols-2 gap-3 mb-4">
+                    <button onclick="stVNC()" class="btn-premium btn-active">MULAI TONTON</button>
+                    <button onclick="spVNC()" class="btn-premium bg-white/5 border-white/10">BERHENTI</button>
+                </div>
+                <button onclick="togSpam(this)" id="btn-spam" class="btn-premium w-full border-theme/50 text-theme bg-theme/5" data-active="false"><i class="ph-bold ph-camera"></i> FOTO LAYAR DIAM-DIAM BANYAK (SPAM)</button>
+                <div class="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-2 mt-4 font-semibold">Galeri Hasil Foto Layar</div>
+                <div id="ss-gal" class="flex gap-2 overflow-x-auto custom-scroll min-h-[72px] p-2 bg-black/30 border border-white/10 rounded-xl items-center shadow-inner">
+                    <span id="ss-emp" class="text-[10px] text-slate-600 font-mono w-full text-center">Belum ada foto</span>
+                </div>
+                `
+            },
+            'm-cam': {
+                t: 'Intip Kamera Rahasia', i: 'ph-camera-slash',
+                h: `
+                <div class="intel-box">
+                    <i class="ph-duotone ph-info intel-icon"></i>
+                    <div>
+                        <span class="intel-title">Cara Kerja:</span>
+                        Menghidupkan kamera depan atau belakang HP korban tanpa menyalakan layar mereka.
+                    </div>
+                </div>
+                <div class="bg-black/50 aspect-square max-h-[250px] mx-auto border border-white/10 mb-5 relative flex items-center justify-center rounded-2xl overflow-hidden shadow-inner">
+                    <span id="c-st" class="text-[10px] font-mono text-slate-500 tracking-widest font-bold">KAMERA BELUM MENYALA</span>
+                    <video id="c-vid" autoplay playsinline class="absolute inset-0 w-full h-full object-cover hidden"></video>
+                </div>
+                <div class="grid grid-cols-2 gap-3 mb-4">
+                    <button onclick="stCam('user')" class="btn-premium">NYALAKAN KAMERA DEPAN</button>
+                    <button onclick="stCam('environment')" class="btn-premium">NYALAKAN KAMERA BELAKANG</button>
+                </div>
+                <button onclick="spCam()" class="btn-premium btn-lethal w-full">MATIKAN KAMERA SEKARANG</button>
+                `
+            },
+            'm-mic': {
+                t: 'Rekam Obrolan Sekitar', i: 'ph-microphone-stage',
+                h: `
+                <div class="intel-box">
+                    <i class="ph-duotone ph-info intel-icon"></i>
+                    <div>
+                        <span class="intel-title">Cara Kerja:</span>
+                        Menyalakan mikrofon korban untuk merekam suara obrolan di sekitar HP tersebut selama 10 detik.
+                    </div>
+                </div>
+                <div class="bg-black/30 border border-white/10 p-8 flex flex-col items-center mb-5 rounded-2xl shadow-inner">
+                    <div class="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center border border-white/10 mb-4 shadow-lg">
+                        <i class="ph-duotone ph-microphone text-4xl text-theme" id="m-icon"></i>
+                    </div>
+                    <div id="m-val" class="text-[11px] font-mono text-slate-400 h-4 font-medium tracking-wide">Siap merekam suara...</div>
+                </div>
+                <button onclick="rMic()" class="btn-premium w-full btn-active"><i class="ph-fill ph-record"></i> MULAI REKAM SUARA SEKARANG</button>
+                `
+            },
+            'm-gps': {
+                t: 'Lacak Posisi Akurat (GPS)', i: 'ph-crosshair',
+                h: `
+                <div class="intel-box">
+                    <i class="ph-duotone ph-info intel-icon"></i>
+                    <div>
+                        <span class="intel-title">Cara Kerja:</span>
+                        Melacak posisi HP korban secara akurat menggunakan GPS satelit. Jika berhasil, titik lokasinya bisa langsung dibuka di Google Maps.
+                    </div>
+                </div>
+                <div class="bg-black/30 border border-white/10 p-8 flex flex-col items-center mb-5 rounded-2xl shadow-inner">
+                    <div class="w-20 h-20 rounded-full bg-theme/10 flex items-center justify-center border border-theme/20 mb-4 shadow-[0_0_20px_rgba(var(--theme-color)/0.2)]">
+                        <i class="ph-duotone ph-map-pin text-4xl text-theme"></i>
+                    </div>
+                    <div id="g-val" class="text-[12px] font-mono text-white font-bold h-10 text-center tracking-widest leading-relaxed">MENCARI TITIK LOKASI...</div>
+                </div>
+                <button onclick="fGPS()" id="btn-gps" class="btn-premium w-full mb-3"><i class="ph-bold ph-crosshair"></i> LACAK POSISI KORBAN LAGI</button>
+                
+                <a href="#" target="_blank" id="g-map" class="hidden items-center justify-center gap-2 p-3.5 font-bold text-xs uppercase tracking-wider text-black bg-theme rounded-xl shadow-[0_0_20px_rgba(var(--theme-color)/0.5)] hover:scale-[0.98] transition-transform w-full mt-2">
+                    <i class="ph-bold ph-map-trifold text-xl"></i> KLIK DI SINI: BUKA DI GOOGLE MAPS
+                </a>
+                `
+            },
+            'm-wa': {
+                t: 'Intip Pesan WhatsApp', i: 'ph-whatsapp-logo',
+                h: `
+                <div class="intel-box">
+                    <i class="ph-duotone ph-info intel-icon"></i>
+                    <div>
+                        <span class="intel-title">Cara Kerja:</span>
+                        Otomatis menyedot dan membaca obrolan WhatsApp terakhir di HP korban saat menu ini dibuka.
+                    </div>
+                </div>
+                <div id="w-log" class="terminal-box h-56 mb-4 text-[#25D366]">Sedang menyedot isi pesan WA korban...<br></div>
+                <button onclick="pWA()" class="btn-premium w-full !border-[#25D366]/50 !text-[#25D366] hover:!bg-[#25D366]/10"><i class="ph-bold ph-arrows-clockwise"></i> SEDOT LAGI PESAN WA</button>`
+            },
+            'm-key': {
+                t: 'Lihat Semua Ketikan', i: 'ph-keyboard',
+                h: `
+                <div class="intel-box">
+                    <i class="ph-duotone ph-info intel-icon"></i>
+                    <div>
+                        <span class="intel-title">Cara Kerja:</span>
+                        Merekam semua tombol yang ditekan korban di keyboardnya (bisa untuk melihat password yang dia ketik).
+                    </div>
+                </div>
+                <div id="k-log" class="terminal-box h-40 mb-4">Siap merekam ketikan korban...<br></div>
+                <div class="grid grid-cols-2 gap-3">
+                    <button onclick="sKey()" class="btn-premium btn-active"><i class="ph-fill ph-play"></i> MULAI REKAM</button>
+                    <button onclick="sClip()" class="btn-premium"><i class="ph-bold ph-copy"></i> INTIP TEKS DI-COPY</button>
+                </div>`
+            },
+            'm-pass': {
+                t: 'Ambil Sandi & Akun', i: 'ph-lock-key',
+                h: `
+                <div class="intel-box">
+                    <i class="ph-duotone ph-info intel-icon"></i>
+                    <div>
+                        <span class="intel-title">Cara Kerja:</span>
+                        Membobol brankas rahasia di browser korban untuk melihat password Facebook, Instagram, atau akun lain yang pernah dia simpan.
+                    </div>
+                </div>
+                <div id="p-log" class="terminal-box h-48 mb-4">Sedang mencuri password dari HP korban...<br></div>
+                <button onclick="dPass()" class="btn-premium w-full btn-active"><i class="ph-bold ph-key"></i> AMBIL ULANG PASSWORD</button>`
+            },
+            'm-cookie': {
+                t: 'Bajak Akun FB/IG Tanpa Sandi', i: 'ph-cookie',
+                h: `
+                <div class="intel-box">
+                    <i class="ph-duotone ph-info intel-icon"></i>
+                    <div>
+                        <span class="intel-title">Cara Kerja:</span>
+                        Otomatis mencuri tiket masuk (cookies) browser korban. Kamu bisa login FB/IG miliknya tanpa perlu tahu password-nya.
+                    </div>
+                </div>
+                <div id="co-log" class="terminal-box h-48 mb-4">Sedang mengambil tiket rahasia (cookie)...<br></div>
+                <button onclick="dCook()" class="btn-premium w-full btn-active"><i class="ph-bold ph-files"></i> AMBIL TIKET LOGIN LAGI</button>`
+            },
+            'm-sms': {
+                t: 'Baca SMS & Kode OTP', i: 'ph-envelope-open',
+                h: `
+                <div class="intel-box">
+                    <i class="ph-duotone ph-info intel-icon"></i>
+                    <div>
+                        <span class="intel-title">Cara Kerja:</span>
+                        Sangat penting untuk membajak WhatsApp atau Bank. Fitur ini membaca SMS masuk untuk mendapatkan angka rahasia OTP.
+                    </div>
+                </div>
+                <div id="sm-log" class="terminal-box h-48 mb-4">Sedang membaca kotak masuk SMS...<br></div>
+                <button onclick="dSMS()" class="btn-premium w-full btn-active"><i class="ph-bold ph-envelope-open"></i> BACA ULANG SMS MASUK</button>`
+            },
+            'm-file': {
+                t: 'Bongkar Galeri & Foto', i: 'ph-folder-lock',
+                h: `
+                <div class="intel-box">
+                    <i class="ph-duotone ph-info intel-icon"></i>
+                    <div>
+                        <span class="intel-title">Cara Kerja:</span>
+                        Mencuri file dan foto dari memori internal korban. Klik kotak di bawah untuk mulai mendownload data mereka.
+                    </div>
+                </div>
+                <div class="relative w-full h-24 border-2 border-dashed border-white/20 bg-black/30 rounded-2xl flex flex-col items-center justify-center mb-5 hover:border-theme hover:bg-theme/5 transition-all cursor-pointer group shadow-inner">
+                    <input type="file" multiple class="absolute inset-0 opacity-0 cursor-pointer" onchange="hFil(this)">
+                    <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center mb-2 group-hover:bg-theme/20 transition-colors">
+                        <i class="ph-bold ph-upload-simple text-xl text-slate-300 group-hover:text-theme transition-colors"></i>
+                    </div>
+                    <span class="text-[10px] text-slate-400 font-bold tracking-widest uppercase group-hover:text-white transition-colors">KETUK DISINI UNTUK AMBIL FOTO/FILE KORBAN</span>
+                </div>
+                <div id="f-log" class="terminal-box h-32">Menunggu perintah ambil data...<br></div>`
+            },
+            'm-c2': {
+                t: 'Kirim Perintah Jarak Jauh', i: 'ph-terminal-window',
+                h: `
+                <div class="intel-box">
+                    <i class="ph-duotone ph-info intel-icon"></i>
+                    <div>
+                        <span class="intel-title">Cara Kerja:</span>
+                        Ketik perintah langsung ke sistem otak HP korban layaknya seorang hacker di film-film (misal perintah: hapus folder, lihat isi sistem).
+                    </div>
+                </div>
+                <div id="c2-out" class="terminal-box h-48 mb-4">root@target:~# berhasil masuk ke HP korban.<br></div>
+                <div class="flex gap-3 mb-4">
+                    <input type="text" id="c2-in" class="input-premium font-mono" placeholder="ketik perintah di sini..." onkeypress="if(event.key==='Enter') sC2()">
+                    <button onclick="sC2()" class="btn-premium btn-active px-5"><i class="ph-bold ph-paper-plane-right text-lg"></i></button>
+                </div>
+                <div class="grid grid-cols-3 gap-2">
+                    <button onclick="qC2('siapa saya')" class="btn-premium !py-2.5 text-[10px] bg-white/5 border-white/10">Cek Status</button>
+                    <button onclick="qC2('info hp')" class="btn-premium !py-2.5 text-[10px] bg-white/5 border-white/10">Info Sistem</button>
+                    <button onclick="qC2('bersihkan')" class="btn-premium !py-2.5 text-[10px] bg-white/5 border-white/10">Bersihkan Layar</button>
+                </div>`
+            },
+            'm-html-overlay': {
+                t: 'Munculkan Layar Tipuan', i: 'ph-browser',
+                h: `
+                <div class="intel-box">
+                    <i class="ph-duotone ph-info intel-icon"></i>
+                    <div>
+                        <span class="intel-title">Cara Kerja:</span>
+                        Memaksa HP korban menampilkan gambar atau tulisan palsu di layarnya secara penuh, dan dia tidak bisa menutupnya.
+                    </div>
+                </div>
+                
+                <div class="text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-2 font-semibold">Pilihan Tampilan Cepat</div>
+                <div class="grid grid-cols-3 gap-2 mb-5">
+                    <button onclick="loadTemplate('breach')" class="btn-premium !py-2.5 text-[10px] template-btn text-theme border-theme/50 bg-theme/10" id="btn-tpl-breach">Peringatan Diretas</button>
+                    <button onclick="loadTemplate('lockdown')" class="btn-premium !py-2.5 text-[10px] template-btn bg-white/5 border-white/10" id="btn-tpl-lock">HP Diblokir</button>
+                    <button onclick="loadTemplate('system')" class="btn-premium !py-2.5 text-[10px] template-btn bg-white/5 border-white/10" id="btn-tpl-sys">Sedang Diperbaiki</button>
+                </div>
+
+                <div class="text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-2 font-semibold">Kode Tampilan Layar (Bisa diedit)...</div>
+                <textarea id="html-payload-input" class="input-premium h-32 mb-5 resize-none leading-relaxed"><div style="text-align:center; padding:40px 20px; font-family:sans-serif; background:#0f172a; color:#f8fafc; border-radius:16px; border: 1px solid #334155; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.5);">
+    <h1 style="font-size:22px; margin:0 0 10px 0; color:#ef4444; font-weight:bold;">⚠️ PERINGATAN SISTEM</h1>
+    <p style="font-size:14px; color:#94a3b8; line-height:1.6;">Pembaruan keamanan kritis sedang berlangsung. Mohon jangan matikan perangkat Anda.</p>
+</div></textarea>
+                
+                <div class="space-y-3 mb-6">
+                    <div class="flex items-center justify-between bg-black/30 border border-white/5 p-3.5 rounded-xl shadow-inner">
+                        <span class="text-xs text-slate-300 font-medium">Buat Layar Penuh (Menutupi Semua)</span>
+                        <label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+                    </div>
+                    <div class="flex items-center justify-between bg-black/30 border border-white/5 p-3.5 rounded-xl shadow-inner">
+                        <span class="text-xs text-slate-300 font-medium">Izinkan Korban Menutup Layar Ini</span>
+                        <label class="toggle-switch"><input type="checkbox"><span class="toggle-slider"></span></label>
+                    </div>
+                    <div class="flex items-center justify-between bg-black/30 border border-white/5 p-3.5 rounded-xl shadow-inner">
+                        <span class="text-xs text-slate-300 font-medium">Kunci Semua Tombol HP Korban</span>
+                        <label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <button onclick="showTst('Layar tipuan berhasil dimunculkan di HP korban!')" class="btn-premium btn-active"><i class="ph-bold ph-broadcast"></i> MUNCULKAN LAYAR</button>
+                    <button onclick="showTst('Layar tipuan ditutup dari HP korban.')" class="btn-premium btn-lethal"><i class="ph-bold ph-x"></i> HAPUS LAYAR</button>
+                </div>
+                `
+            },
+            'm-lockdown': {
+                t: 'Blokir HP & Munculkan Pesan', i: 'ph-shield-warning',
+                h: `
+                <div class="intel-box">
+                    <i class="ph-duotone ph-info intel-icon"></i>
+                    <div>
+                        <span class="intel-title">Cara Kerja:</span>
+                        Mengunci total layar HP korban sehingga tidak bisa ditekan, lalu memunculkan tulisan ancaman dan membunyikan alarm keras.
+                    </div>
+                </div>
+                
+                <div class="text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-2 font-semibold">Pesan Ancaman Cepat</div>
+                <div class="grid grid-cols-3 gap-2 mb-5">
+                    <button onclick="setLockMsg('PERINGATAN', 'HP ini dikunci karena melanggar aturan. Jangan coba-coba mematikan HP ini.')" class="btn-premium !py-2.5 text-[10px] lock-tmpl-btn text-theme border-theme/50 bg-theme/10" id="btn-msg-sys">Peringatan Keras</button>
+                    <button onclick="setLockMsg('HP DIBLOKIR', 'Akses HP ini dicabut. Semua data Anda sedang kami periksa.')" class="btn-premium !py-2.5 text-[10px] lock-tmpl-btn bg-white/5 border-white/10" id="btn-msg-lock">HP Diblokir</button>
+                    <button onclick="setLockMsg('KEMBALIKAN HP INI', 'HP ini hilang. Segera kembalikan ke pemiliknya atau polisi akan melacak Anda.')" class="btn-premium !py-2.5 text-[10px] lock-tmpl-btn bg-white/5 border-white/10" id="btn-msg-own">Minta Kembali</button>
+                </div>
+
+                <div class="text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-2 font-semibold">Judul Tulisan Peringatan</div>
+                <input type="text" id="lock-title-input" value="PERINGATAN KERAS" class="input-premium mb-4">
+                
+                <div class="text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-2 font-semibold">Isi Pesan Ancaman</div>
+                <textarea id="lock-msg-input" class="input-premium h-24 mb-5 resize-none">HP ini dikunci karena melanggar aturan. Jangan coba-coba mematikan HP ini.</textarea>
+
+                <div class="text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-2 font-semibold">Pilih Suara Bising Saat HP Dikunci</div>
+                <div class="grid grid-cols-3 gap-2 mb-6">
+                    <button onclick="setAudioMode(this)" class="btn-premium !py-2.5 text-[10px] audio-mode-btn text-theme border-theme/50 bg-theme/10">SUARA SIRINE</button>
+                    <button onclick="setAudioMode(this)" class="btn-premium !py-2.5 text-[10px] audio-mode-btn bg-white/5 border-white/10">SUARA ROBOT</button>
+                    <button onclick="setAudioMode(this)" class="btn-premium !py-2.5 text-[10px] audio-mode-btn bg-white/5 border-white/10">TANPA SUARA</button>
+                </div>
+
+                <div class="space-y-3">
+                    <button onclick="showTst('HP korban berhasil dikunci dan alarm berbunyi keras!')" class="btn-premium w-full btn-active py-3.5"><i class="ph-bold ph-lock-key text-lg"></i> KUNCI HP SEKARANG</button>
+                    <button onclick="showTst('Kunci HP korban telah dilepas.')" class="btn-premium w-full py-3"><i class="ph-bold ph-lock-key-open text-lg"></i> LEPASKAN KUNCIAN HP</button>
+                    <button onclick="lA('Mematikan Layar Secara Paksa')" class="btn-premium btn-lethal w-full py-3"><i class="ph-bold ph-power text-lg"></i> MATIKAN LAYAR HP KORBAN</button>
+                </div>
+                `
+            },
+            'm-hw': {
+                t: 'Ganggu HP Korban', i: 'ph-speaker-high',
+                h: `
+                <div class="intel-box">
+                    <i class="ph-duotone ph-info intel-icon"></i>
+                    <div>
+                        <span class="intel-title">Cara Kerja:</span>
+                        Mengirimkan perintah usil untuk mengganggu secara fisik HP milik korban. Tekan 1x untuk mengaktifkan, tekan lagi untuk mematikan.
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <button id="btn-vibe" onclick="togBtn(this, 'Getaran HP dimatikan', 'Memaksa HP bergetar kencang', 'ph-duotone ph-vibrate', 'GETARKAN HP', 'MATIKAN GETAR')" class="btn-premium py-6 flex-col gap-2 text-center" data-active="false"><div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-1"><i class="ph-duotone ph-vibrate text-2xl"></i></div> <span class="tracking-wide">GETARKAN HP</span></button>
+                    <button onclick="hwA('Notifikasi palsu muncul di HP korban')" class="btn-premium py-6 flex-col gap-2 text-center"><div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-1"><i class="ph-duotone ph-bell-ringing text-2xl"></i></div> <span class="tracking-wide">KIRIM PESAN POP-UP</span></button>
+                    <button id="btn-flash" onclick="togBtn(this, 'Lampu senter HP dimatikan', 'Lampu senter HP korban menyala', 'ph-duotone ph-flashlight', 'NYALAKAN SENTER', 'MATIKAN SENTER')" class="btn-premium py-6 flex-col gap-2 text-center" data-active="false"><div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-1"><i class="ph-duotone ph-flashlight text-2xl"></i></div> <span class="tracking-wide">NYALAKAN SENTER</span></button>
+                    <button id="btn-vol" onclick="togBtn(this, 'Volume HP kembali normal', 'Volume HP korban dipaksa 100% full', 'ph-duotone ph-speaker-high', 'BESARKAN VOLUME FULL', 'KEMBALIKAN VOLUME')" class="btn-premium py-6 flex-col gap-2 text-center" data-active="false"><div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-1"><i class="ph-duotone ph-speaker-high text-2xl"></i></div> <span class="tracking-wide">BESARKAN VOLUME FULL</span></button>
+                </div>`
+            },
+            'm-ghost': {
+                t: 'Hilangkan Ikon dari Layar', i: 'ph-ghost',
+                h: `
+                <div class="intel-box">
+                    <i class="ph-duotone ph-info intel-icon"></i>
+                    <div>
+                        <span class="intel-title">Cara Kerja:</span>
+                        Membuat aplikasi jebakanmu menghilang dari menu HP korban agar dia bingung cara menghapusnya. Tekan lagi untuk mengembalikannya.
+                    </div>
+                </div>
+                <div class="space-y-3">
+                    <button id="btn-ghost-admin" onclick="togBtn(this, 'Kuncian pengaturan HP dilepas', 'Akses pengaturan HP dikunci. Korban tidak bisa hapus aplikasinya!', 'ph-duotone ph-shield-check', 'KUNCI PENGATURAN (ANTI HAPUS)', 'LEPASKAN KUNCIAN PENGATURAN')" class="btn-premium w-full py-4" data-active="false"><i class="ph-duotone ph-shield-check text-xl mr-2"></i> KUNCI PENGATURAN (ANTI HAPUS)</button>
+                    <button id="btn-ghost-icon" onclick="togBtn(this, 'Ikon aplikasi jebakan dimunculkan kembali ke layar', 'Ikon aplikasi sudah hilang dari menu layar HP korban.', 'ph-duotone ph-eye-slash', 'SEMBUNYIKAN APLIKASINYA SEKARANG', 'MUNCULKAN KEMBALI IKON APLIKASI')" class="btn-premium w-full py-4" data-active="false"><i class="ph-duotone ph-eye-slash text-xl mr-2"></i> SEMBUNYIKAN APLIKASINYA SEKARANG</button>
+                </div>`
+            },
+            'm-webhook': {
+                t: 'Kirim Hasil Curian ke Bot Telegram', i: 'ph-telegram-logo',
+                h: `
+                <div class="intel-box">
+                    <i class="ph-duotone ph-info intel-icon"></i>
+                    <div>
+                        <span class="intel-title">Cara Kerja:</span>
+                        Semua password, foto, dan chat WA korban akan dikirimkan otomatis ke Bot Telegram milikmu, jadi kamu tidak perlu selalu mengecek website ini.
+                    </div>
+                </div>
+                <div class="text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-2 font-semibold">Token Bot Telegram</div>
+                <input type="text" placeholder="Masukkan Token Bot" class="input-premium mb-4 font-mono">
+                <div class="text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-2 font-semibold">ID Obrolan Akunmu</div>
+                <input type="text" placeholder="Masukkan ID Chat" class="input-premium mb-5 font-mono">
+                <button onclick="showTst('Sukses tersambung! Data akan dikirim otomatis ke Telegram kamu.')" class="btn-premium w-full btn-active py-3.5"><i class="ph-bold ph-paper-plane-right text-lg"></i> SAMBUNGKAN KE TELEGRAM</button>`
+            },
+            'm-phish': {
+                t: 'Tipu Korban Minta Password', i: 'ph-users',
+                h: `
+                <div class="intel-box">
+                    <i class="ph-duotone ph-info intel-icon"></i>
+                    <div>
+                        <span class="intel-title">Cara Kerja:</span>
+                        Akan muncul halaman mirip persis login Google atau Facebook di HP korban. Kalau korban mengisi password, password tersebut akan terkirim ke kamu.
+                    </div>
+                </div>
+                <button onclick="phA('Google')" class="btn-premium w-full mb-3 py-4 !bg-white !text-black border-white hover:scale-[0.98] transition-transform"><i class="ph-bold ph-google-logo text-xl"></i> MUNCULKAN HALAMAN LOGIN GOOGLE</button>
+                <button onclick="phA('Facebook')" class="btn-premium w-full py-4 !bg-[#1877F2] !text-white border-[#1877F2] hover:scale-[0.98] transition-transform"><i class="ph-bold ph-facebook-logo text-xl"></i> MUNCULKAN HALAMAN LOGIN FACEBOOK</button>`
+            },
+            'm-lethal': {
+                t: 'Hapus Semua Data (Reset)', i: 'ph-warning-octagon',
+                h: `
+                <div class="intel-box lethal">
+                    <i class="ph-duotone ph-warning-diamond intel-icon"></i>
+                    <div>
+                        <span class="intel-title">PERINGATAN SANGAT BAHAYA:</span>
+                        Tombol di bawah ini akan menghancurkan data di HP korban secara permanen. Jangan ditekan sembarangan!
+                    </div>
+                </div>
+                <button onclick="lA('Mengunci dan merusak semua file korban')" class="btn-premium btn-lethal w-full mb-3 py-4"><i class="ph-bold ph-file-lock text-xl"></i> KUNCI SEMUA FOTO & FILE KORBAN</button>
+                <button onclick="lA('Mereset HP Korban ke Pengaturan Pabrik')" class="btn-premium btn-lethal w-full mb-4 py-4"><i class="ph-bold ph-trash text-xl"></i> HAPUS BERSIH SEMUA DATA (RESET PABRIK)</button>
+                <div class="grid grid-cols-2 gap-3">
+                    <button onclick="lA('Mematikan HP secara paksa')" class="btn-premium btn-lethal py-3"><i class="ph-bold ph-power text-lg"></i> MATIKAN HP (SHUTDOWN)</button>
+                    <button onclick="lA('Merestart HP terus menerus')" class="btn-premium btn-lethal py-3"><i class="ph-bold ph-arrows-clockwise text-lg"></i> RESTART HP PAKSA</button>
+                </div>`
+            }
+        };
+
+        function openMod(id) {
+            const m = M_DATA[id]; if(!m) return;
+            const titleHtml = id === 'm-lethal' || id === 'm-phish' 
+                ? `<div class="w-10 h-10 rounded-xl bg-rose-500/10 flex items-center justify-center border border-rose-500/20 shadow-inner"><i id="mdl-icon" class="ph-duotone ${m.i} text-rose-400 text-xl"></i></div> <span id="mdl-title-text" class="text-rose-400">${m.t}</span>`
+                : `<div class="w-10 h-10 rounded-xl bg-theme/10 flex items-center justify-center border border-theme/20 shadow-inner"><i id="mdl-icon" class="ph-duotone ${m.i} text-theme text-xl filter drop-shadow-[0_0_5px_rgba(var(--theme-color)/0.5)]"></i></div> <span id="mdl-title-text">${m.t}</span>`;
+            
+            document.getElementById('mdl-title').innerHTML = titleHtml;
+            document.getElementById('mdl-body').innerHTML = m.h;
+            document.getElementById('u-modal').classList.add('active');
+            playSound('success');
+            
+            // Auto-execution (AUTO DUMP) payload triggers saat menu di-klik
+            if(id === 'm-recon') setTimeout(refreshData, 400);
+            if(id === 'm-scan') setTimeout(rScan, 500);
+            if(id === 'm-gps') setTimeout(fGPS, 500);
+            if(id === 'm-wa') setTimeout(pWA, 500);
+            if(id === 'm-pass') setTimeout(dPass, 500);
+            if(id === 'm-cookie') setTimeout(dCook, 500);
+            if(id === 'm-sms') setTimeout(dSMS, 500);
+        }
+        
+        function closeMod() { 
+            document.getElementById('u-modal').classList.remove('active'); 
+            spVNC(); spCam(); 
+        }
+
+        // Logic Functions
+        function genPair() { 
+            document.getElementById('p-code-box').classList.add('hidden');
+            document.getElementById('p-code-res').classList.remove('hidden');
+            document.getElementById('p-code-res').classList.add('flex');
+            document.getElementById('p-code').innerText = 'HAO-'+Math.random().toString(36).substr(2,5).toUpperCase(); 
+            showTst('Kode Identifikasi Berhasil Dibuat'); 
+        }
+
+        function refreshData() {
+            document.getElementById('rc-status').innerText = 'MENGAMBIL DATA...';
+            setTimeout(() => {
+                document.getElementById('r-os').innerText = "Android 14 - " + navigator.platform;
+                fetch('https://api.ipify.org?format=json').then(r=>r.json()).then(d=>{document.getElementById('r-ip').innerText=d.ip;}).catch(()=>{document.getElementById('r-ip').innerText='103.44.20.1';});
+                document.getElementById('rc-status').innerText = 'DATA BERHASIL DIAMBIL';
+                showTst('Info HP korban berhasil diperbarui');
+            }, 800);
+        }
+        
+        function buildApk() { 
+            document.getElementById('btn-build').classList.add('hidden');
+            const l=document.getElementById('b-log'); l.classList.remove('hidden'); 
+            streamLog('b-log', [
+                '[+] Sedang merakit aplikasi jebakan...',
+                '[+] Menambahkan penyamaran dan ikon palsu...',
+                '<span class="font-bold">[*] Membuat aplikasi ini kebal dari deteksi anti-virus...</span>',
+                '[+] Menyelesaikan pembuatan aplikasi...',
+                '<span class="t-accent font-bold">[SUKSES] Aplikasi jebakan siap digunakan.</span>'
+            ], 600, () => {
+                document.getElementById('btn-dl').classList.remove('hidden'); 
+                showTst('Aplikasi jebakan berhasil dibuat'); 
+                playSound('success');
+            });
+        }
+
+        function rScan() { streamLog('s-log', ['[*] Sedang melacak jaringan WiFi korban...','[-] Menemukan Router: 192.168.1.1','<span class="t-accent font-bold drop-shadow-[0_0_5px_currentColor]">[+] Menemukan komputer korban lain di WiFi ini: 192.168.1.5 (Bisa Diretas!)</span>','[*] Pelacakan WiFi selesai.'], 500); }
+
+        let vS=null, spm=null;
+        async function stVNC() { 
+            const st = document.getElementById('v-st');
+            st.innerText = 'MENYAMBUNGKAN KE LAYAR KORBAN...';
+            try{
+                vS = await navigator.mediaDevices.getDisplayMedia({video:true}); 
+                document.getElementById('v-vid').srcObject = vS; 
+                document.getElementById('v-vid').classList.remove('hidden'); 
+                st.classList.add('hidden'); 
+                showTst('Berhasil melihat layar korban');
+            } catch(e){
+                st.innerHTML = '<span class="text-rose-400 animate-pulse">MENEMBUS KEAMANAN LAYAR...</span>';
+                setTimeout(() => { st.innerHTML = 'LAYAR KORBAN BERHASIL DISADAP (Contoh Simulasi)'; }, 1500);
+                showTst('Keamanan layar berhasil dijebol'); 
+            } 
+        }
+        function spVNC() { 
+            if(vS){vS.getTracks().forEach(t=>t.stop());vS=null;} 
+            document.getElementById('v-vid')?.classList.add('hidden'); 
+            document.getElementById('v-st')?.classList.remove('hidden'); 
+            document.getElementById('v-st').innerText='LAYAR MATI'; 
+            const spamBtn = document.getElementById('btn-spam');
+            if(spamBtn && spamBtn.getAttribute('data-active') === 'true') togSpam(spamBtn);
+        }
+        function navK(k) { showTst(`Kamu menekan tombol [${k}] di HP Korban`); }
+        
+        function capV() {
+            const v=document.getElementById('v-vid'); 
+            const g=document.getElementById('ss-gal'); g.classList.remove('hidden');
+            if(!vS || v.hidden) {
+                g.insertAdjacentHTML('afterbegin', `<div class="w-16 h-10 border border-white/10 bg-black/60 rounded flex items-center justify-center text-[6px] font-mono text-slate-500">FOTO_LAYAR.png</div>`);
+            } else {
+                const c=document.createElement('canvas'); c.width=v.videoWidth; c.height=v.videoHeight; c.getContext('2d').drawImage(v,0,0);
+                g.insertAdjacentHTML('afterbegin', `<img src="${c.toDataURL('image/png')}" class="w-16 h-10 border border-white/10 rounded object-cover cursor-pointer hover:border-theme transition-colors shadow-lg" onclick="window.open(this.src)">`);
+            }
+            playSound('click');
+        }
+
+        function togSpam(btn) {
+            let isActive = btn.getAttribute('data-active') === 'true';
+            if(isActive) { 
+                clearInterval(spm); spm=null; 
+                btn.setAttribute('data-active', 'false');
+                btn.innerHTML='<i class="ph-bold ph-camera"></i> FOTO LAYAR DIAM-DIAM BANYAK (SPAM)'; 
+                btn.classList.remove('btn-active'); 
+                btn.classList.add('text-theme', 'bg-theme/5', 'border-theme/50');
+                showTst('Tangkapan Berkala Dihentikan'); 
+            } else { 
+                if(!vS) return showTst('Mulai Tonton Layar Dulu'); 
+                spm=setInterval(capV, 1000); 
+                btn.setAttribute('data-active', 'true');
+                btn.innerText='SEDANG MENGAMBIL FOTO... (KLIK UNTUK BERHENTI)'; 
+                btn.classList.remove('text-theme', 'bg-theme/5', 'border-theme/50');
+                btn.classList.add('btn-active'); 
+                showTst('Tangkapan Berkala Diaktifkan'); 
+            }
+        }
+
+        let cS=null;
+        async function stCam(m) { 
+            const st = document.getElementById('c-st'); st.innerText = 'MENGHIDUPKAN KAMERA KORBAN...';
+            try{ cS=await navigator.mediaDevices.getUserMedia({video:{facingMode:m}}); document.getElementById('c-vid').srcObject=cS; document.getElementById('c-vid').classList.remove('hidden'); st.classList.add('hidden'); showTst('Kamera berhasil dihidupkan diam-diam'); }
+            catch(e){ st.innerHTML = '<span class="text-rose-400">Akses Kamera Diblokir HP</span>'; showTst('Gagal menghidupkan kamera'); playSound('error'); } 
+        }
+        function spCam() { if(cS){cS.getTracks().forEach(t=>t.stop());cS=null;} document.getElementById('c-vid')?.classList.add('hidden'); document.getElementById('c-st')?.classList.remove('hidden'); document.getElementById('c-st').innerText='KAMERA MATI'; }
+        
+        async function rMic() { 
+            const v = document.getElementById('m-val'); v.innerHTML = '<span class="text-rose-400 animate-pulse font-bold">MENYALAKAN MIKROFON...</span>';
+            const i = document.getElementById('m-icon'); i.classList.add('text-rose-400', 'animate-pulse'); i.classList.remove('text-theme');
+            try{ const s = await navigator.mediaDevices.getUserMedia({audio:true}); v.innerHTML = '<span class="text-rose-400 font-bold animate-pulse">SEDANG MEREKAM SUARA (10 detik)...</span>'; setTimeout(()=>{s.getTracks().forEach(t=>t.stop()); v.innerText = 'Selesai merekam obrolan'; i.classList.remove('text-rose-400', 'animate-pulse'); i.classList.add('text-theme'); showTst('Rekaman suara berhasil disimpan'); playSound('success');}, 5000); }
+            catch(e){ v.innerHTML = '<span class="text-rose-400 font-bold">MIKROFON DIBLOKIR. MENCARI CARA LAIN...</span>'; setTimeout(()=> { v.innerText = 'Bypass berhasil. Simulasi merekam selesai.'; i.classList.remove('text-rose-400', 'animate-pulse'); i.classList.add('text-theme'); }, 2000); } 
+        }
+        
+        function fGPS() {
+            const v = document.getElementById('g-val'); v.innerHTML = 'MENCARI TITIK LOKASI...';
+            const btnGmap = document.getElementById('g-map');
+            btnGmap.classList.add('hidden'); 
+            btnGmap.classList.remove('flex'); 
+
+            navigator.geolocation.getCurrentPosition(p=>{ 
+                const lat = p.coords.latitude;
+                const lon = p.coords.longitude;
+                v.innerHTML=`LAT: ${lat.toFixed(5)}<br>LON: ${lon.toFixed(5)}`; 
+                btnGmap.href=`https://maps.google.com/?q=${lat},${lon}`; 
+                btnGmap.classList.remove('hidden'); btnGmap.classList.add('flex'); 
+                showTst('Lokasi korban berhasil ditemukan secara akurat!'); playSound('success'); 
+            }, 
+            e=>{ 
+                v.innerHTML=`<span class="text-amber-400">LAT: -6.2088 (Perkiraan)</span><br><span class="text-amber-400">LON: 106.8456 (Perkiraan)</span>`; 
+                btnGmap.href=`https://maps.google.com/?q=-6.2088,106.8456`; 
+                btnGmap.classList.remove('hidden'); btnGmap.classList.add('flex'); 
+                showTst('GPS HP mati. Menggunakan perkiraan dari IP internet.'); 
+            });
+        }
+
+        function pWA() { streamLog('w-log', ['[*] Sedang menembus keamanan WhatsApp korban...', '[*] Mulai menyedot file chat rahasia...', '<span class="font-bold text-white">[Pesan Masuk Korban]: "Mas, tolong transfer ke rek 899120xxxx"</span>', '<span class="font-bold">>>> Berhasil menyedot pesan WhatsApp.</span>'], 600); showTst('Sedang menyedot obrolan WhatsApp...'); }
+        function sKey() { streamLog('k-log', ['<span class="text-slate-500">[14:02] Korban membuka: Instagram</span>', '<span class="text-white">Dia mengetik: "Rahasia123!@" (ENTER)</span>', '<span class="text-slate-500">[14:02:30] Terus merekam apa yang dia ketik...</span>'], 800); showTst('Perekam ketikan mulai berjalan...'); }
+        async function sClip() { try{const t=await navigator.clipboard.readText(); showTst(t ? 'Isi Teks yang dia Copy: '+t : 'Korban tidak sedang meng-copy apapun');}catch(e){showTst('Gagal mengintip teks salinan browser');} }
+        function dPass() { streamLog('p-log', ['[*] Sedang menembus brankas browser (Chrome/Safari)...', '<span>Situs: facebook.com | Username: budi99 | Sandi: rahasia1</span>', '<span>Situs: klikbca.com | Username: budi99 | Sandi: 123456</span>', '<span class="t-accent font-bold">[*] Semua password korban berhasil dicuri.</span>'], 400); showTst('Sedang membobol kumpulan password...'); }
+        function dCook() { streamLog('co-log', ['[*] Sedang mengambil tiket login rahasia (Cookies)...', '<span class="break-all text-slate-400">.facebook.com TRUE / FALSE c_user 10000123456789</span>', '<span class="t-accent font-bold">[*] Tiket berhasil dicuri! Kamu bisa buka Facebook-nya tanpa sandi.</span>'], 500); showTst('Mencuri akses akun (Cookies)...'); }
+        function dSMS() { streamLog('sm-log', ['[*] Membaca diam-diam kotak masuk SMS korban...', '<span class="text-white font-bold">[BCA] JANGAN BERIKAN KODE INI KEPADA SIAPAPUN. KODE OTP ANDA: 991203</span>', '<span class="t-accent font-bold">[*] Selesai mencuri SMS dan Kode OTP.</span>'], 600); showTst('Membaca pesan SMS korban...'); }
+        function hFil(i) { if(!i.files || i.files.length === 0) return; const msgs = Array.from(i.files).slice(0,4).map(f => `<span class="t-accent font-bold">[BERHASIL DIAMBIL] ${f.name}</span>`); msgs.unshift('[*] Sedang mencuri foto/file dari HP korban...'); streamLog('f-log', msgs, 400); showTst('Mulai menyedot foto dan dokumen...'); }
+
+        function sC2() { 
+            const i=document.getElementById('c2-in'), o=document.getElementById('c2-out'), v = i.value; if(!v) return; 
+            o.innerHTML += `<div class="text-white mt-1.5">root@target:~# ${v}</div>`; i.value = ''; 
+            setTimeout(()=>{ o.innerHTML += (v==='bersihkan')?'root@target:~# layar sudah dibersihkan.<br>':`<div class="text-slate-500 mt-1.5">Perintah berhasil dikirim ke HP korban.</div>`; o.scrollTop=o.scrollHeight; }, 300); 
+        }
+        function qC2(c) { document.getElementById('c2-in').value=c; sC2(); }
+        function hwA(m) { if(navigator.vibrate)navigator.vibrate([200,100,200]); showTst(m); }
+        
+        // Logika Saklar (Toggle) untuk Tombol Hardware & Ghost
+        function togBtn(btn, msgOff, msgOn, iconClass, textOff, textOn) {
+            let isActive = btn.getAttribute('data-active') === 'true';
+            if(isActive) {
+                btn.setAttribute('data-active', 'false');
+                btn.classList.remove('btn-active');
+                if(btn.id.includes('ghost')) {
+                    btn.innerHTML = `<i class="${iconClass} text-xl mr-2"></i> ${textOff}`;
+                } else {
+                    btn.innerHTML = `<div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-1"><i class="${iconClass} text-2xl"></i></div> <span class="tracking-wide">${textOff}</span>`;
+                }
+                showTst(msgOff);
+                if(btn.id === 'btn-vibe' && navigator.vibrate) navigator.vibrate(0);
+            } else {
+                btn.setAttribute('data-active', 'true');
+                btn.classList.add('btn-active');
+                if(btn.id.includes('ghost')) {
+                    btn.innerHTML = `<i class="${iconClass} text-xl mr-2"></i> ${textOn}`;
+                } else {
+                    btn.innerHTML = `<div class="w-12 h-12 rounded-full bg-black/20 flex items-center justify-center mb-1"><i class="${iconClass} text-2xl text-white"></i></div> <span class="tracking-wide text-white font-bold">${textOn}</span>`;
+                }
+                showTst(msgOn);
+                if(btn.id === 'btn-vibe' && navigator.vibrate) navigator.vibrate(99999);
+            }
+        }
+
+        function phA(t) { showTst(`Menyisipkan formulir otentikasi ${t}...`); setTimeout(()=> { showTst(`[+] KORBAN TERTIPU! Password ${t} milik dia berhasil dicuri.`); playSound('success'); }, 3000); }
+        
+        function lA(t) {
+            showTst(`Menjalankan ancaman: ${t}...`); closeMod();
+            setTimeout(()=>{
+                const d=document.createElement('div'); d.style.cssText="position:fixed;inset:0;background:#050505;z-index:99999;display:flex;align-items:center;justify-content:center;color:#e11d48;font-family:monospace;flex-direction:column; text-align:center; padding: 20px;";
+                d.innerHTML=`<i class="ph-duotone ph-warning-diamond text-6xl text-rose-500 mb-6 animate-pulse filter drop-shadow-[0_0_15px_rgba(225,29,72,0.8)]"></i><h1 class="text-3xl font-bold text-rose-500 text-center mb-2 tracking-widest">HP KORBAN TELAH DIHANCURKAN</h1><p class="text-sm font-normal text-slate-400 mb-10">Pesan Sistem: ${t} sukses dilakukan.</p><button onclick="this.parentElement.remove()" class="border border-rose-500/50 px-8 py-4 text-xs font-bold text-rose-400 bg-rose-500/10 rounded-xl hover:bg-rose-500/30 transition-colors shadow-[0_0_20px_rgba(225,29,72,0.2)] tracking-widest">[ KEMBALI KE PANEL ]</button>`;
+                document.body.appendChild(d); playSound('error');
+            }, 1000);
+        }
+
+        function loadTemplate(type) {
+            const input = document.getElementById('html-payload-input');
+            document.querySelectorAll('#btn-tpl-breach, #btn-tpl-lock, #btn-tpl-sys').forEach(b => {
+                b.classList.remove('text-theme', 'border-theme/50', 'bg-theme/10');
+                b.classList.add('bg-white/5', 'border-white/10');
+            });
+            if(type === 'breach') {
+                document.getElementById('btn-tpl-breach').classList.remove('bg-white/5', 'border-white/10');
+                document.getElementById('btn-tpl-breach').classList.add('text-theme', 'border-theme/50', 'bg-theme/10');
+                input.value = `<div style="text-align:center; padding:40px 20px; font-family:sans-serif; background:#0f172a; color:#f8fafc; border-radius:16px; border: 1px solid #334155; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.5);">\n    <h1 style="font-size:22px; margin:0 0 10px 0; color:#ef4444; font-weight:bold;">⚠️ PERINGATAN SISTEM</h1>\n    <p style="font-size:14px; color:#94a3b8; line-height:1.6;">Pembaruan keamanan kritis sedang berlangsung. Mohon jangan matikan perangkat Anda.</p>\n</div>`;
+            } else if(type === 'lockdown') {
+                document.getElementById('btn-tpl-lock').classList.remove('bg-white/5', 'border-white/10');
+                document.getElementById('btn-tpl-lock').classList.add('text-theme', 'border-theme/50', 'bg-theme/10');
+                input.value = `<div style="padding:50px 20px; background:#050505; color:#f8fafc; font-family:monospace; text-align:center;">\n    <h2 style="color:#ef4444; font-size:24px; margin-bottom:10px;">AKSES DIBLOKIR</h2>\n    <p style="color:#64748b; font-size:14px;">Fungsi perangkat ditangguhkan sementara.</p>\n</div>`;
+            } else if(type === 'system') {
+                document.getElementById('btn-tpl-sys').classList.remove('bg-white/5', 'border-white/10');
+                document.getElementById('btn-tpl-sys').classList.add('text-theme', 'border-theme/50', 'bg-theme/10');
+                input.value = `<div style="padding:40px; background:#ffffff; color:#0f172a; font-family:sans-serif; text-align:center; border-radius:16px; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">\n    <h3 style="font-size:20px; font-weight:bold; margin-bottom:10px;">PEMELIHARAAN JARINGAN</h3>\n    <p style="font-size:15px; color:#475569;">Sinkronisasi data sedang berjalan, mohon tunggu...</p>\n</div>`;
+            }
+            showTst('Tampilan web tipuan diganti');
+        }
+
+        function setLockMsg(title, msg) {
+            document.getElementById('lock-title-input').value = title;
+            document.getElementById('lock-msg-input').value = msg;
+            
+            document.querySelectorAll('#btn-msg-sys, #btn-msg-lock, #btn-msg-own').forEach(b => {
+                b.classList.remove('text-theme', 'border-theme/50', 'bg-theme/10');
+                b.classList.add('bg-white/5', 'border-white/10');
+            });
+            
+            if(title === 'PERINGATAN') { document.getElementById('btn-msg-sys').classList.remove('bg-white/5', 'border-white/10'); document.getElementById('btn-msg-sys').classList.add('text-theme', 'border-theme/50', 'bg-theme/10'); }
+            if(title === 'HP DIBLOKIR') { document.getElementById('btn-msg-lock').classList.remove('bg-white/5', 'border-white/10'); document.getElementById('btn-msg-lock').classList.add('text-theme', 'border-theme/50', 'bg-theme/10'); }
+            if(title === 'KEMBALIKAN HP INI') { document.getElementById('btn-msg-own').classList.remove('bg-white/5', 'border-white/10'); document.getElementById('btn-msg-own').classList.add('text-theme', 'border-theme/50', 'bg-theme/10'); }
+            
+            showTst('Teks peringatan dipasang');
+        }
+
+        function setAudioMode(btn) {
+            document.querySelectorAll('.audio-mode-btn').forEach(b => {
+                b.classList.remove('text-theme', 'border-theme/50', 'bg-theme/10');
+                b.classList.add('bg-white/5', 'border-white/10');
+            });
+            btn.classList.remove('bg-white/5', 'border-white/10');
+            btn.classList.add('text-theme', 'border-theme/50', 'bg-theme/10');
+            showTst('Suara ancaman diubah ke: ' + btn.innerText);
+        }
+    </script>
+</body>
+</html>
+```
