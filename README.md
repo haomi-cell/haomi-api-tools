@@ -1,37 +1,48 @@
-<img src="https://capsule-render.vercel.app/api?type=cylinder&color=0:0d1117,50:2e2410,100:0d1117&height=150&section=header&text=haomi-api-tools&fontSize=40&fontColor=e6edf3&fontAlignY=40&desc=payment%20gateway%20engine%20%E2%80%94%20QRIS%2C%20zero-fee%20settlement&descSize=13&descAlignY=60" width="100%"/>
-
 <div align="center">
-<img src="https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=node.js&logoColor=white"/>
-<img src="https://img.shields.io/badge/QRIS-payment-FFD700?style=flat-square&logo=qrcode&logoColor=black"/>
-<img src="https://img.shields.io/badge/fee-0%25-brightgreen?style=flat-square"/>
-<img src="https://img.shields.io/badge/deploy-Vercel-black?style=flat-square&logo=vercel&logoColor=white"/>
+
+<img src="https://capsule-render.vercel.app/api?type=soft&color=0:000000,50:0f2f0f,100:000000&height=180&section=header&text=haomi-api-tools&fontSize=40&fontColor=00ff41&fontAlignY=42&desc=%5B%20payment%20gateway%20%2F%2F%20zero-fee%20protocol%20%5D&descSize=13&descAlignY=62&animation=fadeIn" width="100%"/>
+
 </div>
 
-## Features
+```bash
+root@xMSHaomi:~# cat /projects/pay/README
 
-- **Invoice engine** — unique reference per transaction (`HAO` + 10 hex)
-- **QRIS direct settlement** — funds land in your own e-wallet, no intermediary cut
-- **Collision-free amounts** — +1 suffix per active invoice
-- **Real-time status endpoint** — check any invoice on demand
-- **Webhook matching** — auto-confirm paid invoices
-- **Vouchers** — create / validate / apply discounts
-- **WhatsApp notification** — instant confirmation on success
-
-## API
-
-```
-POST /pay            → create invoice + QRIS
-GET  /status/:id     → payment status
-GET  /qris/:id.png   → QR image
-POST /webhook/notif  → payment confirmation
-GET  /health         → uptime check
+  >> STATUS    : OPERATIONAL
+  >> FEE       : 0.0%  — dana langsung ke DANA merchant
+  >> QRIS      : statis asli + nominal unik (+1) anti-bentrok
+  >> INVOICE   : HAO + 10 hex uppercase
 ```
 
-## Deploy
+## ⚙ Modules
 
 ```bash
-vercel --prod
+root@xMSHaomi:~# tree api/
+
+  └── haomi-pay.js
+      ├── [1] invoice engine     → auto-generate HAO+10hex
+      ├── [2] qris builder       → QRIS pribadi, dana masuk sendiri
+      ├── [3] status checker     → GET /status/:id real-time
+      ├── [4] webhook matcher    → auto PAID saat bayaran masuk
+      ├── [5] voucher system     → buat / cek / potongan
+      └── [6] WA notifier        → kirim konfirmasi otomatis
+```
+
+## 🔌 Endpoints
+
+```bash
+POST /pay             →  { "amount": 5000 }
+GET  /status/:id      →  invoice status
+GET  /qris/:id.png    →  QR image
+POST /webhook/notif   →  payment confirmation
+GET  /health          →  uptime
+```
+
+## 🚀 Deploy
+
+```bash
+root@xMSHaomi:~# vercel --prod
+  ▲ deploying... done [2s]
 ```
 
 ---
-<div align="center"><sub>xMSHaomi</sub></div>
+<div align="center"><sub>root@xMSHaomi — payment protocol v2</sub></div>
