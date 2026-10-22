@@ -1,169 +1,40 @@
-
-<!DOCTYPE html>
-<html lang="id">
+<!doctype html>
+<html lang="id" class="dark">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>HAO OMNI V52 - Supabase</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0; padding: 24px 16px;
-      background: #08080a; color: #f4f4f5;
-      font-family: system-ui, sans-serif;
-    }
-    main {
-      max-width: 600px; margin: 30px auto;
-      padding: 24px; background: #15151b;
-      border: 1px solid #303039; border-radius: 20px;
-    }
-    h1 { color: #39d6a0; }
-    label { display: block; margin-top: 18px; }
-    input {
-      display: block; width: 100%; margin-top: 8px;
-      padding: 13px; border-radius: 10px;
-      border: 1px solid #454550;
-      background: #09090c; color: white;
-    }
-    button {
-      width: 100%; padding: 14px; margin-top: 16px;
-      border: 0; border-radius: 10px;
-      background: #39d6a0; color: #07110d;
-      font-weight: bold; font-size: 16px;
-    }
-    #result {
-      white-space: pre-wrap; overflow-wrap: anywhere;
-      margin-top: 20px; padding: 14px;
-      background: #09090c; border-radius: 10px;
-    }
-    small { color: #aaa; }
-  </style>
-</head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><meta name="theme-color" content="#08080a">
+<title>HAO OMNI V52 — Supabase Connect Demo</title>
+<style>
+:root{--bg:#08080a;--panel:#121216;--panel2:#19191f;--line:#303039;--muted:#a1a1ad;--text:#f4f4f5;--mint:#39d6a0;--gold:#d4af37;--warn:#ffbf47;--radius:22px}*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:radial-gradient(circle at 5% 10%,#18231c 0,transparent 32%),var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif}button,input,select{font:inherit}button{cursor:pointer;color:inherit}.top{position:sticky;top:0;z-index:5;background:#08080aeb;backdrop-filter:blur(18px);border-bottom:1px solid #26262d;padding:20px 20px 17px;display:flex;justify-content:space-between;align-items:center;gap:12px}.brand{font-weight:900;letter-spacing:4px;font-size:22px}.brand b{color:var(--mint)}.sub{font-size:11px;letter-spacing:2px;color:var(--muted);font-weight:800;margin-top:7px}.theme,.btn,.tab{border:1px solid #383840;background:linear-gradient(145deg,#202026,#151519);border-radius:16px;padding:13px 16px;font-weight:800}.wrap{max-width:1000px;margin:auto;padding:20px 18px 44px}.hero,.panel,.stat,.tile,.notice{background:linear-gradient(145deg,#17171c,#0f0f13);border:1px solid var(--line);border-radius:var(--radius)}.hero{padding:22px;margin-bottom:18px}.eyebrow{font-size:12px;letter-spacing:3px;color:var(--mint);font-weight:900}.hero h1{font-size:28px;line-height:1.18;margin:10px 0}.muted{color:var(--muted);line-height:1.6}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:20px}.stat{padding:14px;border-radius:18px;background:#09090b}.stat small{display:block;color:var(--muted);font-weight:700;margin-bottom:8px}.stat strong{font-size:15px}.tabs{display:flex;gap:9px;overflow:auto;padding:4px 0 18px;scrollbar-width:none}.tab{white-space:nowrap;min-width:max-content}.tab.active{border-color:var(--mint);color:var(--mint);background:#102018}.view{display:none}.view.active{display:block}.panel{padding:22px;margin-bottom:18px}.panel h2{font-size:22px;margin:6px 0 12px}.panel h3{margin:0 0 10px}.field{display:block;margin:16px 0}.field span{display:block;font-weight:800;margin-bottom:8px}.field input,.field select{width:100%;background:#08080a;border:1px solid #3a3a43;border-radius:15px;color:var(--text);padding:15px;outline:none}.field input:focus,.field select:focus{border-color:var(--mint)}.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.primary{background:linear-gradient(110deg,var(--mint),#a7a52e);color:#07110c;border:0}.full{width:100%}.note{background:#24190b;color:var(--warn);padding:14px;border-radius:16px;line-height:1.5;font-size:13px;font-weight:700;margin-top:15px}.output{background:#070709;border:1px solid #292930;border-radius:15px;padding:14px;color:#c7cbd4;margin-top:14px;min-height:50px;line-height:1.5;overflow-wrap:anywhere}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.tile{padding:20px 16px;min-height:145px}.tile .ico{font-size:22px;color:var(--mint);margin-bottom:18px}.tile h3{font-size:16px;margin:0 0 8px}.tile p{font-size:13px;color:var(--muted);line-height:1.5;margin:0}.sectionline{display:flex;align-items:center;justify-content:space-between;margin:24px 2px 14px;font-weight:900;letter-spacing:1.5px}.pill{border:1px solid #474333;border-radius:99px;color:var(--mint);background:#181a12;padding:6px 11px;font-size:12px;letter-spacing:0}.owner-mark{display:inline-flex;align-items:center;gap:7px;color:var(--gold);font-size:11px;letter-spacing:2px;font-weight:900}.small{font-size:12px;color:var(--muted)}.hidden{display:none!important}.companion{max-width:500px;margin:30px auto}.companion-logo{height:68px;width:68px;border-radius:22px;display:grid;place-items:center;background:#10251b;border:1px solid #2a7459;color:var(--mint);font-size:30px;margin:8px auto 18px}.center{text-align:center}.login-icon{font-size:30px;color:var(--gold);margin-bottom:12px}.footer{text-align:center;color:#777783;font-size:11px;padding:20px 0}.light{--bg:#e9e9ed;--panel:#fff;--panel2:#f5f5f7;--line:#d1d1d8;--muted:#5d5d69;--text:#17171b;background:var(--bg);color:var(--text)}.light .top{background:#ffffffeb}.light .hero,.light .panel,.light .tile{background:#fff}.light .stat,.light .field input,.light .field select,.light .output{background:#f7f7f9;color:#17171b}.light .tab,.light .btn,.light .theme{background:#f7f7f9;color:#17171b}
+@media(min-width:700px){.wrap{padding-top:26px}.hero h1{font-size:34px}.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.top{padding-left:max(24px,calc((100vw - 1000px)/2));padding-right:max(24px,calc((100vw - 1000px)/2))}}@media(max-width:430px){.brand{font-size:19px;letter-spacing:3px}.top{padding:18px 16px}.wrap{padding:16px 14px 34px}.hero,.panel{padding:18px}.stats{gap:7px}.stat{padding:11px}.stat strong{font-size:13px}.actions{gap:8px}.btn,.tab{padding:12px 13px}.grid{gap:10px}.tile{padding:17px 14px}}
+</style></head>
 <body>
-<main>
-  <h1>HAO OMNI V52</h1>
-  <p>Supabase Connection</p>
-
-  <label>Project URL
-    <input id="url" type="url"
-      value="https://vdszqtqbywcozkolaytu.supabase.co">
-  </label>
-
-  <label>Publishable Key
-    <input id="key" type="password"
-      value="sb_publishable_9r_4K2uRC_tm-Q7405KI2w_AnIUexg0">
-  </label>
-
-  <button id="save">Simpan Konfigurasi</button>
-  <button id="test">Tes Koneksi</button>
-  <button id="open">Buka Endpoint Supabase</button>
-
-  <div id="result">Siap. Tekan Tes Koneksi.</div>
-  <p><small>
-    Gunakan publishable key saja di browser.
-    Jangan masukkan secret key.
-  </small></p>
+<header class="top"><div><div class="brand">HAO OMNI <b>V52</b></div><div class="sub">PREMIUM DEVICE CONSOLE • UI DEMO</div></div><button class="theme" id="themeBtn">◐ Tema</button></header>
+<main class="wrap">
+<section class="hero" id="hero"><div class="eyebrow">DEVICE CONSOLE</div><h1>Kontrol panel HAO OMNI</h1><div class="muted">Demo tampilan untuk pengelolaan perangkat, kode pairing, konfigurasi APK pendamping, dan bantuan jarak jauh yang disetujui pemilik perangkat.</div><div class="stats"><div class="stat"><small>Waktu lokal</small><strong id="clock">--:--:--</strong></div><div class="stat"><small>Jaringan</small><strong id="net">Memeriksa…</strong></div><div class="stat"><small>Backend</small><strong id="backendState">Demo lokal</strong></div></div></section>
+<nav class="tabs" aria-label="Menu utama"><button class="tab active" data-view="modules">MODUL</button><button class="tab" data-view="builder">APK BUILDER</button><button class="tab" data-view="pairing">PAIRING</button><button class="tab" data-view="supabase">SUPABASE</button><button class="tab" data-view="owner">OWNER</button><button class="tab" data-view="companion">DEMO TARGET</button></nav>
+<section class="view active" id="view-modules"><div class="field"><input id="search" placeholder="Cari modul…" autocomplete="off"></div><div class="sectionline"><span>MODULE ARSENAL</span><span class="pill">21 MODUL</span></div><div class="grid" id="grid"></div><div class="note">Pratinjau UI saja. Modul yang membutuhkan akses perangkat akan meminta izin secara terpisah dalam implementasi nyata.</div></section>
+<section class="view" id="view-builder"><div class="panel"><div class="eyebrow">APK CONFIGURATION</div><h2>APK Builder</h2><p class="muted">Atur metadata APK pendamping. Panel ini belum melakukan kompilasi APK.</p><label class="field"><span>Nama aplikasi</span><input id="appName" value="HAO Companion" maxlength="40"></label><label class="field"><span>Application ID</span><input id="appId" value="id.hao.omni.companion"></label><label class="field"><span>Versi</span><input id="appVersion" value="1.0.0"></label><label class="field"><span>Fitur demo</span><select id="appFeature"><option value="pairing">Pairing perangkat</option><option value="screen">Pairing + berbagi layar dengan izin</option><option value="support">Paket bantuan jarak jauh dengan persetujuan</option></select></label><div class="actions"><button class="btn primary" id="exportConfig">Ekspor konfigurasi</button><button class="btn" id="shareConfig">Bagikan konfigurasi</button></div><div class="output" id="builderOut">Konfigurasi belum diekspor.</div><div class="note">Tombol ini hanya mengekspor konfigurasi JSON, bukan file APK terpasang.</div></div></section>
+<section class="view" id="view-pairing"><div class="panel"><div class="eyebrow">CONSENT-BASED REMOTE SUPPORT</div><h2>Pairing perangkat</h2><p class="muted">Buat kode sementara untuk memasangkan dua perangkat milikmu. Demo ini hanya menyimpan status secara lokal; belum menghubungkan jaringan atau streaming.</p><label class="field"><span>Peran perangkat</span><select id="pairRole"><option value="controller">HP pengontrol</option><option value="companion">HP pendamping</option></select></label><label class="field"><span>Kode sesi</span><input id="pairCode" placeholder="HAO-XXX-XXX-XXX" autocapitalize="characters"></label><div class="actions"><button class="btn primary" id="makeCode">Buat kode sesi</button><button class="btn" id="copyCode">Salin kode</button><button class="btn" id="validateCode">Validasi format kode</button><button class="btn" id="endSession">Hentikan sesi lokal</button></div><div class="output" id="pairOut">Belum ada sesi lokal.</div><div class="note">Pairing tidak otomatis membuka kamera, mikrofon, berbagi layar, atau kendali perangkat. Izin Android harus diminta terpisah dan disetujui pemilik perangkat.</div></div></section>
+<section class="view" id="view-supabase"><div class="panel"><div class="eyebrow">BACKEND CONNECTION</div><h2>Supabase Settings</h2><p class="muted">Masukkan Project URL dan publishable/anon key untuk menguji koneksi dasar. Pengaturan disimpan di browser perangkat ini saja.</p><label class="field"><span>Supabase Project URL</span><input id="supabaseUrl" type="url" placeholder="https://xxxx.supabase.co" autocomplete="url"></label><label class="field"><span>Publishable key / anon public key</span><input id="supabaseKey" type="password" placeholder="sb_publishable_… atau anon public key" autocomplete="off"></label><div class="actions"><button class="btn primary" id="saveSupabase">Simpan konfigurasi</button><button class="btn" id="testSupabase">Uji koneksi</button></div><div class="output" id="supabaseOut">Backend belum dikonfigurasi.</div><div class="note">Jangan masukkan service_role/secret key ke HTML atau browser. Untuk akses data, buat tabel dan Row Level Security (RLS) di Supabase; URL + anon key saja tidak memberi hak akses otomatis.</div></div><div class="panel"><div class="eyebrow">OWNER SECURITY</div><h2>Login Owner</h2><p class="muted">Login asli akan memakai Supabase Auth setelah konfigurasi tersimpan. Dashboard Owner sebaiknya hanya menampilkan data yang diizinkan oleh policy RLS.</p><button class="btn full" id="goOwner">Buka menu Owner</button></div></section>
+<section class="view" id="view-owner"><div class="panel"><div class="owner-mark">✦ OWNER AREA</div><h2>Masuk dashboard Owner</h2><p class="muted">Login Supabase akan diintegrasikan setelah konfigurasi backend diuji. Login demo di bawah ini tetap hanya pratinjau UI.</p><label class="field"><span>Email Owner</span><input id="ownerEmail" type="email" placeholder="owner@example.com" autocomplete="username"></label><label class="field"><span>Kata sandi</span><input id="ownerPassword" type="password" placeholder="Masukkan kata sandi demo" autocomplete="current-password"></label><button class="btn primary full" id="ownerLogin">Pratinjau dashboard Owner</button><div class="output" id="ownerOut">Belum login.</div><div id="ownerDash" class="hidden"><div class="sectionline"><span>DASHBOARD OWNER</span><span class="pill">DEMO</span></div><div class="grid"><div class="tile"><div class="ico">▤</div><h3>Backend</h3><p>Belum tersambung</p></div><div class="tile"><div class="ico">⌘</div><h3>Sesi aktif</h3><p id="ownerSessions">0 sesi demo</p></div><div class="tile"><div class="ico">◈</div><h3>Perangkat</h3><p>Belum ada perangkat terverifikasi</p></div></div><button class="btn full" id="ownerLogout" style="margin-top:14px">Keluar dashboard</button></div><div class="note">Tombol pratinjau tidak mengautentikasi akun. Jangan gunakan kata sandi asli pada demo ini.</div></div></section>
+<section class="view" id="view-companion"><div class="panel companion"><div class="center"><div class="companion-logo">H</div><div class="eyebrow">HAO COMPANION</div><h2>Hubungkan perangkat</h2><p class="muted">Masukkan kode pairing yang dibuat dari aplikasi utama.</p></div><label class="field"><span>Kode pairing</span><input id="joinCode" placeholder="HAO-XXX-XXX-XXX" autocapitalize="characters" maxlength="15"></label><button class="btn primary full" id="joinSession">Hubungkan</button><div class="output" id="companionOut">Menunggu kode pairing.</div><div id="consentBox" class="hidden"><div class="note">Kode cocok dalam demo lokal. Dalam aplikasi nyata, pemilik perangkat tetap harus menyetujui setiap izin Android yang diperlukan.</div><button class="btn full" id="consentBtn" style="margin-top:12px">Setujui demo pairing</button></div></div></section>
+<div class="footer">HAO OMNI V52 • SUPABASE CONNECTION TEST • AUTH & PAIRING MASIH BELUM DIIMPLEMENTASIKAN</div>
 </main>
-
 <script>
-const $ = id => document.getElementById(id);
-const result = $('result');
+const modules=[['▣','Info perangkat','Lihat informasi browser dan layar perangkat ini.'],['⌁','Status jaringan','Periksa status koneksi yang dilaporkan browser.'],['▬','Status baterai','Baca level baterai jika API tersedia.'],['◷','Jam & tanggal','Waktu lokal dan zona waktu.'],['⌖','Lokasi perangkat','Minta izin lokasi secara eksplisit.'],['◎','Uji kamera','Buka kamera perangkat ini setelah izin diberikan.'],['♫','Uji mikrofon','Rekam sampel singkat secara lokal setelah izin.'],['▤','Pilih berkas','Pilih berkas sendiri untuk melihat metadata.'],['▧','Papan klip','Demo input dan salin teks secara manual.'],['▦','Penyimpanan web','Lihat ringkasan penyimpanan browser.'],['⌘','Pembuat sandi','Buat sandi acak secara lokal.'],['#','Generator hash','Hash teks yang kamu masukkan.'],['{}','Pemformat JSON','Rapikan JSON lokal.'],['⇄','Encoder Base64','Encode/decode teks biasa.'],['◉','Status sesi','Lihat status sesi pairing demo.'],['▣','APK Builder','Atur metadata APK pendamping.'],['⌁','Validasi kode','Validasi format kode pairing.'],['♢','Riwayat lokal','Lihat aktivitas demo pada halaman ini.'],['⛨','Pusat izin','Ringkasan izin yang diperlukan.'],['⇧','Ekspor konfigurasi','Ekspor konfigurasi aplikasi dalam JSON.'],['⚙','Pengaturan','Tema dan preferensi antarmuka.']];
+const grid=document.querySelector('#grid');function renderModules(q=''){grid.innerHTML='';modules.filter(m=>(m[1]+' '+m[2]).toLowerCase().includes(q.toLowerCase())).forEach(m=>{const el=document.createElement('article');el.className='tile';el.innerHTML=`<div class="ico">${m[0]}</div><h3>${m[1]}</h3><p>${m[2]}</p>`;grid.appendChild(el)})}renderModules();document.querySelector('#search').addEventListener('input',e=>renderModules(e.target.value));
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id==='view-'+b.dataset.view));window.scrollTo({top:0,behavior:'smooth'})}));document.querySelector('#themeBtn').onclick=()=>document.body.classList.toggle('light');function tick(){document.querySelector('#clock').textContent=new Date().toLocaleTimeString('id-ID')}tick();setInterval(tick,1000);document.querySelector('#net').textContent=navigator.onLine?'Online':'Offline';window.addEventListener('online',()=>document.querySelector('#net').textContent='Online');window.addEventListener('offline',()=>document.querySelector('#net').textContent='Offline');
+function genCode(){const a='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';const part=n=>Array.from({length:n},()=>a[Math.floor(Math.random()*a.length)]).join('');return `HAO-${part(3)}-${part(3)}-${part(3)}`}function valid(s){return /^HAO-[A-Z0-9]{3}-[A-Z0-9]{3}-[A-Z0-9]{3}$/.test(s.trim().toUpperCase())}const code=document.querySelector('#pairCode'),pairOut=document.querySelector('#pairOut');document.querySelector('#makeCode').onclick=()=>{code.value=genCode();pairOut.textContent='Kode sesi dibuat secara lokal: '+code.value+'. Belum terdaftar di server.';document.querySelector('#ownerSessions').textContent='1 sesi demo'};document.querySelector('#copyCode').onclick=async()=>{if(!code.value){pairOut.textContent='Buat kode terlebih dahulu.';return}try{await navigator.clipboard.writeText(code.value);pairOut.textContent='Kode disalin.'}catch{pairOut.textContent='Kode: '+code.value+' (salin manual bila clipboard diblokir).'}};document.querySelector('#validateCode').onclick=()=>pairOut.textContent=valid(code.value)?'Format kode valid. Ini belum memverifikasi sesi server.':'Format kode salah. Contoh: HAO-ABC-234-XYZ.';document.querySelector('#endSession').onclick=()=>{code.value='';pairOut.textContent='Sesi lokal dihentikan.';document.querySelector('#ownerSessions').textContent='0 sesi demo'};
+document.querySelector('#joinSession').onclick=()=>{const v=document.querySelector('#joinCode').value.trim().toUpperCase();const out=document.querySelector('#companionOut');if(!valid(v)){out.textContent='Format kode salah. Contoh: HAO-ABC-234-XYZ.';document.querySelector('#consentBox').classList.add('hidden');return}if(v!==code.value.toUpperCase()||!code.value){out.textContent='Kode belum ditemukan di demo lokal ini. Kedua layar harus dibuka pada halaman yang sama untuk simulasi.';document.querySelector('#consentBox').classList.add('hidden');return}out.textContent='Kode cocok pada demo lokal. Belum ada koneksi jarak jauh.';document.querySelector('#consentBox').classList.remove('hidden')};document.querySelector('#consentBtn').onclick=()=>{document.querySelector('#companionOut').textContent='Pairing demo disetujui secara lokal. Tidak ada layar yang dikirim.';document.querySelector('#consentBox').classList.add('hidden')};
+function config(){return {appName:document.querySelector('#appName').value.trim(),applicationId:document.querySelector('#appId').value.trim(),version:document.querySelector('#appVersion').value.trim(),feature:document.querySelector('#appFeature').value,generatedAt:new Date().toISOString(),demo:true}}document.querySelector('#exportConfig').onclick=()=>{const data=JSON.stringify(config(),null,2);document.querySelector('#builderOut').textContent=data;const blob=new Blob([data],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='hao-companion-config.json';a.click();URL.revokeObjectURL(a.href)};document.querySelector('#shareConfig').onclick=async()=>{const data=JSON.stringify(config(),null,2);try{if(navigator.share)await navigator.share({title:'HAO Companion config',text:data});else{await navigator.clipboard.writeText(data);document.querySelector('#builderOut').textContent='Konfigurasi disalin untuk dibagikan.\n'+data}}catch(e){document.querySelector('#builderOut').textContent=data}};
+document.querySelector('#ownerLogin').onclick=()=>{const email=document.querySelector('#ownerEmail').value.trim(),pw=document.querySelector('#ownerPassword').value;if(!email||!pw){document.querySelector('#ownerOut').textContent='Isi email dan kata sandi demo untuk melihat pratinjau dashboard.';return}document.querySelector('#ownerOut').textContent='Login demo berhasil untuk '+email+'. Ini bukan autentikasi sungguhan.';document.querySelector('#ownerDash').classList.remove('hidden')};document.querySelector('#ownerLogout').onclick=()=>{document.querySelector('#ownerDash').classList.add('hidden');document.querySelector('#ownerPassword').value='';document.querySelector('#ownerOut').textContent='Keluar dari dashboard demo.'};
+// Supabase connection configuration: only public/publishable key is supported in this client demo.
+const sbUrl=document.querySelector('#supabaseUrl'), sbKey=document.querySelector('#supabaseKey'), sbOut=document.querySelector('#supabaseOut');
+function loadSb(){try{const c=JSON.parse(localStorage.getItem('hao_supabase_public_config')||'{}');sbUrl.value=c.url||'';sbKey.value=c.key||'';if(c.url&&c.key){document.querySelector('#backendState').textContent='Tersimpan';sbOut.textContent='Konfigurasi publik ditemukan di browser. Tekan Uji koneksi untuk memeriksa endpoint.'}}catch{}}
+function cleanUrl(v){return v.trim().replace(/\/+$/,'')}
+document.querySelector('#saveSupabase').onclick=()=>{const url=cleanUrl(sbUrl.value),key=sbKey.value.trim();if(!/^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(url)){sbOut.textContent='URL belum sesuai format project Supabase, contoh: https://xxxx.supabase.co';return}if(!key){sbOut.textContent='Masukkan publishable key atau anon public key.';return}if(/service_role|sb_secret_/i.test(key)){sbOut.textContent='Ditolak: secret/service_role key tidak boleh disimpan di browser. Gunakan publishable/anon public key.';return}localStorage.setItem('hao_supabase_public_config',JSON.stringify({url,key}));document.querySelector('#backendState').textContent='Konfigurasi disimpan';sbOut.textContent='Konfigurasi publik tersimpan di browser ini. Belum berarti tabel atau autentikasi sudah berfungsi.'};
+document.querySelector('#testSupabase').onclick=async()=>{const url=cleanUrl(sbUrl.value),key=sbKey.value.trim();if(!/^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(url)||!key){sbOut.textContent='Isi URL project dan publishable/anon key terlebih dahulu.';return}if(/service_role|sb_secret_/i.test(key)){sbOut.textContent='Ditolak demi keamanan: gunakan publishable/anon key, bukan secret/service_role.';return}sbOut.textContent='Menguji endpoint Auth Supabase…';try{const r=await fetch(url+'/auth/v1/settings',{method:'GET',headers:{apikey:key}});const body=await r.text();if(r.ok){document.querySelector('#backendState').textContent='Endpoint terjangkau';sbOut.textContent='Berhasil menjangkau endpoint Auth Supabase (HTTP '+r.status+'). Ini hanya tes konektivitas; belum memverifikasi login, tabel, RLS, atau pairing.'}else{document.querySelector('#backendState').textContent='Perlu diperiksa';sbOut.textContent='Endpoint merespons HTTP '+r.status+'. Periksa project URL dan key. Respons: '+body.slice(0,300)}}catch(e){document.querySelector('#backendState').textContent='Gagal diuji';sbOut.textContent='Koneksi gagal dari browser: '+e.message+'. Periksa internet, URL, dan apakah permintaan diblokir browser/CORS.'}};
+document.querySelector('#goOwner').onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.view==='owner'));document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id==='view-owner'));window.scrollTo({top:0,behavior:'smooth'})};
+loadSb();
 
-function getConfig() {
-  const url = $('url').value.trim().replace(/\/+$/, '');
-  const key = $('key').value.trim();
-
-  if (!/^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(url)) {
-    throw Error('Format Project URL tidak valid.');
-  }
-  if (!key || /sb_secret_|service_role/i.test(key)) {
-    throw Error('Gunakan publishable key, bukan secret key.');
-  }
-  return { url, key };
-}
-
-$('save').onclick = () => {
-  try {
-    const config = getConfig();
-    localStorage.setItem(
-      'hao_supabase_public_config',
-      JSON.stringify(config)
-    );
-    result.textContent = 'Konfigurasi berhasil disimpan di browser.';
-  } catch (e) {
-    result.textContent = e.message;
-  }
-};
-
-$('open').onclick = () => {
-  try {
-    const { url } = getConfig();
-    window.open(
-      url + '/auth/v1/health',
-      '_blank',
-      'noopener'
-    );
-    result.textContent =
-      'Endpoint dibuka. Periksa hasil di tab baru.';
-  } catch (e) {
-    result.textContent = e.message;
-  }
-};
-
-$('test').onclick = async () => {
-  let timer;
-
-  try {
-    const { url, key } = getConfig();
-    result.textContent = 'Menguji koneksi Supabase...';
-
-    const controller = new AbortController();
-    timer = setTimeout(() => controller.abort(), 12000);
-
-    const response = await fetch(url + '/auth/v1/settings', {
-      method: 'GET',
-      headers: {
-        apikey: key,
-        Authorization: 'Bearer ' + key
-      },
-      signal: controller.signal,
-      cache: 'no-store'
-    });
-
-    const body = await response.text();
-
-    if (response.ok) {
-      result.textContent =
-        'KONEKSI BERHASIL (HTTP ' + response.status + ').\n' +
-        'Endpoint Auth merespons. Login dan database belum diuji.';
-    } else {
-      result.textContent =
-        'Supabase merespons HTTP ' + response.status +
-        '\nRespons: ' + body.slice(0, 500) +
-        '\nPeriksa URL, key, dan konfigurasi project.';
-    }
-  } catch (e) {
-    result.textContent = e.name === 'AbortError'
-      ? 'Waktu koneksi habis. Periksa jaringan dan URL project.'
-      : 'GAGAL TERHUBUNG.\n' + e.message +
-        '\n\nBuka endpoint untuk memeriksa DNS dan status project. ' +
-        'Jika ERR_NAME_NOT_RESOLVED muncul, periksa Project URL ' +
-        'di Settings → API pada dashboard Supabase.';
-  } finally {
-    clearTimeout(timer);
-  }
-};
-
-// Muat konfigurasi tersimpan jika tersedia.
-try {
-  const saved = JSON.parse(
-    localStorage.getItem('hao_supabase_public_config') || 'null'
-  );
-  if (saved) {
-    $('url').value = saved.url;
-    $('key').value = saved.key;
-  }
-} catch (_) {}
-</script>
-</body>
-</html>
+</script></body></html>
