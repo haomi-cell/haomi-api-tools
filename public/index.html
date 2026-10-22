@@ -33,7 +33,43 @@ const sbUrl=document.querySelector('#supabaseUrl'), sbKey=document.querySelector
 function loadSb(){try{const c=JSON.parse(localStorage.getItem('hao_supabase_public_config')||'{}');sbUrl.value=c.url||'';sbKey.value=c.key||'';if(c.url&&c.key){document.querySelector('#backendState').textContent='Tersimpan';sbOut.textContent='Konfigurasi publik ditemukan di browser. Tekan Uji koneksi untuk memeriksa endpoint.'}}catch{}}
 function cleanUrl(v){return v.trim().replace(/\/+$/,'')}
 document.querySelector('#saveSupabase').onclick=()=>{const url=cleanUrl(sbUrl.value),key=sbKey.value.trim();if(!/^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(url)){sbOut.textContent='URL belum sesuai format project Supabase, contoh: https://xxxx.supabase.co';return}if(!key){sbOut.textContent='Masukkan publishable key atau anon public key.';return}if(/service_role|sb_secret_/i.test(key)){sbOut.textContent='Ditolak: secret/service_role key tidak boleh disimpan di browser. Gunakan publishable/anon public key.';return}localStorage.setItem('hao_supabase_public_config',JSON.stringify({url,key}));document.querySelector('#backendState').textContent='Konfigurasi disimpan';sbOut.textContent='Konfigurasi publik tersimpan di browser ini. Belum berarti tabel atau autentikasi sudah berfungsi.'};
-document.querySelector('#testSupabase').onclick=async()=>{const url=cleanUrl(sbUrl.value),key=sbKey.value.trim();if(!/^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(url)||!key){sbOut.textContent='Isi URL project dan publishable/anon key terlebih dahulu.';return}if(/service_role|sb_secret_/i.test(key)){sbOut.textContent='Ditolak demi keamanan: gunakan publishable/anon key, bukan secret/service_role.';return}sbOut.textContent='Menguji endpoint Auth Supabase…';try{const r=await fetch(url+'/auth/v1/settings',{method:'GET',headers:{apikey:key}});const body=await r.text();if(r.ok){document.querySelector('#backendState').textContent='Endpoint terjangkau';sbOut.textContent='Berhasil menjangkau endpoint Auth Supabase (HTTP '+r.status+'). Ini hanya tes konektivitas; belum memverifikasi login, tabel, RLS, atau pairing.'}else{document.querySelector('#backendState').textContent='Perlu diperiksa';sbOut.textContent='Endpoint merespons HTTP '+r.status+'. Periksa project URL dan key. Respons: '+body.slice(0,300)}}catch(e){document.querySelector('#backendState').textContent='Gagal diuji';sbOut.textContent='Koneksi gagal dari browser: '+e.message+'. Periksa internet, URL, dan apakah permintaan diblokir browser/CORS.'}};
+document.querySelector('#testSupabase').onclick=async()=>{
+  const url=cleanUrl(sbUrl.value),key=sbKey.value.trim();
+  if(!/^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(url)||!key){
+    sbOut.textContent='Isi URL project dan publishable/anon key terlebih dahulu.';return;
+  }
+  if(/service_role|sb_secret_/i.test(key)){
+    sbOut.textContent='Ditolak demi keamanan: gunakan publishable/anon key, bukan secret/service_role.';return;
+  }
+  sbOut.textContent='Menguji endpoint Auth Supabase…';
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(()=>controller.abort(), 12000);
+    const r=await fetch(url+'/auth/v1/settings',{
+      method:'GET',
+      headers:{apikey:key, Authorization:'Bearer '+key},
+      mode:'cors',
+      cache:'no-store',
+      signal:controller.signal
+    });
+    clearTimeout(timeoutId);
+    const body=await r.text();
+    if(r.ok){
+      document.querySelector('#backendState').textContent='Endpoint terjangkau';
+      sbOut.textContent='Berhasil menjangkau endpoint Auth Supabase (HTTP '+r.status+'). Ini hanya tes konektivitas; belum memverifikasi login, tabel, RLS, atau pairing.';
+    } else {
+      document.querySelector('#backendState').textContent='Perlu diperiksa';
+      sbOut.textContent='Supabase merespons HTTP '+r.status+'. '+(r.status===401||r.status===403?'Key mungkin salah atau tidak cocok dengan project. ':r.status===404?'Project URL mungkin salah atau endpoint tidak tersedia. ':'')+'Respons: '+body.slice(0,300);
+    }
+  } catch(e) {
+    document.querySelector('#backendState').textContent='Gagal diuji';
+    if(e.name==='AbortError'){
+      sbOut.textContent='Waktu tunggu habis setelah 12 detik. Periksa koneksi internet dan URL project Supabase.';
+    } else {
+      sbOut.textContent='Browser tidak dapat membaca respons Supabase (Failed to fetch). Ini biasanya karena URL/project tidak terjangkau, internet/VPN/DNS, atau pemblokiran jaringan/browser. Coba buka '+url+'/auth/v1/ di tab baru untuk melihat apakah domain bisa dijangkau; lalu periksa lagi URL dan publishable key di Supabase Dashboard. Jangan gunakan service_role/secret key.';
+    }
+  }
+};
 document.querySelector('#goOwner').onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.view==='owner'));document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id==='view-owner'));window.scrollTo({top:0,behavior:'smooth'})};
 loadSb();
 
